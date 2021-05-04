@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Persona;
@@ -32,7 +33,12 @@ public class PersonaImpl extends Conexion implements ICRUD<Persona>{
             ps.setString(6, per.getDNI());
             ps.setString(7, per.getCelular());
             ps.setString(8, per.getROL());
-            ps.setInt(9, per.getPersonaID());
+            if (per.getPersonaID()==0) {
+                ps.setNull(9, Types.INTEGER);
+            }else{
+                ps.setInt(9, per.getPersonaID());
+            }
+            
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
