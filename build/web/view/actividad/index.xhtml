@@ -14,7 +14,7 @@
     </center>
 
     <h:body>
-        <h:form id="formActividad">
+        <h:form id="formActividad"> 
             <p:growl id="msg" life="1500">
                 <p:autoUpdate/>
             </p:growl>
@@ -22,8 +22,10 @@
             <p:panelGrid columns="2">
 
                 <p:outputLabel value="Nombre:"/>
-                <p:inputText value="#{actividadControlador.actividad.nomact}" style="width: 250px"
-                             required="true" requiredMessage="Rellene el Nombre"/>
+                <p:inputText value="#{actividadControlador.actividad.nomact}" style="width: 250px"   
+                             required="true" requiredMessage="Rellene el Nombre"/>  
+
+
 
                 <p:outputLabel value="Monto:"/>
                 <p:inputText value="#{actividadControlador.actividad.monespact}" style="width: 250px"
@@ -31,7 +33,7 @@
                     <p:keyFilter regEx="/[0-9]/"/>
                 </p:inputText>
 
-                <p:outputLabel value="Cantidad:"/>
+                <p:outputLabel value="Cantidad de Apoderados:"/>
                 <p:inputText value="#{actividadControlador.actividad.canapoact}" style="width: 250px"
                              required="true" requiredMessage="Rellene la Cantidad">
                     <p:keyFilter regEx="/[0-9]/"/>

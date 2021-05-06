@@ -15,11 +15,9 @@ import modelo.ActividadModel;
 @Named(value = "actividadControlador")
 @SessionScoped
 public class ActividadControlador implements Serializable {
-
     ActividadModel actividad = new ActividadModel();
     private List<ActividadModel> lstActividad;
     private ActividadModel selectedActividad;
-
     @PostConstruct
     public void start() {
         try {
@@ -34,7 +32,6 @@ public class ActividadControlador implements Serializable {
 
         actividad = new ActividadModel();
     }
-
     public void listarActividad() throws Exception {
         ActividadDao dao;
         try {
@@ -45,7 +42,6 @@ public class ActividadControlador implements Serializable {
         }
 
     }
-
     public void registrarActividad() throws Exception {
         ActividadDao dao;
         try {
