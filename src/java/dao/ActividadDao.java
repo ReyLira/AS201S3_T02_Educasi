@@ -38,7 +38,7 @@ public class ActividadDao extends dao.Conexion implements ActividadI {
             ActividadModel actividad;
             while (rs.next()) {
                 actividad = new ActividadModel();
-                actividad.setIdact(rs.getString("IDACT"));  //commit
+                actividad.setIdact(rs.getString("IDACT"));  //prueb
                 actividad.setNomact(rs.getString("NOMACT"));
                 actividad.setMonespact(rs.getString("MONESPACT"));
                 actividad.setCanapoact(rs.getString("CANAPOACT"));
