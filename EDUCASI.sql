@@ -52,8 +52,8 @@ CREATE TABLE PERSONA (
     DIREPER varchar(20)  NOT NULL,
     DNIPER char(8)  NOT NULL,
     CELPER char(9)  NOT NULL,
-    ROLPER char(1)  NOT NULL,
-    ESTPER char(1)  NOT NULL,
+    ROLPER char(9)  NOT NULL,
+    ESTPER char(8)  NOT NULL,
     PERSONA_IDPER int  NULL,
     CONSTRAINT PERSONA_pk PRIMARY KEY  (IDPER)
 );
@@ -85,18 +85,17 @@ select IDCUOT,CANCUOT,MONCUOT,ESTCUOT,FECCUOT,CONCAT(NOMPER,' ',APEPER)AS NOMPER
 inner join PERSONA ON CUOTA.IDPER=PERSONA.IDPER
 inner join ACTIVIDAD ON CUOTA.IDACT=ACTIVIDAD.IDACT;
 -- vista fin
-DROP VIEW V_CUOTA;
-select * from V_CUOTA;
+
 
 -- vista inicio
 CREATE VIEW V_PERSONA as
-select super.IDPER,super.NOMPER,super.APEPER,super.PASPER,super.EMAPER,super.DIREPER,super.DNIPER,
-super.CELPER,super.ROLPER,super.ESTPER,CONCAT(infer.NOMPER,' ',infer.APEPER)
-as RELACION from PERSONA as super
+select ROW_NUMBER() OVER( ORDER BY super.IDPER desc) AS FILA, SUPER.IDPER,
+super.NOMPER,super.APEPER,super.PASPER,
+super.EMAPER,super.DIREPER,super.DNIPER,super.CELPER,
+super.ROLPER,super.ESTPER,CONCAT(infer.NOMPER,' ',infer.APEPER)
+as RELACION  from PERSONA  as super
 left join PERSONA as infer on super.PERSONA_IDPER =infer.IDPER ;
 -- vista fin
-DROP VIEW V_PERSONA;
-SELECT* FROM V_PERSONA;
 
 
 -- vista inicio
@@ -107,3 +106,23 @@ GASTO_ACTIVIDAD.FECGASACT AS FECGASACT, GASTO_ACTIVIDAD.IDACT AS IDACT,ACTIVIDAD
 FROM GASTO_ACTIVIDAD 
 INNER JOIN ACTIVIDAD ON GASTO_ACTIVIDAD.IDACT = ACTIVIDAD.IDACT;
 -- vista fin
+
+--funcion
+CREATE OR ALTER FUNCTION  SaldoCuota
+( 
+@idActividad integer,
+@idPersona integer
+)
+RETURNS integer
+    as 
+	
+    BEGIN
+        declare @monto int;
+		declare @acu int;
+		select @acu = isnull(sum(MONCUOT),0) from CUOTA where IDACT=@idActividad and IDPER = @idPersona;
+		select @monto =MONESPACT from ACTIVIDAD where IDACT=@idActividad;
+        RETURN @monto - @acu;
+    END;
+
+	SELECT dbo.SaldoCuota(1,1) ;
+
