@@ -29,7 +29,6 @@ Gestionar la rendición de cuentas de los ingresos y egresos de APAFA
 
 
 ### Requerimientos no Funcionales
-* El sistema controlará el acceso y lo permitirá solamente a usuarios autorizados 
 * El tiempo de aprendizaje del sistema por un usuario deberá ser menor a 4 horas 
 * El sistema debe contar con manuales de usuario estructurados adecuadamente 
 * El sistema debe proporcionar mensajes de error que sean informativos y orientados al usuario final 
