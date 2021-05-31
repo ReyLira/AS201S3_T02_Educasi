@@ -14,6 +14,7 @@ VALUES ('60','arreglo','2021-05-05','1'),
 	   ('50','compra','2021-05-05','2'),
        ('70','minta','2021-05-05','2');
 
-insert into CUOTA (CANCUOT,MONCUOT,ESTCUOT,FECCUOT,IDACT,IDPER) 
-values ('10','10','I','2021-03-06','3','3'),
-		('10','10','I','2021-03-06','3','2');
+insert into CUOTA (CANCUOT,MONCUOT,FECCUOT,IDACT,IDPER) 
+values ('10','10','2021-03-06','3','3'),
+		('10','10','2021-03-06','3','2');
+
