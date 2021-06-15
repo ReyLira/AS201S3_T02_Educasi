@@ -1,5 +1,8 @@
 # AS201S3_T02_Educasi.
-Sistema de Gestión de Ingresos y Egresos de APAFA (Edgard Rodriguez | Luis Taquire)
+Sistema de Gestión de Ingresos y Egresos de APAFA 
+
+# Equipo de desarrollo.
+(Edgard Rodriguez | Luis Taquire)
 
 ### Objetivos Generales
 Gestionar la rendición de cuentas de los ingresos y egresos de APAFA 
