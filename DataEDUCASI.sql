@@ -18,3 +18,4 @@ insert into CUOTA (CANCUOT,MONCUOT,FECCUOT,IDACT,IDPER)
 values ('10','10','2021-03-06','3','3'),
 		('10','10','2021-03-06','3','2');
 
+		select* from cuota;
