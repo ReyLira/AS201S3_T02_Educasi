@@ -1,0 +1,289 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <body>
+
+        <ui:composition template="./plantilla.xhtml">
+            <ui:define name="content">
+                    <p:growl id="msg" life="1500" showDetail="true" skipDetailIfEqualsSummary="true"
+                         rendered="#{not facesContext.validationFailed}">
+                    <p:autoUpdate/>
+                </p:growl>
+                    <p:accordionPanel>
+                        <p:tab title="ACTIVIDAD">
+                            <h:form id="formActividad">
+                                <p:panelGrid columns="3" styleClass="ui-noborder">
+
+                                    <p:outputLabel for="idNom" value="NOMBRE DE LA ACTIVIDAD:"/>
+                                    <p:inputText id="idNom" value="#{actividadControlador.actividad.nomact}" style="width: 250px"
+                                                 required="true" requiredMessage="Rellene el nombre"/>
+                                    <p:message for="idNom"/>
+
+                                    <p:outputLabel for="idMon" value="CUOTA POR CADA APODERADO:"/>
+                                    <p:inputText id="idMon" value="#{actividadControlador.actividad.monespact}" style="width: 250px"
+                                                 required="true" requiredMessage="Rellene el monto">
+                                        <p:keyFilter regEx="/[0-9]/"/>
+                                    </p:inputText>
+                                    <p:message for="idMon"/>
+
+                                    <p:outputLabel for="idCan" value="CANTIDAD DE APODERADOS:"/>
+                                    <p:inputText id="idCan" value="#{actividadControlador.actividad.canapoact}" style="width: 250px"
+                                                 required="true" requiredMessage="Rellene la Cantidad">
+                                        <p:keyFilter regEx="/[0-9]/"/>
+                                    </p:inputText>
+                                    <p:message for="idCan"/>
+
+                                    <p:outputLabel value="FECHA:"/>
+                                    <p:calendar id="german" value="#{actividadControlador.actividad.fecact}"  locale="de" navigator="true"
+                                           pattern="yyyy-MMM-dd"/>
+                                   
+
+                                    <p:commandButton value="Registrar" actionListener="#{actividadControlador.registrarActividad()}"
+                                                     action="#{actividadControlador.listarComboAct()}"
+                                                     update="formActividad @([id$=formTblActividad]) @([id$=formGastoAct])"/>
+
+                                </p:panelGrid>
+                            </h:form>
+                            <h:form id="formDescargaActividad">
+                                <p:commandButton value="Exportar Actividades" actionListener="#{actividadControlador.reporteActividad()}" 
+                                                 ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                            </h:form>
+                            <h:form id="formTblActividad">
+                                <p:dataTable id="tblActividad"
+                                             var="actividad"
+                                             value="#{actividadControlador.lstActividad}"
+                                             selection="#{actividadControlador.selectedActividad}"
+                                             selectionMode="single"
+                                             rowKey="#{actividad.idact}"
+                                             paginator="true"
+                                             paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             widgetVar="customersTable">
+                                    <f:facet name="header">
+
+                                        <h:commandLink value="Descargar Listado" >
+                                            <p:dataExporter type="xls" target="tblActividad" fileName="Listado"/>
+                                        </h:commandLink>
+                                    </f:facet>
+
+                                    <p:column headerText="NOMBRE DE LA ACTIVIDAD:" sortBy="#{actividad.nomact}" filterBy="#{actividad.nomact}">
+                                        <p:outputLabel value="#{actividad.nomact}"/>
+                                    </p:column>
+
+                                    <p:column headerText="CUOTA POR CADA APODERADO:">
+                                        <p:outputLabel value="#{actividad.monespact}"/>
+                                    </p:column>
+
+                                    <p:column headerText="CANTIDAD DE APODERADOS:">
+                                        <p:outputLabel value="#{actividad.canapoact}"/>
+                                    </p:column>
+
+                                    <p:column headerText="FECHA:">
+                                        <h:outputText value="#{actividad.fecact}" style="text-transform: uppercase">
+                                            <f:convertDateTime type="date" pattern="dd - MMM - y"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="Gastos" filterMatchMode="exact" filterBy="#{actividad.estfinact}">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu label="a" onchange="PF('customersTable').filter()"
+                                                             panelStyle="width:150px">
+                                                <f:selectItem itemLabel="Todos" itemValue="#{null}" noSelectionOption="true"/>
+                                                <f:selectItem itemLabel="Creado" itemValue="Creado" />
+                                                <f:selectItem itemLabel="En Proceso" itemValue="En Proceso" />
+                                                <f:selectItem itemLabel="Finalizado" itemValue="Finalizado" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <p:outputLabel value="#{actividad.estfinact}"/>
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:contextMenu for="tblActividad">
+                                    <p:menuitem value="MODIFICAR" oncomplete="PF('dloModActividad').show()" update=":formDialogActividad"/>
+                                    <p:menuitem value="ELIMINAR" actionListener="#{actividadControlador.eliminarActividad()}" update="@([id$=formTblActividad])">
+                                        <p:confirm header="CONFIRMACIÓN" message="¿Está seguro de eliminar este registro?"/>
+                                    </p:menuitem>
+                                </p:contextMenu>
+                            </h:form>
+                        </p:tab>
+
+                        <!-- CÓDIGO: GASTOS DE ACTIVIDADES -->
+                        <!-- CÓDIGO: GASTOS DE ACTIVIDADES -->
+                        <!-- CÓDIGO: GASTOS DE ACTIVIDADES -->
+                        <!-- CÓDIGO: GASTOS DE ACTIVIDADES -->
+                        <!-- CÓDIGO: GASTOS DE ACTIVIDADES -->
+                        <p:tab title="GASTOS DE ACTIVIDADES">
+                            <h:form id="formGastoAct">
+                                <p:panelGrid columns="3" styleClass="ui-noborder">
+                                    <p:outputLabel for="idGas" value="GASTO REALIZADO:"/>
+                                    <p:inputText id="idGas" value="#{gastoActividadC.gastoActividad.gasact}"
+                                                 required="true" requiredMessage="Rellene el Gasto Realizado">
+                                        <p:keyFilter regEx="/[0-9]/"/>
+                                    </p:inputText>
+                                    <p:message for="idGas"/>
+
+                                    <p:outputLabel for="idDes" value="DESCRIPCION:"/>
+                                    <p:inputText id="idDes" value="#{gastoActividadC.gastoActividad.desgasact}"
+                                                 required="true" requiredMessage="Rellene la Descripción"/>
+                                    <p:message for="idDes"/>
+
+                                    <p:outputLabel for="comboAct" value="ACTIVIDAD"/>
+                                    <p:panelGrid columns="2" styleClass="ui-noborder">
+                                        <p:selectOneMenu id="comboAct" value="#{gastoActividadC.gastoActividad.idact}"
+                                                         required="true" requiredMessage="Seleccione la Actividad">
+                                            <f:selectItem itemLabel="Seleccione" itemDisabled="true" itemValue="#{null}"/>
+                                            <f:selectItems value="#{actividadControlador.lstComboAct}" var="actividad" 
+                                                           itemLabel="#{actividad.nomact}" itemValue="#{actividad.idact}"/>
+                                        </p:selectOneMenu>
+                                    </p:panelGrid>
+                                    <p:message for="comboAct"/>
+
+                                    <p:outputLabel value="FECHA:"/>
+                                     <p:calendar id="german" value="#{gastoActividadC.gastoActividad.fecgasact}" locale="de" navigator="true"
+                                           pattern="yyyy-MMM-dd"/>
+                                     <br/>
+                                    <p:outputLabel for="idUlt" value="ULTIMO GASTO"/>
+                                    <p:selectOneRadio id="idUlt" value="#{gastoActividadC.gastoActividad.radiobutfin}"
+                                                      required="true" requiredMessage="Active el Gasto">
+                                        <f:selectItem itemLabel="No" itemValue="N"/>
+                                        <f:selectItem itemLabel="Si" itemValue="S"/>
+                                    </p:selectOneRadio>
+                                    <p:message for="idUlt"/>
+
+                                    <p:commandButton value="Registrar" actionListener="#{gastoActividadC.registrarGastoAct()}" 
+                                                     action="#{actividadControlador.listarActividad()}"
+                                                     update="formGastoAct @([id$=formTblGastoAct]) @([id$=formTblActividad])">
+                                        <f:actionListener binding="#{actividadControlador.listarComboAct()}"/>
+                                    </p:commandButton>
+                                </p:panelGrid>
+                            </h:form>
+                            <h:form id="formDescargaGastoAct">
+                                <p:commandButton value="EXPORTAR GASTOS DE ACTIVIDADES" actionListener="#{gastoActividadC.reporteGastoActividad()}" 
+                                                 ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                            </h:form>
+                            <h:form id="formTblGastoAct">
+                                <p:dataTable id="tblGastoAct"
+                                             var="gasto"
+                                             value="#{gastoActividadC.lstGastoAct}"
+                                             selection="#{gastoActividadC.selectedGastoActividad}"
+                                             selectionMode="single"
+                                             rowKey="#{gasto.idgasact}"
+                                             paginator="true"
+                                             paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
+
+                                    <p:column headerText="ACTIVIDAD" sortBy="#{gasto.nombreactividad}" filterBy="#{gasto.nombreactividad}">
+                                        <p:outputLabel value="#{gasto.nombreactividad}"/>
+                                    </p:column>
+
+                                    <p:column headerText="DESCRIPCION" sortBy="#{gasto.desgasact}" filterBy="#{gasto.desgasact}">
+                                        <p:outputLabel value="#{gasto.desgasact}"/>
+                                    </p:column>
+
+                                    <p:column headerText="GASTO REALIZADO">
+                                        <p:outputLabel value="#{gasto.gasact}"/>
+                                    </p:column>
+
+                                    <p:column headerText="FECHA">
+                                        <h:outputText value="#{gasto.fecgasact}" style="text-transform: uppercase">
+                                            <f:convertDateTime type="date" pattern="dd - MMM - y"/>
+                                        </h:outputText>
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:contextMenu for="tblGastoAct">
+                                    <p:menuitem value="MODIFICAR" oncomplete="PF('dlgModGasto').show()" update=":formDialogGasto"/>
+                                    <p:menuitem value="ELIMINAR" actionListener="#{gastoActividadC.eliminarGastoAct()}" update="@([id$=formTblGastoAct])">
+                                        <p:confirm header="CONFIRMACIÓN" message="¿Está seguro de eliminar este registro?"/>
+                                    </p:menuitem>
+                                </p:contextMenu>
+
+                            </h:form>
+                        </p:tab>
+                    </p:accordionPanel>
+
+                    <!-- CÓDIGO: DIÁLOGO PARA MODIFICAR ACTIVIDAD -->
+                    <!-- CÓDIGO: DIÁLOGO PARA MODIFICAR ACTIVIDAD -->
+                    <!-- CÓDIGO: DIÁLOGO PARA MODIFICAR ACTIVIDAD -->
+
+                    <p:dialog header="ACTUALIZAR DATOS" widgetVar="dloModActividad" resizable="false" modal="true">
+                        <h:form id="formDialogActividad"> 
+                            <p:panelGrid columns="3" styleClass="ui-noborder">
+                                <p:outputLabel for="idNomMod" value="NOMBRE DE LA ACTIVIDAD:"/>
+                                <p:inputText id="idNomMod" value="#{actividadControlador.selectedActividad.nomact}" style="width: 250px"
+                                             required="true" requiredMessage="Rellene el nombre"/>
+                                <p:message for="idNomMod"/>
+
+                                <p:outputLabel for="idMonMod" value="CUOTA POR CADA APODERADO:"/>
+                                <p:inputText id="idMonMod" value="#{actividadControlador.selectedActividad.monespact}" style="width: 250px"
+                                             required="true" requiredMessage="Rellene el monto">
+                                    <p:keyFilter regEx="/[0-9]/"/>
+                                </p:inputText>
+                                <p:message for="idMonMod"/>
+
+                                <p:outputLabel for="idCanMod" value="CANTIDAD DE APODERADOS:"/>
+                                <p:inputText id="idCanMod" value="#{actividadControlador.selectedActividad.canapoact}" style="width: 250px"
+                                             required="true" requiredMessage="Rellene la Cantidad">
+                                    <p:keyFilter regEx="/[0-9]/"/>
+                                </p:inputText>
+                                <p:message for="idCanMod"/>
+
+                                <p:outputLabel value="Fecha:"/>
+                                <p:calendar id="german" value="#{actividadControlador.selectedActividad.fecact}"  locale="de" navigator="true"
+                                           pattern="yyyy-MMM-dd"/>
+                                
+                                <p:commandButton value="MODIFICAR" actionListener="#{actividadControlador.modificarActividad()}" update="@([id$=formTblActividad]) formDialogActividad"/>
+                                <p:commandButton value="CANCELAR" oncomplete="PF('dloModActividad').hide()"/>
+                            </p:panelGrid>
+                        </h:form>
+                    </p:dialog>
+
+
+                    <p:dialog header="ACTUALIZAR DATOS" widgetVar="dlgModGasto" resizable="false" modal="true">
+                        <h:form id="formDialogGasto">
+                            <p:panelGrid columns="3" styleClass="ui-noborder">
+                                <p:outputLabel for="idGasMod" value="GASTO REALIZADO:"/>
+                                <p:inputText id="idGasMod" value="#{gastoActividadC.selectedGastoActividad.gasact}"
+                                             required="true" requiredMessage="Rellene el Gasto Realizado">
+                                    <p:keyFilter regEx="/[0-9]/"/>
+                                </p:inputText>
+                                <p:message for="idGasMod"/>
+
+                                <p:outputLabel for="idDesMod" value="DESCRIPCION:"/>
+                                <p:inputText id="idDesMod" value="#{gastoActividadC.selectedGastoActividad.desgasact}"
+                                             required="true" requiredMessage="Rellene la Descripción"/>
+                                <p:message for="idDesMod"/>
+
+                                <p:outputLabel for="idAct" value="ACTIVIDAD"/>
+                                <p:selectOneMenu id="idAct" value="#{gastoActividadC.selectedGastoActividad.idact}"
+                                                 required="true" requiredMessage="Seleccione la Actividad">
+                                    <f:selectItem itemLabel="Seleccione" itemDisabled="true" itemValue="#{null}"/>
+                                    <f:selectItems value="#{actividadControlador.lstActividad}" var="actividad" 
+                                                   itemLabel="#{actividad.nomact}" itemValue="#{actividad.idact}"/>
+                                </p:selectOneMenu>
+                                <p:message for="idAct"/>
+
+                                <p:outputLabel value="FECHA"/>
+                                <p:calendar id="german" value="#{gastoActividadC.selectedGastoActividad.fecgasact}"  locale="de" navigator="true"
+                                           pattern="yyyy-MMM-dd"/>
+                                <p:commandButton value="MODIFICAR" actionListener="#{gastoActividadC.modificarGastoAct()}" update="@([id$=formTblGastoAct])" oncomplete="PF('dlgModGasto').hide()"/>
+                                <p:commandButton value="CANCELAR" oncomplete="PF('dlgModGASTO').hide()"/>
+                            </p:panelGrid>
+                        </h:form>
+                    </p:dialog>
+
+                    <h:form>
+                        <p:confirmDialog global="true">
+                            <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes"/>
+                            <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no"/>
+                        </p:confirmDialog>
+                    </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
