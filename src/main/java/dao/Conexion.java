@@ -3,19 +3,23 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 public class Conexion {
 
     private Connection cnx = null;
 
     public void conectar() throws Exception {
-        try {
-            if (cnx == null) {
-                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                cnx = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;database=DBEDUCASI","sa", "Quilmana123");
-            }
-        } catch (SQLException e) {
-            throw e;
+       try {
+            String user = ("EDUCASI");
+            String pwd = ("1234");
+            String driver = ("oracle.jdbc.OracleDriver");
+            String url = ("jdbc:oracle:thin:@localhost:1521/XE");
+            Class.forName(driver).newInstance();
+            cnx = DriverManager.getConnection(url, user, pwd);            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de conexión, revise xfa");
+            System.out.println("error de conexion " + e.getMessage());
         }
 
     }

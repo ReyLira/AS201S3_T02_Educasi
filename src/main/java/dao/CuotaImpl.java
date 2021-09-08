@@ -152,7 +152,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
         return cuota;
     }
     public int obtenerSaldoCuota(int idCuota, int idPersona) throws SQLException {
-        String sql = "SELECT dbo.SaldoCuota(?,?) as saldoCuota";
+        String sql = "SELECT SaldoCuota(?,?)  AS  saldoCuota from dual";
         ResultSet rs;
         int cuota = -1;
         try {
