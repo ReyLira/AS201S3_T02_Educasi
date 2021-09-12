@@ -3,7 +3,7 @@ ALTER SESSION SET nls_date_format = 'YYYY-MM-DD';
 -- Table: ACTIVIDAD
 CREATE TABLE actividad (
     idact     INT NOT NULL,
-    nomact    VARCHAR2(60) NOT NULL,
+    nomact    VARCHAR2(60) NOT NULL UNIQUE,
     monespact INT NOT NULL,
     canapoact INT NOT NULL,
     fecact    DATE NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE persona (
     pasper        VARCHAR2(16) NOT NULL,
     emaper        VARCHAR2(20) NOT NULL,
     direper       VARCHAR2(20) NOT NULL,
-    dniper        CHAR(8) NOT NULL,
+    dniper        CHAR(8) NOT NULL UNIQUE,
     celper        CHAR(9) NOT NULL,
     rolper        CHAR(9) NOT NULL,
     estper        CHAR(8) DEFAULT 'ACTIVO' NULL,
@@ -189,6 +189,7 @@ CREATE OR REPLACE VIEW v_cuota AS
         INNER JOIN actividad ON cuota.idact = actividad.idact;
 
 --vista de la tabla persona
+
 CREATE OR REPLACE VIEW v_persona AS
     SELECT
         ROW_NUMBER()
@@ -268,5 +269,5 @@ is
 
 end SaldoCuota;
 
-SELECT SaldoCuota(1,1)  AS  saldoCuota from dual;
+--SELECT SaldoCuota(1,1)  AS  saldoCuota from dual;
         
