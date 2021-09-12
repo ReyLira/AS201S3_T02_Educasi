@@ -17,28 +17,34 @@
                     <title>EDUCASI</title>
                     <f:event listener="#{personaC.listar()}" type="preRenderView" />
                 </h:head>
-
-                <h:form id="formPersona" style="align-content: center;align-items: center;text-align: center">
+                <h:form id="formPersona"  style="align-content: center;align-items: center;text-align: center">
+                    <h1 style="font-family: sans-serif">PERSONA</h1>    
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-9">
+                        <p:fragment>
+                            <p:panelGrid columns="2" >
+                                <p:outputLabel value="DNI"/>
+                                <p:commandButton value="Buscar" action="#{personaC.buscarPorDNI()}"  update="NOMBRE APELLIDO">
+                                    <p:inputText value="#{personaC.per.DNI}" maxlength="8">
+                                        <p:keyFilter regEx="/[0-9]/"/>
+                                    </p:inputText>&#160;
+                                </p:commandButton>
+                                <p:outputLabel value="NOMBRE" />
+                                <p:inputText  id="NOMBRE" value="#{personaC.per.nombre}"  maxlength="40" disabled="true">
+                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
+                                </p:inputText>
+                                <p:outputLabel value="APELLIDO"/><p:inputText id="APELLIDO" value="#{personaC.per.apellido}" maxlength="40" disabled="true">
+                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
+                                </p:inputText>
+                            </p:panelGrid>
+                        </p:fragment>
+                        <br></br> 
+                    </div>
+                    <div class="ui-g-2"></div>
                     <div class="ui-g-10">
-                        <h1 style="font-family: sans-serif">PERSONA</h1>
                         <p:panelGrid columns="2">
-                            <p:outputLabel value="DNI"/>
-                            <h:panelGroup class="p-col-12 p-md-4">
-                                <h:panelGroup class="ui-inputgroup">
-                                    <p:inputText value="#{personaC.per.DNI}" maxlength="8" required="true" 
-                                                 requiredMessage="Rellene el DNI"><p:keyFilter regEx="/[0-9]/" /></p:inputText>
-                                    <p:commandButton icon="pi pi-search" styleClass="ui-button-warning" actionListener="#{personaC.buscarPorDNI}" update="NOMBRE APELLIDO" />
-                                </h:panelGroup>
-                            </h:panelGroup>
-                            <p:outputLabel value="NOMBRE" />
-                            <p:inputText  id="NOMBRE" value="#{personaC.per.nombre}"  maxlength="30" required="true" requiredMessage="Rellene el Nombre">
-                                <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
-                            </p:inputText>
-                            <p:outputLabel value="APELLIDO"/><p:inputText id="APELLIDO" value="#{personaC.per.apellido}" maxlength="20" required="true" requiredMessage="Rellene el Apellido">
-                                <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
-                            </p:inputText>
                             <p:outputLabel value="CONTRASEÑA"/><p:password value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña"/>
-                            <p:outputLabel value="EMAIL"/><p:inputText id="email" value="#{personaC.per.email}" maxlength="20" label="Email" validatorMessage="#{personaC.per.email} no es valido" required="true" requiredMessage="Rellene el correo">
+                            <p:outputLabel value="EMAIL"/><p:inputText id="email" value="#{personaC.per.email}" maxlength="60" label="Email" validatorMessage="#{personaC.per.email} no es valido" required="true" requiredMessage="Rellene el correo">
                                 <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" /> <p:message for="email" /></p:inputText>
 
                             <p:outputLabel value="DIRECCION"/><p:inputText value="#{personaC.per.direccion}" maxlength="20" required="true" requiredMessage="Rellene la direccion"/>
