@@ -6,6 +6,7 @@
 package dao;
 
 import dao.ICRUD;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,7 +49,27 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel>{
             this.Cerrar();
         }
     }
-
+    public void registrarD(PersonaModel per) throws SQLException {
+       String sql = "insert into PERSONA (NOMPER, APEPER, PASPER, EMAPER, DIREPER, DNIPER, CELPER, ROLPER,PERSONA_IDPER)values (?,?,?,?,?,?,?,?,?)";
+        try (Connection conec  = (Connection) this.getCn() ) {
+            PreparedStatement ps = conec.prepareStatement(sql);
+            ps.setString(1, per.getNombre());
+            ps.setString(2, per.getApellido());
+            ps.setString(3, per.getPassword());
+            ps.setString(4, per.getEmail());
+            ps.setString(5, per.getDireccion());
+            ps.setString(6, per.getDNI());
+            ps.setString(7, per.getCelular());
+            ps.setString(8, per.getROL());
+            if (per.getPersonaID()==0) {
+                ps.setNull(9, Types.INTEGER);
+            }else{
+                ps.setInt(9, per.getPersonaID());
+            }
+            ps.executeUpdate();
+            ps.close();
+        } 
+    }
     @Override
     public void modificar(PersonaModel per) throws Exception {
        String sql = "update PERSONA set NOMPER=?, APEPER=?, PASPER=?, EMAPER=?, DIREPER=?, DNIPER=?, CELPER=?, ROLPER=?,ESTPER=? where IDPER=?";

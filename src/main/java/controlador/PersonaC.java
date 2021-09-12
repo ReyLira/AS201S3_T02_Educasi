@@ -18,8 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-
 import modelo.PersonaModel;
+import static servicio.ReniecS.buscarDni;
 import servicio.Reporte;
 
 /**
@@ -29,27 +29,41 @@ import servicio.Reporte;
 @Named(value = "personaC")
 @SessionScoped
 public class PersonaC implements Serializable {
-
+    
     private PersonaModel per;
     private PersonaImpl dao;
     private String rol;
     private String est;
     private List<PersonaModel> listadoPer;
     private List<PersonaModel> listadoApoderado;
+
     public PersonaC() {
         per = new PersonaModel();
         dao = new PersonaImpl();
     }
-
+    public void buscarPorDNI (){
+        try {
+           buscarDni(per);
+            System.out.println(per.getApellido());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
     public void registrar() throws Exception {
         try {
             System.out.println(per.getROL());
-            dao.registrar(per);
+            dao.registrarD(per);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Modificado con éxito"));
             limpiar();
             listar();
-        } catch (Exception e) {
-            System.out.println("Error en registrarC " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            if (e.getErrorCode() == 1) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "el DNI ingresado coincide con otro usuario existente"));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "error", "error fatal"));
+            }
         }
     }
 
@@ -86,6 +100,7 @@ public class PersonaC implements Serializable {
             System.out.println("Error en listarC " + e.getMessage());
         }
     }
+
     public void reportePersona() throws Exception {
         Reporte report = new Reporte();
         try {
@@ -97,6 +112,7 @@ public class PersonaC implements Serializable {
             throw e;
         }
     }
+
     // metodos generados
     public PersonaModel getPer() {
         return per;
@@ -155,6 +171,7 @@ public class PersonaC implements Serializable {
         }
         return listadoApoderado;
     }
+
     public String getEst() {
         return est;
     }
