@@ -44,10 +44,10 @@ CREATE TABLE gasto_actividad (
 -- Table: PERSONA
 CREATE TABLE persona (
     idper         INT NOT NULL,
-    nomper        VARCHAR2(20) NOT NULL,
-    apeper        VARCHAR2(20) NOT NULL,
+    nomper        VARCHAR2(40) NOT NULL,
+    apeper        VARCHAR2(40) NOT NULL,
     pasper        VARCHAR2(16) NOT NULL,
-    emaper        VARCHAR2(20) NOT NULL,
+    emaper        VARCHAR2(60) NOT NULL,
     direper       VARCHAR2(20) NOT NULL,
     dniper        CHAR(8) NOT NULL UNIQUE,
     celper        CHAR(9) NOT NULL,
