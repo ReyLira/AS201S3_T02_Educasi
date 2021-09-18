@@ -3,6 +3,7 @@ package servicio;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import static com.google.gson.JsonParser.parseReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -23,10 +24,8 @@ public class ReniecS {
         try {
             URL url = new URL(enlace);
             URLConnection request = url.openConnection();
-            request.connect();
-
-            JsonParser jp = new JsonParser();
-            JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+            request.connect();          
+             JsonElement root = parseReader(new InputStreamReader((InputStream) request.getContent()));
             if (root.isJsonObject()) {
                 JsonObject rootobj = root.getAsJsonObject();
                 String apellido_paterno = rootobj.get("apellidoPaterno").getAsString();

@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 import modelo.PersonaModel;
 import static servicio.ReniecS.buscarDni;
 import servicio.Reporte;
-
+import static  servicio.MailJava.enviarCorreo;
 /**
  *
  * @author EDGARD VIERI RODRIGUEZ HUAMAN
@@ -46,7 +46,16 @@ public class PersonaC implements Serializable {
            buscarDni(per);
             System.out.println(per.getApellido());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("error en buscar por DNI " +e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    public void enviarC (){
+        try {
+           enviarCorreo(per); 
+            System.out.println(per.getApellido());
+        } catch (Exception e) {
+            System.out.println("error en buscar enviar correo " +e.getMessage());
             e.printStackTrace();
         }
     }
@@ -54,7 +63,8 @@ public class PersonaC implements Serializable {
         try {
             System.out.println(per.getROL());
             dao.registrarD(per);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Modificado con éxito"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Registrado con éxito"));
+            enviarCorreo(per); 
             limpiar();
             listar();
         } catch (SQLException e) {

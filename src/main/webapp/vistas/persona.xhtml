@@ -60,7 +60,7 @@
                                 <f:selectItem itemLabel="SELECCIONE"/>
                                 <f:selectItems value="#{personaC.listadoApoderado}" var="apo" itemLabel="#{apo.nombre.concat(' ').concat(apo.apellido)}" itemValue="#{apo.ID}"/>
                             </p:selectOneMenu>
-                            <p:commandButton value="Registrar" actionListener="#{personaC.registrar()}" 
+                            <p:commandButton value="Registrar" actionListener="#{personaC.registrar()}"
                                              update="formPersona :formTblPersona:tblPersona"/>
                         </p:panelGrid>
                     </div>
