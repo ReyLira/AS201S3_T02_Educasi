@@ -7,8 +7,7 @@ CREATE TABLE actividad (
     monespact INT NOT NULL,
     canapoact INT NOT NULL,
     fecact    DATE NOT NULL,
-    estact    CHAR(1) DEFAULT 'A' NOT NULL,
-    estfinact CHAR(1) DEFAULT 'C' NOT NULL,
+    estact    CHAR(8) DEFAULT 'ACTIVO' NULL,
     CONSTRAINT actividad_pk PRIMARY KEY ( idact )
 );
 
@@ -33,10 +32,10 @@ CREATE TABLE cuota (
 -- Table: GASTO_ACTIVIDAD
 CREATE TABLE gasto_actividad (
     idgasact  INT NOT NULL,
+    cangasact int not null,
+	mongasact int  not null,
     desgasact VARCHAR2(60) NOT NULL,
-    gasact    INT NOT NULL,
     fecgasact DATE NOT NULL,
-    estgasact CHAR(1) NOT NULL,
     idact     INT NOT NULL,
     CONSTRAINT gasto_actividad_pk PRIMARY KEY ( idgasact )
 );
@@ -188,8 +187,24 @@ CREATE OR REPLACE VIEW v_cuota AS
         INNER JOIN persona ON cuota.idper = persona.idper
         INNER JOIN actividad ON cuota.idact = actividad.idact;
 
---vista de la tabla persona
-
+--vista de la tabla gasto actividad
+CREATE OR REPLACE VIEW v_gastoAcividad AS
+    SELECT ROW_NUMBER()
+        OVER(
+            ORDER BY
+                gasto_actividad.idgasact DESC
+        ) AS fila,
+            actividad.idact,
+            gasto_actividad.idgasact,
+            actividad.nomact,
+            gasto_actividad.cangasact, 
+            gasto_actividad.mongasact,
+            gasto_actividad.desgasact, 
+            gasto_actividad.fecgasact 
+      from  gasto_actividad
+       INNER JOIN actividad ON gasto_actividad.idact = actividad.idact;
+ 
+ --vista de la tabla persona
 CREATE OR REPLACE VIEW v_persona AS
     SELECT
         ROW_NUMBER()
@@ -235,22 +250,6 @@ CREATE OR REPLACE VIEW v_persona_rol AS
         persona super
         LEFT JOIN persona infer ON super.persona_idper = infer.idper;
 
--- vista de la tabla gasto actividad
-CREATE OR REPLACE VIEW vw_gasto_actividad AS
-    SELECT
-        gasto_actividad.idgasact  AS idgasact,
-        gasto_actividad.gasact    AS gasact,
-        gasto_actividad.desgasact AS desgasact,
-        gasto_actividad.fecgasact AS fecgasact,
-        gasto_actividad.idact     AS idact,
-        actividad.nomact          AS nomact,
-        gasto_actividad.estgasact AS estgasact
-    FROM
-             gasto_actividad
-        INNER JOIN actividad ON gasto_actividad.idact = actividad.idact;
-
-
-
 --funcion
 CREATE OR REPLACE FUNCTION  SaldoCuota
 ( 
@@ -268,6 +267,25 @@ is
         RETURN monto -acu;
 
 end SaldoCuota;
-
+/
 --SELECT SaldoCuota(1,1)  AS  saldoCuota from dual;
+
+--funcion que calcula el saldo de la actividad
+CREATE OR REPLACE FUNCTION  SaldoActividad
+
+( 
+idActividad int
+)
+return int
+is
+ monto int;
+ acu int;
+	
+    BEGIN
+		select NVL(sum(MONCUOT),0)into acu from CUOTA where IDACT=idActividad;
+		select NVL(sum(MONGASACT),0) into monto from gasto_actividad where IDACT=idActividad;
+		RETURN acu - monto;
         
+   end SaldoActividad;
+   /
+--   SELECT SaldoActividad(2)  AS  saldoActividad from dual;
