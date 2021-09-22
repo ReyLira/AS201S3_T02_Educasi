@@ -133,33 +133,38 @@
                 </h:form>
                 <p:dialog header="ACTUALIZAR DATOS" widgetVar="wdlgDatos" resizable="false" modal="true">
                     <h:form id="formDialog">
-                        <p:panelGrid columns="2">
-                            <p:outputLabel value="NOMBRE" /> 
-                            <p:inputText value="#{personaC.per.nombre}" maxlength="20" required="true" requiredMessage="Rellene el Nombre">
-                                <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
-                            </p:inputText>
-                            <p:outputLabel value="APELLIDO" /> 
-                            <p:inputText value="#{personaC.per.apellido}" maxlength="20" required="true" requiredMessage="Rellene el Apellido">
-                                <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
-                            </p:inputText>
-                            <p:outputLabel value="CONTRASEÑA" /> 
-                            <p:inputText value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña">
-                            </p:inputText>
-                            <p:outputLabel value="EMAIL" /> 
-                            <p:inputText id="email" value="#{personaC.per.email}" maxlength="20" label="Email" validatorMessage="#{personaC.per.email} no es valido" required="true" requiredMessage="Rellene el correo">
-                                <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" /><p:message for="email" />
-                            </p:inputText>
-                            <p:outputLabel value="DIRECCION" /> 
-                            <p:inputText value="#{personaC.per.direccion}" maxlength="20" required="true" requiredMessage="Rellene la direccion"></p:inputText>
-                            <p:outputLabel value="DNI" /> 
-                            <p:inputText value="#{personaC.per.DNI}" maxlength="8" required="true" requiredMessage="Rellene el DNI"><p:keyFilter regEx="/[0-9]/" /></p:inputText>
-                            <p:outputLabel value="CELULAR" /> 
-                            <p:inputText value="#{personaC.per.celular}" maxlength="9" required="true" requiredMessage="Rellene el celular"><p:keyFilter regEx="/[0-9]/" /></p:inputText>
+                        <p:fragment>
+                            <p:panelGrid columns="2" >
+                                <p:outputLabel value="DNI"/>
+                                <p:commandButton value="Buscar" action="#{personaC.buscarPorDNI()}"  update="NOMBRE APELLIDO">
+                                    <p:inputText value="#{personaC.per.DNI}" maxlength="8">
+                                        <p:keyFilter regEx="/[0-9]/"/>
+                                    </p:inputText>&#160;
+                                </p:commandButton>
+                                <p:outputLabel value="NOMBRE" />
+                                <p:inputText  id="NOMBRE" value="#{personaC.per.nombre}"  maxlength="40" disabled="true">
+                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
+                                </p:inputText>
+                                <p:outputLabel value="APELLIDO"/><p:inputText id="APELLIDO" value="#{personaC.per.apellido}" maxlength="40" disabled="true">
+                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
+                                </p:inputText>
+                            </p:panelGrid>
+                        </p:fragment>
+                        <br></br> 
+                        <p:panelGrid columns="4">
+                            <p:outputLabel value="CONTRASEÑA"/><p:password value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña"/>
+                            <p:outputLabel value="EMAIL"/><p:inputText id="email" value="#{personaC.per.email}" maxlength="60" label="Email" validatorMessage="#{personaC.per.email} no es valido" required="true" requiredMessage="Rellene el correo">
+                                <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" /> <p:message for="email" /></p:inputText>
+
+                            <p:outputLabel value="DIRECCION"/><p:inputText value="#{personaC.per.direccion}" maxlength="20" required="true" requiredMessage="Rellene la direccion"/>
+
+                            <p:outputLabel value="CELULAR"/><p:inputText value="#{personaC.per.celular}" maxlength="9" required="true" requiredMessage="Rellene el celular"><p:keyFilter regEx="/[0-9]/" /></p:inputText>
                             <p:outputLabel value="ESTADO"/><p:selectOneRadio value="#{personaC.per.estado}">
                                 <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO"/>
                                 <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO"/>
                             </p:selectOneRadio>
-                            <p:outputLabel value="ROL" /><p:selectOneRadio id="roles" value="#{personaC.per.ROL}">
+                            <p:outputLabel value="ROL"/><p:selectOneRadio id="rol" value="#{personaC.per.ROL}" required="true" requiredMessage="seleccione un rol">
+                                <p:ajax event="change" listener="#{personaC.listadoApoderado.clear()}"/>
                                 <f:selectItem itemLabel="ADMINISTRADOR" itemValue="ADMIN"/>
                                 <f:selectItem itemLabel="APODERADO" itemValue="APODERADO"/>
                                 <f:selectItem itemLabel="ALUMNO" itemValue="ALUMNO"/>

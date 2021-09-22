@@ -63,7 +63,7 @@
                             </p:column>
 
                             <p:column headerText="CUOTA POR CADA APODERADO:">
-                                <p:outputLabel value="#{act.montoActividad}"/>
+                                <p:outputLabel value="S/. #{act.montoActividad}"/>
                             </p:column>
 
                             <p:column headerText="CANTIDAD DE APODERADOS:">
@@ -110,10 +110,6 @@
                                 <p:outputLabel value="FECHA" />
                                 <p:calendar id="german" value="#{actividadC.act.fechaActividad}"  locale="de" navigator="true"
                                             pattern="yyyy-MMM-dd"/>
-                                <p:outputLabel value="ESTADO"/><p:selectOneRadio value="#{actividadC.act.estadoActividad}">
-                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO"/>
-                                    <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO"/>
-                                </p:selectOneRadio>
                                 <p:commandButton value="MODIFICAR" actionListener="#{actividadC.modificar()}" update="@([id$=formTblActividad]) formDialogActividad"/>
                                 <p:commandButton value="CANCELAR" oncomplete="PF('dloModActividad').hide()"/>
                             </p:panelGrid>
