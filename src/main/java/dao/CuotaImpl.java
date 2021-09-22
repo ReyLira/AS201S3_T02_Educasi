@@ -61,6 +61,8 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             ps.close();
         } catch (Exception e) {
             System.out.println("Error al modificar cuota Dao " + e.getMessage());
+        }finally {
+            this.Cerrar();
         }
     }
 
@@ -125,7 +127,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
                 act.setMonespact(rs.getString("MONESPACT"));
                 act.setCanapoact(rs.getString("CANAPOACT"));
                 act.setFecact(rs.getDate("FECACT"));
-                act.setEstfinact(rs.getString("ESTFINACT"));
+                act.setEstfinact(rs.getString("estact"));
                 listAc.add(act);
             }
             rs.close();

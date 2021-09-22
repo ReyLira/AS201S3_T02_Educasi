@@ -1,128 +1,132 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controlador;
 
 import dao.GastoActividadImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import modelo.GastoActividadModel;
-import servicio.Reporte;
 
+/**
+ *
+ * @author EDGARD
+ */
 @Named(value = "gastoActividadC")
 @SessionScoped
 public class GastoActividadC implements Serializable {
 
-    GastoActividadModel gastoActividad = new GastoActividadModel();
-    private List<GastoActividadModel> lstGastoAct;
-    private GastoActividadModel selectedGastoActividad;
-
-    @PostConstruct
-    public void start() {
-        try {
-            listarGastoAct();
-        } catch (Exception ex) {
-        }
-
+    private GastoActividadModel gasAct;
+    private GastoActividadImpl dao;
+    
+    private List<GastoActividadModel> listGasAct;
+    private List<GastoActividadModel> listAct;
+    public GastoActividadC() {
+        gasAct = new GastoActividadModel();
+        dao = new GastoActividadImpl();
     }
-
-    public void limpiar() {
-        gastoActividad = new GastoActividadModel();
-    }
-
-    public void listarGastoAct() throws Exception {
-        GastoActividadImpl dao;
+    public void registrar() throws Exception {
         try {
-            dao = new GastoActividadImpl();
-            lstGastoAct = dao.listarTodos();
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
-    public void registrarGastoAct() {
-        GastoActividadImpl dao;
-        try {
-            dao = new GastoActividadImpl();
-            if (gastoActividad.getRadiobutfin().equals("S")) {
-                dao.cambiarEstadoGasto("F", getGastoActividad().getIdact());
-                dao.registrar(gastoActividad);
-            } else {
-                dao.cambiarEstadoGasto("P", getGastoActividad().getIdact());
-                dao.registrar(gastoActividad);
-            }
-            listarGastoAct();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "REGISTRADO CORRECTAMENTE", null));
+            System.out.println(gasAct);
+            dao.registrar(gasAct);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Registrado con éxito"));
             limpiar();
+            listar();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR AL REGISTRAR", null));
+            System.out.println("Error en modificarC " + e.getMessage());
         }
     }
 
-    public void modificarGastoAct() {
-        GastoActividadImpl dao;
+    public void modificar() throws Exception {
         try {
-            dao = new GastoActividadImpl();
-            dao.modificar(selectedGastoActividad);
-            listarGastoAct();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "MODIFICADO CORRECTAMENTE", null));
+            dao.modificar(gasAct);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Modificado con éxito"));
             limpiar();
+            listar();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR AL MODIFICAR", null));
+            System.out.println("Error en modificarC " + e.getMessage());
         }
     }
 
-    public void eliminarGastoAct() {
-        GastoActividadImpl dao;
+    public void eliminar() throws Exception {
         try {
-            dao = new GastoActividadImpl();
-            dao.eliminar(selectedGastoActividad);
-            listarGastoAct();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ELIMINADO CORRECTAMENTE", null));
+            dao.eliminar(gasAct);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "OK", "Eliminado con éxito"));
             limpiar();
+            listar();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR AL ELIMINAR", null));
+            System.out.println("Error en eliminarC " + e.getMessage());
         }
     }
     
-    public void reporteGastoActividad() throws Exception {
-        Reporte report = new Reporte();
+    public void limpiar() {
+        gasAct = new GastoActividadModel();
+    }
+
+    public void listar() {
         try {
-            Map<String, Object> parameters = new HashMap();
-            report.exportarPDFGlobal(parameters, "GastosActividades.jasper", "GastosPorActividades.pdf");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+            listGasAct = dao.listarTodos();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
-            throw e;
+            System.out.println("Error en listarC " + e.getMessage());
         }
     }
-
-    public GastoActividadModel getGastoActividad() {
-        return gastoActividad;
+    public void obtenerCuota() throws Exception{
+        
+        try {
+            if (gasAct.getFKactividad()>0) {
+               gasAct.setCantGasActividad(dao.obtenerSaldoActividad(gasAct.getFKactividad()));  
+            }
+        } catch (Exception e) {
+            System.out.println("Error en obtener cuota " + e.getMessage());
+        }
+      
+    }
+    public GastoActividadModel getGasAct() {
+        return gasAct;
     }
 
-    public void setGastoActividad(GastoActividadModel gastoActividad) {
-        this.gastoActividad = gastoActividad;
+    public void setGasAct(GastoActividadModel gasAct) {
+        this.gasAct = gasAct;
     }
 
-    public List<GastoActividadModel> getLstGastoAct() {
-        return lstGastoAct;
+    public GastoActividadImpl getDao() {
+        return dao;
     }
 
-    public void setLstGastoAct(List<GastoActividadModel> lstGastoAct) {
-        this.lstGastoAct = lstGastoAct;
+    public void setDao(GastoActividadImpl dao) {
+        this.dao = dao;
     }
 
-    public GastoActividadModel getSelectedGastoActividad() {
-        return selectedGastoActividad;
+    public List<GastoActividadModel> getListGasAct() {
+        return listGasAct;
     }
 
-    public void setSelectedGastoActividad(GastoActividadModel selectedGastoActividad) {
-        this.selectedGastoActividad = selectedGastoActividad;
+    public void setListGasAct(List<GastoActividadModel> listGasAct) {
+        this.listGasAct = listGasAct;
     }
 
+    public List<GastoActividadModel> getListAct() {
+        try {
+            listAct=dao.listarAct();
+        } catch (SQLException ex) {
+            Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listAct;
+    }
+
+    public void setListAct(List<GastoActividadModel> listAct) {
+        this.listAct = listAct;
+    }
+    
 }

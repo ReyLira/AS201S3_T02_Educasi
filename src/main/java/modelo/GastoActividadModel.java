@@ -1,66 +1,136 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package modelo;
 
 import java.util.Date;
 
+/**
+ *
+ * @author EDGARD
+ */
 public class GastoActividadModel {
 
-    private String idgasact, gasact, desgasact, idact, nombreactividad;
-    private String radiobutfin;
-    private Date fecgasact;
+    private int IdGastActividad;
+    private int CantGasActividad;
+    private int MonGasActividad;
+    private String DesGasActividad;
+    private Date FechGasActividad;
+    private int FKactividad;
+    
+    private String fila;
 
-    public String getIdgasact() {
-        return idgasact;
+    private int IDactividad;
+    private String NombreActividad;
+    private int MontoActividad;
+    private int CantApoActividad;
+    private Date FechaActividad;
+    private String EstadoActividad;
+
+    public int getIdGastActividad() {
+        return IdGastActividad;
     }
 
-    public void setIdgasact(String idgasact) {
-        this.idgasact = idgasact;
+    public void setIdGastActividad(int IdGastActividad) {
+        this.IdGastActividad = IdGastActividad;
     }
 
-    public String getGasact() {
-        return gasact;
+    public int getCantGasActividad() {
+        return CantGasActividad;
     }
 
-    public void setGasact(String gasact) {
-        this.gasact = gasact;
+    public void setCantGasActividad(int CantGasActividad) {
+        this.CantGasActividad = CantGasActividad;
     }
 
-    public String getDesgasact() {
-        return desgasact;
+    public int getMonGasActividad() {
+        return MonGasActividad;
     }
 
-    public void setDesgasact(String desgasact) {
-        this.desgasact = desgasact;
+    public void setMonGasActividad(int MonGasActividad) {
+        this.MonGasActividad = MonGasActividad;
     }
 
-    public String getIdact() {
-        return idact;
+    public String getDesGasActividad() {
+        return DesGasActividad;
     }
 
-    public void setIdact(String idact) {
-        this.idact = idact;
+    public void setDesGasActividad(String DesGasActividad) {
+        this.DesGasActividad = DesGasActividad;
     }
 
-    public String getNombreactividad() {
-        return nombreactividad;
+    public Date getFechGasActividad() {
+        return FechGasActividad;
     }
 
-    public void setNombreactividad(String nombreactividad) {
-        this.nombreactividad = nombreactividad;
+    public void setFechGasActividad(Date FechGasActividad) {
+        this.FechGasActividad = FechGasActividad;
     }
 
-    public Date getFecgasact() {
-        return fecgasact;
+    public int getFKactividad() {
+        return FKactividad;
     }
 
-    public void setFecgasact(Date fecgasact) {
-        this.fecgasact = fecgasact;
+    public void setFKactividad(int FKactividad) {
+        this.FKactividad = FKactividad;
     }
 
-    public String getRadiobutfin() {
-        return radiobutfin;
+    public String getNombreActividad() {
+        return NombreActividad;
     }
 
-    public void setRadiobutfin(String radiobutfin) {
-        this.radiobutfin = radiobutfin;
+    public void setNombreActividad(String NombreActividad) {
+        this.NombreActividad = NombreActividad;
     }
+
+    public int getIDactividad() {
+        return IDactividad;
+    }
+
+    public void setIDactividad(int IDactividad) {
+        this.IDactividad = IDactividad;
+    }
+
+    public int getMontoActividad() {
+        return MontoActividad;
+    }
+
+    public void setMontoActividad(int MontoActividad) {
+        this.MontoActividad = MontoActividad;
+    }
+
+    public int getCantApoActividad() {
+        return CantApoActividad;
+    }
+
+    public void setCantApoActividad(int CantApoActividad) {
+        this.CantApoActividad = CantApoActividad;
+    }
+
+    public Date getFechaActividad() {
+        return FechaActividad;
+    }
+
+    public void setFechaActividad(Date FechaActividad) {
+        this.FechaActividad = FechaActividad;
+    }
+
+    public String getEstadoActividad() {
+        return EstadoActividad;
+    }
+
+    public void setEstadoActividad(String EstadoActividad) {
+        this.EstadoActividad = EstadoActividad;
+    }
+
+    public String getFila() {
+        return fila;
+    }
+
+    public void setFila(String fila) {
+        this.fila = fila;
+    }
+    
 }

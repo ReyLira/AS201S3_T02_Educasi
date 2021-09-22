@@ -5,10 +5,9 @@
  */
 package dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,126 +15,107 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import modelo.ActividadModel;
-import dao.ICRUD;
 
-public class ActividadImpl extends dao.Conexion implements ICRUD <ActividadModel>{
-
-    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
+/**
+ *
+ * @author EDGARD
+ */
+public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
+    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
     public static Date stringToFecha(String fecha) throws ParseException {
-        return fecha != null ? new SimpleDateFormat("dd/MM/yyyy").parse(fecha) : null;
+        return fecha != null ? new SimpleDateFormat("dd-MM-yyyy").parse(fecha) : null;
     }
+    @Override
+    public void registrar(ActividadModel obj) throws Exception {
+         String sql ="insert into ACTIVIDAD (NOMACT,MONESPACT,CANAPOACT,FECACT) values (?,?,?,?)";
+        try {
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.setString(1, obj.getNombreActividad());
+            ps.setInt(2, obj.getMontoActividad());
+            ps.setInt(3, obj.getCantApoActividad());
+            ps.setString(4, formatter.format(obj.getFechaActividad()));
+            ps.executeUpdate();
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("Error al Ingresar Actividad Dao " + e.getMessage());
+        }
+    }
+    public void registrarD(ActividadModel obj) throws Exception {
+         String sql ="insert into ACTIVIDAD (NOMACT,MONESPACT,CANAPOACT,FECACT) values (?,?,?,?)";
+        try (Connection conec  = (Connection) this.getCn() ){
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.setString(1, obj.getNombreActividad());
+            ps.setInt(2, obj.getMontoActividad());
+            ps.setInt(3, obj.getCantApoActividad());
+            ps.setString(4, formatter.format(obj.getFechaActividad()));
+            ps.executeUpdate();
+            ps.close();
+        } 
+    }
+
+    @Override
+    public void modificar(ActividadModel obj) throws Exception {
+        String sql = "update ACTIVIDAD set NOMACT=?,MONESPACT=?,CANAPOACT=?,FECACT=?,ESTACT=? where IDACT=?";
+        try {
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.setString(1, obj.getNombreActividad());
+            ps.setInt(2, obj.getMontoActividad());
+            ps.setInt(3, obj.getCantApoActividad());
+            ps.setString(4, formatter.format(obj.getFechaActividad()));
+            ps.setString(5, obj.getEstadoActividad());
+            ps.setInt(6, obj.getIDactividad());
+            ps.executeUpdate();
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("Error al modificar Actividad Dao " + e.getMessage());
+        }finally {
+            this.Cerrar();
+        }
+    }
+
+    @Override
+    public void eliminar(ActividadModel obj) throws Exception {
+        String sql = "delete from ACTIVIDAD where IDACT=?";               
+        try {
+            PreparedStatement ps = this.getCn().prepareStatement(sql);             
+            ps.setInt(1, obj.getIDactividad());
+            ps.executeUpdate();
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("Error en eliminar Actividad" + e.getMessage());
+        }finally {
+            this.Cerrar();
+        } 
+    }
+    
 
     @Override
     public List<ActividadModel> listarTodos() throws Exception {
-        List<ActividadModel> listaActividad;
+        List<ActividadModel> listado = null;
+        ActividadModel act;
+        String sql = "select *from ACTIVIDAD";
         ResultSet rs;
         try {
             this.conectar();
-            String sql = "SELECT IDACT,NOMACT,MONESPACT,CANAPOACT,FECACT,ESTACT,\n"
-                    + "CASE ESTFINACT\n"
-                    + "WHEN 'C' THEN 'Creado'\n"
-                    + "WHEN 'P' THEN 'En Proceso'\n"
-                    + "WHEN 'F' THEN 'Finalizado'\n"
-                    + "END AS ESTFINACT\n"
-                    + "FROM ACTIVIDAD WHERE ESTACT LIKE 'A'\n"
-                    + "ORDER BY IDACT DESC";
+            listado = new ArrayList();
             PreparedStatement ps = this.getCn().prepareStatement(sql);
-            rs = ps.executeQuery();
-            listaActividad = new ArrayList<>();
-            ActividadModel actividad;
+            rs = ps.executeQuery(); 
             while (rs.next()) {
-                actividad = new ActividadModel();
-                actividad.setIdact(rs.getString("IDACT"));
-                actividad.setNomact(rs.getString("NOMACT"));
-                actividad.setMonespact(rs.getString("MONESPACT"));
-                actividad.setCanapoact(rs.getString("CANAPOACT"));
-                actividad.setFecact(rs.getDate("FECACT"));
-                actividad.setEstfinact(rs.getString("ESTFINACT"));
-                listaActividad.add(actividad);
+             act = new ActividadModel();
+             act.setIDactividad(rs.getInt("IDACT"));
+             act.setNombreActividad(rs.getString("NOMACT"));
+             act.setMontoActividad(rs.getInt("MONESPACT"));
+             act.setCantApoActividad(rs.getInt("CANAPOACT"));
+             act.setFechaActividad(rs.getDate("FECACT"));
+             act.setEstadoActividad(rs.getString("ESTACT")); 
+             listado.add(act);
             }
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            this.Cerrar();
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+             System.out.println("Error en listarCuota Dao" + e.getMessage());
         }
-        return listaActividad;
+         return listado;
     }
-
-    @Override
-    public void registrar(ActividadModel actividad) throws Exception {
-        this.conectar();
-        try {
-            String sql = "INSERT INTO ACTIVIDAD (NOMACT,MONESPACT,CANAPOACT,FECACT) VALUES (?,?,?,?)";
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
-            ps.setString(1, actividad.getNomact());
-            ps.setString(2, actividad.getMonespact());
-            ps.setString(3, actividad.getCanapoact());
-            ps.setString(4, formatter.format(actividad.getFecact()));
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            this.Cerrar();
-        }
-    }
-
-    @Override
-    public void modificar(ActividadModel actividad) throws Exception {
-        this.conectar();
-        try {
-            String sql = "UPDATE ACTIVIDAD SET NOMACT=?, MONESPACT=?, CANAPOACT=?, FECACT=? WHERE IDACT LIKE ?";
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
-            ps.setString(1, actividad.getNomact());
-            ps.setString(2, actividad.getMonespact());
-            ps.setString(3, actividad.getCanapoact());
-            ps.setString(4, formatter.format(actividad.getFecact()));
-            ps.setString(5, actividad.getIdact());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            this.Cerrar();
-        }
-    }
-
-    @Override
-    public void eliminar(ActividadModel actividad) throws Exception {
-        this.conectar();
-        try {
-            String sql = "UPDATE ACTIVIDAD SET ESTACT='I' WHERE IDACT LIKE ?";
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
-            ps.setString(1, actividad.getIdact());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            this.Cerrar();
-        }
-    }
-
-    public List<ActividadModel> listarComboAct() throws Exception {
-        List<ActividadModel> listaActividad;
-        ResultSet rs;
-        try {
-            this.conectar();
-            String sql = "SELECT IDACT,NOMACT FROM ACTIVIDAD WHERE ESTFINACT NOT LIKE 'F' AND ESTACT LIKE 'A'";
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
-            rs = ps.executeQuery();
-            listaActividad = new ArrayList<>();
-            ActividadModel actividad;
-            while (rs.next()) {
-                actividad = new ActividadModel();
-                actividad.setIdact(rs.getString("IDACT"));
-                actividad.setNomact(rs.getString("NOMACT"));
-                listaActividad.add(actividad);
-            }
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            this.Cerrar();
-        }
-        return listaActividad;
-    }
-
+    
 }

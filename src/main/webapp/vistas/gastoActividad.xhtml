@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <body>
+
+        <ui:composition template="./plantilla.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msj" showDetail="true" skipDetailIfEqualsSummary="true">
+                    <p:autoUpdate/>
+                </p:growl>
+                <h:head>
+                    <title>GASTO ACTIVIDAD</title>
+                    <f:event listener="#{gastoActividadC.listar()}" type="preRenderView" />
+                </h:head>
+                <h:body>
+                    <h:form id="formGastoActividad" style="align-content: center;align-items: center;text-align: center;background-color: white;">
+                        <h1 style="font-family: sans-serif">GASTO POR ACTIVIDAD</h1>
+                        <div class="ui-g-3" ></div>
+                        <div class="ui-g-9" >
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="ACTIVIDAD" />
+                                <p:selectOneMenu value="#{gastoActividadC.gasAct.FKactividad}">
+                                    <p:ajax event="change" update="CuAct boton" listener="#{gastoActividadC.obtenerCuota()}"/>
+                                    <f:selectItem itemLabel="- Seleccione -"/>
+                                    <f:selectItems value="#{gastoActividadC.listAct}" var="apo" itemLabel="#{apo.nombreActividad}" itemValue="#{apo.IDactividad}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="DESCRIPCION"/>
+                                <p:inputText value="#{gastoActividadC.gasAct.desGasActividad}"  maxlength="60" required="true" requiredMessage="Rellene la descripción del Gasto">
+                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/></p:inputText>
+                                <p:outputLabel value="CANTIDAD A PAGAR POR LA ACTIVIDAD"/>
+                                <p:inputNumber id="CuAct" value="#{gastoActividadC.gasAct.cantGasActividad}" disabled="true">
+                                    <p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
+                                <p:outputLabel value="MONTO A PAGAR"/>
+                                <p:inputNumber id="MontPa" value="#{gastoActividadC.gasAct.monGasActividad}" maxValue="#{gastoActividadC.gasAct.cantGasActividad}"  minValue="0" required="true" requiredMessage="Escriba el Monto a pagar">
+                                    <p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
+                                <p:outputLabel value="Fecha:"/>
+                                <p:calendar id="german" value="#{gastoActividadC.gasAct.fechGasActividad}" locale="de" navigator="true"
+                                            pattern="yyyy-MMM-dd"/>
+                                <p:commandButton value="Registrar" actionListener="#{gastoActividadC.registrar()}" id="boton" 
+                                                 update="formGastoActividad :formTblGastoActividad:tblGastoActividad" disabled="#{gastoActividadC.gasAct.cantGasActividad lt 1}"/> 
+                            </p:panelGrid>
+                        </div>
+                        <br></br>
+                    </h:form>
+                    <h:form id="formTblGastoActividad">
+                        <p:dataTable id="tblGastoActividad"
+                                     var="gast"
+                                     value="#{gastoActividadC.listGasAct}"
+                                     selection="#{gastoActividadC.gasAct}"
+                                     selectionMode="single"
+                                     rowKey="#{gast.idGastActividad}"
+                                     paginator="true"
+                                     paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+                            <f:facet name="header">
+                                <h:commandLink value="Descargar Listado" >
+                                    <p:dataExporter type="xls" target="tblGastoActividad" fileName="Listado"/>
+                                </h:commandLink>
+                            </f:facet>
+
+                            <p:column headerText="ACTIVIDAD" sortBy="#{gast.nombreActividad}" filterBy="#{gast.nombreActividad}">
+                                <p:outputLabel value="#{gast.nombreActividad}"/>
+                            </p:column>
+                            <p:column headerText="DESCRIPCION" sortBy="#{gast.desGasActividad}" filterBy="#{gast.desGasActividad}">
+                                <p:outputLabel value="#{gast.desGasActividad}"/>
+                            </p:column>
+                            <p:column headerText="MONTO ACUMULADO">
+                                <p:outputLabel value="#{gast.cantGasActividad}"/>
+                            </p:column>
+                            <p:column headerText="GASTO REALIZADO">
+                                <p:outputLabel value="#{gast.monGasActividad}"/>
+                            </p:column>
+
+                            <p:column headerText="FECHA">
+                                <h:outputText value="#{gast.fechGasActividad}" style="text-transform: uppercase">
+                                    <f:convertDateTime type="date" pattern="dd - MMM - y"/>
+                                </h:outputText>
+                            </p:column>
+                            <f:facet name="footer">
+                                EN TOTAL HAY #{fn:length(gastoActividadC.listGasAct)} REGISTROS.
+                            </f:facet>
+                        </p:dataTable>
+                        <p:contextMenu for="tblGastoActividad">
+                            <p:menuitem value="MODIFICAR" oncomplete="PF('wdlgDatos').show()" update=":formDialog"/>
+                            <p:menuitem value="ELIMINAR" actionListener="#{gastoActividadC.eliminar()}" update="tblGastoActividad"> 
+                                <p:confirm header="CONFIRMACIÓN" message="¿Está seguro de eliminar este registro?"/>
+                            </p:menuitem>
+                        </p:contextMenu>
+                    </h:form>
+                    <p:dialog header="ACTUALIZAR DATOS" widgetVar="wdlgDatos" resizable="false" modal="true">
+                        <h:form id="formDialog">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="ACTIVIDAD" />
+                                <p:selectOneMenu  value="#{gastoActividadC.gasAct.FKactividad}">
+                                    <p:ajax event="change" update="CuAct" listener="#{gastoActividadC.obtenerCuota()}"/>
+                                    <f:selectItem itemLabel="- Seleccione -"/>
+                                    <f:selectItems value="#{gastoActividadC.listAct}" var="apo" itemLabel="#{apo.nombreActividad}" itemValue="#{apo.IDactividad}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="DESCRIPCION"/> <p:inputText value="#{gastoActividadC.gasAct.desGasActividad}"  maxlength="60" required="true" requiredMessage="Rellene la descripción del Gasto">
+                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/></p:inputText>
+                                <p:outputLabel value="CANTIDAD A PAGAR POR LA ACTIVIDAD"/><p:inputNumber id="CuAct" value="#{gastoActividadC.gasAct.cantGasActividad}" disabled="true"><p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
+                                <p:outputLabel value="MONTO A PAGAR"/><p:inputNumber id="MontPa" value="#{gastoActividadC.gasAct.monGasActividad}" maxValue="#{gastoActividadC.gasAct.cantGasActividad}" required="true" requiredMessage="Escriba el Monto a pagar">
+                                 <p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
+                                <p:outputLabel value="Fecha:"/>
+                                <p:calendar id="german" value="#{gastoActividadC.gasAct.fechGasActividad}" locale="de" navigator="true"
+                                            pattern="yyyy-MMM-dd"/>
+                                <p:commandButton value="MODIFICAR" actionListener="#{gastoActividadC.modificar()}" update=":formTblGastoActividad:tblGastoActividad" oncomplete="PF('wdlgDatos').hide()"/>
+                                <p:commandButton value="CANCELAR" oncomplete="PF('wdlgDatos').hide()"/>
+                            </p:panelGrid>
+                        </h:form>
+                    </p:dialog>
+                    <h:form>
+                        <p:confirmDialog global="true">
+                            <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes"/>
+                            <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no"/>
+                        </p:confirmDialog>
+                    </h:form>
+                </h:body>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

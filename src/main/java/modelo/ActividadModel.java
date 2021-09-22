@@ -1,72 +1,71 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package modelo;
 
 import java.util.Date;
 
+/**
+ *
+ * @author EDGARD
+ */
 public class ActividadModel {
-    private String idact,nomact,monespact,canapoact,estfinact;
-    private Date fecact;
+    private int IDactividad;
+    private String NombreActividad;
+    private int MontoActividad;
+    private int CantApoActividad;
+    private Date FechaActividad;
+    private String EstadoActividad;
 
-    public String getIdact() {
-        return idact;
+    public int getIDactividad() {
+        return IDactividad;
     }
 
-    public void setIdact(String idact) {
-        this.idact = idact;
+    public void setIDactividad(int IDactividad) {
+        this.IDactividad = IDactividad;
     }
 
-    public String getNomact() {
-        return nomact;
+    public String getNombreActividad() {
+        return NombreActividad;
     }
 
-    public void setNomact(String nomact) {
-        this.nomact = nomact;
+    public void setNombreActividad(String NombreActividad) {
+        this.NombreActividad = NombreActividad;
     }
 
-    public String getMonespact() {
-        return monespact;
+    public int getMontoActividad() {
+        return MontoActividad;
     }
 
-    public void setMonespact(String monespact) {
-        this.monespact = monespact;
+    public void setMontoActividad(int MontoActividad) {
+        this.MontoActividad = MontoActividad;
     }
 
-    public String getCanapoact() {
-        return canapoact;
+    public int getCantApoActividad() {
+        return CantApoActividad;
     }
 
-    public void setCanapoact(String canapoact) {
-        this.canapoact = canapoact;
+    public void setCantApoActividad(int CantApoActividad) {
+        this.CantApoActividad = CantApoActividad;
     }
 
-    public String getEstfinact() {
-        return estfinact;
+    public Date getFechaActividad() {
+        return FechaActividad;
     }
 
-    public void setEstfinact(String estfinact) {
-        this.estfinact = estfinact;
+    public void setFechaActividad(Date FechaActividad) {
+        this.FechaActividad = FechaActividad;
     }
 
-    public Date getFecact() {
-        return fecact;
+    public String getEstadoActividad() {
+        return EstadoActividad;
     }
 
-    public void setFecact(Date fecact) {
-        this.fecact = fecact;
+    public void setEstadoActividad(String EstadoActividad) {
+        this.EstadoActividad = EstadoActividad;
     }
-}
+
     
-
-   
-
-            
-            
-            
-            
-                    
-                    
-
-
-
-
-
-
+}

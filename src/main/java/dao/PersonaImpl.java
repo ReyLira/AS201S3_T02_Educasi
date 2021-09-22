@@ -89,6 +89,8 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel>{
             ps.close();
         } catch (Exception e) {
             System.out.println("Error al modificar Persona Dao " + e.getMessage());
+        }finally {
+            this.Cerrar();
         }
     }
 

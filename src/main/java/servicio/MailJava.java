@@ -43,7 +43,7 @@ public class MailJava {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(correo));
         message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(correo));
-        message.setSubject("Testing Subject");
+        message.setSubject("Correo de validacion");
         message.setText("BUENOS DIAS "+per.getNombre() +" "+ per.getApellido()+"\n"+
                 "\n Su usuario es: "+per.getDNI()+"\n y su contraseña es: " +per.getPassword()+
                 "\n Muchas gracias por ser parte de educasi");
@@ -58,7 +58,7 @@ public class MailJava {
     }
     public static void main(String[] args) throws Exception {
         PersonaModel per = new PersonaModel();
-        per.setEmail("edgard.rodriguez@vallegrande.edu.pe");
+        per.setEmail("luis.taquire@vallegrande.edu.pe");
         enviarCorreo(per);
         
     }

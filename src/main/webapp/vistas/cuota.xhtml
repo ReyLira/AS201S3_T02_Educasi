@@ -12,15 +12,18 @@
 
         <ui:composition template="./plantilla.xhtml">
             <ui:define name="content">
+                <p:growl id="msj" showDetail="true" skipDetailIfEqualsSummary="true">
+                    <p:autoUpdate/>
+                </p:growl>
                 <h:head>
                     <title>Cuota</title>
                     <f:event listener="#{cuotaC.listar()}" type="preRenderView" />
                 </h:head>
                 <h:body>
                     <h:form id="formCuota" style="align-content: center;align-items: center;text-align: center">
+                        <h1 style="font-family: sans-serif">CUOTA</h1>
                         <div class="ui-g-2"></div>
-                        <div class="ui-g-10" style="background-color: white;height: 500px">
-                            <h1 style="font-family: sans-serif">CUOTA</h1>
+                        <div class="ui-g-10" style="background-color: white;height: 500px"> 
                             <p:panelGrid columns="2">
                                 <p:outputLabel value="PESONA" />
                                 <p:selectOneMenu value="#{cuotaC.cuot.FKpersona}">
@@ -35,7 +38,7 @@
                                     <f:selectItems value="#{cuotaC.listAct}" var="apo" itemLabel="#{apo.nomact}" itemValue="#{apo.idact}" />
                                 </p:selectOneMenu>
 
-                                <p:outputLabel value="CANTIDAD A PAGAR POR LA CUOTA"/><p:inputNumber id="CuAct" value="#{cuotaC.cuot.cantidadCuota}" maxlength="16"><p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
+                                <p:outputLabel value="CANTIDAD A PAGAR POR LA CUOTA"/><p:inputNumber id="CuAct" value="#{cuotaC.cuot.cantidadCuota}" disabled="true"><p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
                                 <p:outputLabel value="MONTO A PAGAR"/><p:inputNumber id="MontPa" value="#{cuotaC.cuot.montoCuota}" maxValue="#{cuotaC.cuot.cantidadCuota}"/>
                                 <p:outputLabel value="Fecha:"/>
                                <p:calendar id="german" value="#{cuotaC.cuot.fechaCuota}" locale="de" navigator="true"
@@ -106,7 +109,7 @@
                                     <f:selectItem itemLabel="- Seleccione -"/>
                                     <f:selectItems value="#{actividadControlador.lstActividad}" var="apo" itemLabel="#{apo.nomact}" itemValue="#{apo.idact}"/>
                                 </p:selectOneMenu>
-                                <p:outputLabel value="CANTIDAD A PAGAR POR LA CUOTA"/><p:inputText value="#{cuotaC.cuot.cantidadCuota}" maxlength="16"/>
+                                <p:outputLabel value="CANTIDAD A PAGAR POR LA CUOTA"/><p:inputText value="#{cuotaC.cuot.cantidadCuota}" disabled="true"/>
                                 <p:outputLabel value="MONTO A PAGAR"/><p:inputText value="#{cuotaC.cuot.montoCuota}" maxlength="16"/>
                                 <p:outputLabel value="Fecha:"/>
                                 <p:calendar id="german" value="#{cuotaC.cuot.fechaCuota}" locale="de" navigator="true"
