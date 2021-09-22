@@ -60,22 +60,22 @@ CREATE TABLE persona (
 -- Reference: CUOTA_ACTIVIDAD (table: CUOTA)
 ALTER TABLE cuota
     ADD CONSTRAINT cuota_actividad FOREIGN KEY ( idact )
-        REFERENCES actividad ( idact );
+        REFERENCES actividad ( idact )ON DELETE CASCADE;
 
 -- Reference: CUOTA_PERSONA (table: CUOTA)
 ALTER TABLE cuota
     ADD CONSTRAINT cuota_persona FOREIGN KEY ( idper )
-        REFERENCES persona ( idper );
+        REFERENCES persona ( idper )ON DELETE CASCADE;
 
 -- Reference: PERSONA_PERSONA (table: PERSONA)
 ALTER TABLE persona
     ADD CONSTRAINT persona_persona FOREIGN KEY ( persona_idper )
-        REFERENCES persona ( idper );
+        REFERENCES persona ( idper )ON DELETE CASCADE;
 
 -- Reference: SALDO_ACTIVIDAD_ACTIVIDAD (table: GASTO_ACTIVIDAD)
 ALTER TABLE gasto_actividad
     ADD CONSTRAINT saldo_actividad_actividad FOREIGN KEY ( idact )
-        REFERENCES actividad ( idact );
+        REFERENCES actividad ( idact )ON DELETE CASCADE;
 
 -- End of file.
 
