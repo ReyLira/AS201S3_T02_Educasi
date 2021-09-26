@@ -10,10 +10,13 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import modelo.ActividadModel;
+import servicio.Reporte;
 
 /**
  *
@@ -81,7 +84,17 @@ public class ActividadC implements Serializable {
             System.out.println("Error en listarC " + e.getMessage());
         }
     }
-
+    public void reporteActividad() throws Exception {
+        Reporte report = new Reporte();
+        try {
+            Map<String, Object> parameters = new HashMap();
+            report.exportarPDFGlobal(parameters, "actividad.jasper", "actividad.pdf");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
+            throw e;
+        }
+    }
     public ActividadModel getAct() {
         return act;
     }

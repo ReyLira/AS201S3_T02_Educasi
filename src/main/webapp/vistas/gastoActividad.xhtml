@@ -26,15 +26,15 @@
                         <div class="ui-g-9" >
                             <p:panelGrid columns="2">
                                 <p:outputLabel value="ACTIVIDAD" />
-                                <p:selectOneMenu value="#{gastoActividadC.gasAct.FKactividad}">
+                                <p:selectOneMenu value="#{gastoActividadC.gasAct.FKactividad}" filter="true" filterMatchMode="startsWith">
                                     <p:ajax event="change" update="CuAct boton" listener="#{gastoActividadC.obtenerCuota()}"/>
                                     <f:selectItem itemLabel="- Seleccione -"/>
                                     <f:selectItems value="#{gastoActividadC.listAct}" var="apo" itemLabel="#{apo.nombreActividad}" itemValue="#{apo.IDactividad}" />
                                 </p:selectOneMenu>
                                 <p:outputLabel value="DESCRIPCION"/>
                                 <p:inputText value="#{gastoActividadC.gasAct.desGasActividad}"  maxlength="60" required="true" requiredMessage="Rellene la descripción del Gasto">
-                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/></p:inputText>
-                                <p:outputLabel value="CANTIDAD A PAGAR POR LA ACTIVIDAD"/>
+                                    <p:keyFilter regEx="/[A-Z_a-z_ _ñ_á_é_i_ó_ú]/"/></p:inputText>
+                                <p:outputLabel value="CANTIDAD A RECAUDADA POR LA ACTIVIDAD"/>
                                 <p:inputNumber id="CuAct" value="#{gastoActividadC.gasAct.cantGasActividad}" disabled="true">
                                     <p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
                                 <p:outputLabel value="MONTO A PAGAR"/>
@@ -48,6 +48,11 @@
                             </p:panelGrid>
                         </div>
                         <br></br>
+                    </h:form>
+                    <br></br>
+                    <h:form id="formDescargaGastoActividad">
+                        <p:commandButton value="Listar Gasto Actividades" actionListener="#{gastoActividadC.reporteGastoActividad()}" 
+                                         ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
                     </h:form>
                     <h:form id="formTblGastoActividad">
                         <p:dataTable id="tblGastoActividad"
@@ -105,9 +110,9 @@
                                 </p:selectOneMenu>
                                 <p:outputLabel value="DESCRIPCION"/> <p:inputText value="#{gastoActividadC.gasAct.desGasActividad}"  maxlength="60" required="true" requiredMessage="Rellene la descripción del Gasto">
                                     <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/></p:inputText>
-                                <p:outputLabel value="CANTIDAD A PAGAR POR LA ACTIVIDAD"/><p:inputNumber id="CuAct" value="#{gastoActividadC.gasAct.cantGasActividad}" disabled="true"><p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
+                                <p:outputLabel value="CANTIDAD A RECAUDADA POR LA ACTIVIDAD"/><p:inputNumber id="CuAct" value="#{gastoActividadC.gasAct.cantGasActividad}" disabled="true"><p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
                                 <p:outputLabel value="MONTO A PAGAR"/><p:inputNumber id="MontPa" value="#{gastoActividadC.gasAct.monGasActividad}" maxValue="#{gastoActividadC.gasAct.cantGasActividad}" required="true" requiredMessage="Escriba el Monto a pagar">
-                                 <p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
+                                    <p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
                                 <p:outputLabel value="Fecha:"/>
                                 <p:calendar id="german" value="#{gastoActividadC.gasAct.fechGasActividad}" locale="de" navigator="true"
                                             pattern="yyyy-MMM-dd"/>

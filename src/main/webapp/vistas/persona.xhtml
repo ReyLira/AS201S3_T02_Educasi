@@ -56,7 +56,7 @@
                                 <f:selectItem itemLabel="APODERADO" itemValue="APODERADO"/>
                                 <f:selectItem itemLabel="ALUMNO" itemValue="ALUMNO"/>
                             </p:selectOneRadio>
-                            <p:outputLabel value="RELACION APODERADO"/><p:selectOneMenu id="MenuID" value="#{personaC.per.personaID}">
+                            <p:outputLabel value="RELACION APODERADO"/><p:selectOneMenu id="MenuID" value="#{personaC.per.personaID}" filter="true" filterMatchMode="startsWith">
                                 <f:selectItem itemLabel="SELECCIONE"/>
                                 <f:selectItems value="#{personaC.listadoApoderado}" var="apo" itemLabel="#{apo.nombre.concat(' ').concat(apo.apellido)}" itemValue="#{apo.ID}"/>
                             </p:selectOneMenu>
@@ -73,9 +73,9 @@
                     <p:selectOneButton value="#{personaC.rol}" >
                         <p:ajax event="change" update="tblPersona"/>
                         <f:selectItem itemLabel="TODOS" itemValue="" />
-                        <f:selectItem itemLabel="ADMINISTRADOR" itemValue="ADMIN" />
-                        <f:selectItem itemLabel="APODERADOS" itemValue="APODERADO" />
-                        <f:selectItem itemLabel="ALUMNOS" itemValue="ALUMNO" />
+                        <f:selectItem itemLabel="ADMINISTRADOR" itemValue="ADMIN"/>
+                        <f:selectItem itemLabel="APODERADO" itemValue="APODERADO"/>
+                        <f:selectItem itemLabel="ALUMNO" itemValue="ALUMNO"/>
                     </p:selectOneButton>
                     <br/><br/>
                     <p:dataTable id="tblPersona"
@@ -143,10 +143,10 @@
                                 </p:commandButton>
                                 <p:outputLabel value="NOMBRE" />
                                 <p:inputText  id="NOMBRE" value="#{personaC.per.nombre}"  maxlength="40" disabled="true">
-                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
+                                    <p:keyFilter regEx="/[A-Z_a-z_ _ñ_á_é_i_ó_ú]/"/>
                                 </p:inputText>
                                 <p:outputLabel value="APELLIDO"/><p:inputText id="APELLIDO" value="#{personaC.per.apellido}" maxlength="40" disabled="true">
-                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
+                                    <p:keyFilter regEx="/[A-Z_a-z_ _ñ_á_é_i_ó_ú]/"/>
                                 </p:inputText>
                             </p:panelGrid>
                         </p:fragment>

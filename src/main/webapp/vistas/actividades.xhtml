@@ -24,7 +24,7 @@
                         <p:panelGrid columns="2">
                             <p:outputLabel value="ACTIVIDAD" />
                             <p:inputText value="#{actividadC.act.nombreActividad}"  maxlength="60" required="true"  style="width: 250px" requiredMessage="Rellene el Nombre">
-                                <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
+                                <p:keyFilter regEx="/[A-Z_a-z_ _ñ_á_é_i_ó_ú]/"/>
                             </p:inputText>
                             <p:outputLabel value="CUOTA POR CADA APODERADO" />
                             <p:inputText value="#{actividadC.act.montoActividad}" required="true" style="width: 250px" requiredMessage="Escriba la cuota">
@@ -42,6 +42,11 @@
                                              update="formActividad :formTblActividad:tblActividad"/>
                         </p:panelGrid>
 
+                    </h:form>
+                     <br></br>
+                    <h:form id="formDescargaActividad">
+                        <p:commandButton value="Listar Actividades" actionListener="#{actividadC.reporteActividad()}" 
+                                         ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
                     </h:form>
                     <h:form id="formTblActividad">
                         <p:dataTable id="tblActividad"

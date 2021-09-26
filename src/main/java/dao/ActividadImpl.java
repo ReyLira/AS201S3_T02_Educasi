@@ -43,7 +43,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
     public void registrarD(ActividadModel obj) throws Exception {
          String sql ="insert into ACTIVIDAD (NOMACT,MONESPACT,CANAPOACT,FECACT) values (?,?,?,?)";
         try (Connection conec  = (Connection) this.getCn() ){
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = conec.prepareStatement(sql);
             ps.setString(1, obj.getNombreActividad());
             ps.setInt(2, obj.getMontoActividad());
             ps.setInt(3, obj.getCantApoActividad());

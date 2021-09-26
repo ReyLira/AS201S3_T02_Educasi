@@ -172,9 +172,9 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel>{
         List<PersonaModel> listadoRol = null;
         PersonaModel per;
         String sql = "select * from V_PERSONA_ROL WHERE ROLPER=?";
-        try {
+        try (Connection conec  = (Connection) this.getCn() ){
             listadoRol = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = conec.prepareStatement(sql);
             ps.setString(1, rol);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -195,8 +195,6 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel>{
             }
             rs.close();
             ps.close();
-        } catch (Exception e) {
-            System.out.println("Error en listarApoderado Dao" + e.getMessage());
         }
         return listadoRol;
     }

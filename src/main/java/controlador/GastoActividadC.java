@@ -10,12 +10,15 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import modelo.GastoActividadModel;
+import servicio.Reporte;
 
 /**
  *
@@ -67,7 +70,17 @@ public class GastoActividadC implements Serializable {
             System.out.println("Error en eliminarC " + e.getMessage());
         }
     }
-    
+    public void reporteGastoActividad() throws Exception {
+        Reporte report = new Reporte();
+        try {
+            Map<String, Object> parameters = new HashMap();
+            report.exportarPDFGlobal(parameters, "gastoActividades.jasper", "gastoActividades.pdf");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
+            throw e;
+        }
+    }
     public void limpiar() {
         gasAct = new GastoActividadModel();
     }

@@ -26,13 +26,13 @@
                         <div class="ui-g-10" style="background-color: white;height: 500px"> 
                             <p:panelGrid columns="2">
                                 <p:outputLabel value="PESONA" />
-                                <p:selectOneMenu value="#{cuotaC.cuot.FKpersona}">
+                                <p:selectOneMenu value="#{cuotaC.cuot.FKpersona}" filter="true" filterMatchMode="startsWith">
                                     <p:ajax event="change" update="ACT" />
                                     <f:selectItem itemLabel="- Seleccione -"/>
                                     <f:selectItems value="#{personaC.listadoPer}" var="apo" itemLabel="#{apo.nombre.concat(' ').concat(apo.apellido)}" itemValue="#{apo.ID}"/>
                                 </p:selectOneMenu>
                                 <p:outputLabel value="ACTIVIDAD" />
-                                <p:selectOneMenu id="ACT" value="#{cuotaC.cuot.FKActividad}" disabled="#{cuotaC.cuot.FKpersona lt 1}">
+                                <p:selectOneMenu id="ACT" value="#{cuotaC.cuot.FKActividad}" disabled="#{cuotaC.cuot.FKpersona lt 1}" filter="true" filterMatchMode="startsWith">
                                     <p:ajax event="change" update="CuAct MontPa boton" listener="#{cuotaC.obtenerCuota()}"/>
                                     <f:selectItem itemLabel="- Seleccione -"/>
                                     <f:selectItems value="#{cuotaC.listAct}" var="apo" itemLabel="#{apo.nomact}" itemValue="#{apo.idact}" />
@@ -50,7 +50,7 @@
                         </div>
                     </h:form>
                     <h:form id="formDescargaActividad">
-                        <p:commandButton value="Exportar cuotas" actionListener="#{cuotaC.reporteCuota()}" 
+                        <p:commandButton value="Listar cuotas" actionListener="#{cuotaC.reporteCuota()}" 
                                          ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
                     </h:form>
                     <h:form id="formTblCuota">
