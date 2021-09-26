@@ -43,11 +43,15 @@
                     <div class="ui-g-2"></div>
                     <div class="ui-g-10">
                         <p:panelGrid columns="2">
-                            <p:outputLabel value="CONTRASEÑA"/><p:password value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña"/>
+                            <p:outputLabel value="CONTRASEÑA"/><p:password value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña" toggleMask="true" redisplay="true"/>
                             <p:outputLabel value="EMAIL"/><p:inputText id="email" value="#{personaC.per.email}" maxlength="60" label="Email" validatorMessage="#{personaC.per.email} no es valido" required="true" requiredMessage="Rellene el correo">
                                 <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" /> <p:message for="email" /></p:inputText>
 
-                            <p:outputLabel value="DIRECCION"/><p:inputText value="#{personaC.per.direccion}" maxlength="20" required="true" requiredMessage="Rellene la direccion"/>
+                            <p:outputLabel value="DIRECCION"/>
+                            <p:selectOneMenu  value="#{personaC.per.ubigeoFK}" filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="- Seleccione -"/>
+                                    <f:selectItems value="#{personaC.listadoUbigeo}" var="apo" itemLabel="#{apo.distUbigeo.concat(' ').concat(apo.provUbigeo).concat(' ').concat( apo.deparUbigeo)}" itemValue="#{apo.IDubigeo}" />
+                                </p:selectOneMenu>
 
                             <p:outputLabel value="CELULAR"/><p:inputText value="#{personaC.per.celular}" maxlength="9" required="true" requiredMessage="Rellene el celular"><p:keyFilter regEx="/[0-9]/" /></p:inputText>
                             <p:outputLabel value="ROL"/><p:selectOneRadio id="rol" value="#{personaC.per.ROL}" required="true" requiredMessage="seleccione un rol">
@@ -102,8 +106,8 @@
                         <p:column headerText="EMAIL" sortBy="#{pers.email}" filterBy="#{pers.email}">
                             <h:outputText value="#{pers.email}" />
                         </p:column>
-                        <p:column headerText="DIRECCION" sortBy="#{pers.direccion}" filterBy="#{pers.direccion}">
-                            <h:outputText value="#{pers.direccion}" />
+                        <p:column headerText="DIRECCION" sortBy="#{pers.ubigeoFK}" filterBy="#{pers.ubigeoFK}">
+                            <h:outputText value="#{pers.ubigeoFK}" />
                         </p:column>
                         <p:column headerText="DNI" sortBy="#{pers.DNI}" filterBy="#{pers.DNI}">
                             <h:outputText value="#{pers.DNI}" />
@@ -152,11 +156,15 @@
                         </p:fragment>
                         <br></br> 
                         <p:panelGrid columns="4">
-                            <p:outputLabel value="CONTRASEÑA"/><p:password value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña"/>
+                            <p:outputLabel value="CONTRASEÑA"/><p:password value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña" toggleMask="true" redisplay="true"/>
                             <p:outputLabel value="EMAIL"/><p:inputText id="email" value="#{personaC.per.email}" maxlength="60" label="Email" validatorMessage="#{personaC.per.email} no es valido" required="true" requiredMessage="Rellene el correo">
                                 <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" /> <p:message for="email" /></p:inputText>
 
-                            <p:outputLabel value="DIRECCION"/><p:inputText value="#{personaC.per.direccion}" maxlength="20" required="true" requiredMessage="Rellene la direccion"/>
+                            <p:outputLabel value="DIRECCION"/>
+                            <p:selectOneMenu  value="#{personaC.per.ubigeoFK}" filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="- Seleccione -"/>
+                                    <f:selectItems value="#{personaC.listadoUbigeo}" var="apo" itemLabel="#{apo.distUbigeo.concat(' ').concat(apo.provUbigeo).concat(' ').concat( apo.deparUbigeo)}" itemValue="#{apo.IDubigeo}" />
+                                </p:selectOneMenu>
 
                             <p:outputLabel value="CELULAR"/><p:inputText value="#{personaC.per.celular}" maxlength="9" required="true" requiredMessage="Rellene el celular"><p:keyFilter regEx="/[0-9]/" /></p:inputText>
                             <p:outputLabel value="ESTADO"/><p:selectOneRadio value="#{personaC.per.estado}">

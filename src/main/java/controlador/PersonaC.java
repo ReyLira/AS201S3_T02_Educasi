@@ -21,7 +21,8 @@ import javax.faces.context.FacesContext;
 import modelo.PersonaModel;
 import static servicio.ReniecS.buscarDni;
 import servicio.Reporte;
-import static  servicio.MailJava.enviarCorreo;
+import static servicio.MailJava.enviarCorreo;
+
 /**
  *
  * @author EDGARD VIERI RODRIGUEZ HUAMAN
@@ -29,11 +30,12 @@ import static  servicio.MailJava.enviarCorreo;
 @Named(value = "personaC")
 @SessionScoped
 public class PersonaC implements Serializable {
-    
+
     private PersonaModel per;
     private PersonaImpl dao;
     private String rol;
     private String est;
+    private List<PersonaModel> listadoUbigeo;
     private List<PersonaModel> listadoPer;
     private List<PersonaModel> listadoApoderado;
 
@@ -41,30 +43,33 @@ public class PersonaC implements Serializable {
         per = new PersonaModel();
         dao = new PersonaImpl();
     }
-    public void buscarPorDNI (){
+
+    public void buscarPorDNI() {
         try {
-           buscarDni(per);
+            buscarDni(per);
             System.out.println(per.getApellido());
         } catch (Exception e) {
-            System.out.println("error en buscar por DNI " +e.getMessage());
+            System.out.println("error en buscar por DNI " + e.getMessage());
             e.printStackTrace();
         }
     }
-    public void enviarC (){
+
+    public void enviarC() {
         try {
-           enviarCorreo(per); 
+            enviarCorreo(per);
             System.out.println(per.getApellido());
         } catch (Exception e) {
-            System.out.println("error en buscar enviar correo " +e.getMessage());
+            System.out.println("error en buscar enviar correo " + e.getMessage());
             e.printStackTrace();
         }
     }
+
     public void registrar() throws Exception {
         try {
             System.out.println(per.getROL());
             dao.registrarD(per);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Registrado con éxito"));
-            enviarCorreo(per); 
+            enviarCorreo(per);
             limpiar();
             listar();
         } catch (SQLException e) {
@@ -188,6 +193,22 @@ public class PersonaC implements Serializable {
 
     public void setEst(String est) {
         this.est = est;
+    }
+
+    public List<PersonaModel> getListadoUbigeo() {
+        listadoUbigeo = new ArrayList<PersonaModel>();
+        try {
+            listadoUbigeo = dao.listarUbigeo();
+        } catch (SQLException ex) {
+            Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listadoUbigeo;
+    }
+
+    public void setListadoUbigeo(List<PersonaModel> listadoUbigeo) {
+        this.listadoUbigeo = listadoUbigeo;
     }
 
 }

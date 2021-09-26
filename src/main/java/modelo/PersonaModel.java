@@ -16,7 +16,7 @@ public class PersonaModel {
     private String apellido;
     private String password;
     private String email;
-    private String direccion;
+    private String ubigeoFK;
     private String DNI;
     private String celular;
     private String ROL;
@@ -24,6 +24,11 @@ public class PersonaModel {
     private int PersonaID;
     private String relacion;
 
+    private int IDubigeo;
+    private String codigoUbigeo;
+    private String deparUbigeo;
+    private String provUbigeo;
+    private String distUbigeo;
     public int getID() {
         return ID;
     }
@@ -64,13 +69,7 @@ public class PersonaModel {
         this.email = email;
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
+   
 
     public String getDNI() {
         return DNI;
@@ -126,6 +125,56 @@ public class PersonaModel {
 
     public void setFila(String fila) {
         this.fila = fila;
+    }
+
+    
+
+    public int getIDubigeo() {
+        return IDubigeo;
+    }
+
+    public void setIDubigeo(int IDubigeo) {
+        this.IDubigeo = IDubigeo;
+    }
+
+    public String getCodigoUbigeo() {
+        return codigoUbigeo;
+    }
+
+    public void setCodigoUbigeo(String codigoUbigeo) {
+        this.codigoUbigeo = codigoUbigeo;
+    }
+
+    public String getDeparUbigeo() {
+        return deparUbigeo;
+    }
+
+    public void setDeparUbigeo(String deparUbigeo) {
+        this.deparUbigeo = deparUbigeo;
+    }
+
+    public String getProvUbigeo() {
+        return provUbigeo;
+    }
+
+    public void setProvUbigeo(String provUbigeo) {
+        this.provUbigeo = provUbigeo;
+    }
+
+    public String getDistUbigeo() {
+        return distUbigeo;
+    }
+
+    public void setDistUbigeo(String distUbigeo) {
+        this.distUbigeo = distUbigeo;
+    }
+
+    public String getUbigeoFK() {
+        return ubigeoFK;
+    }
+
+    public void setUbigeoFK(String ubigeoFK) {
+        this.ubigeoFK = ubigeoFK;
     }
 
    
