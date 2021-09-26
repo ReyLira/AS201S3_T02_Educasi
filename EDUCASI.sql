@@ -47,15 +47,23 @@ CREATE TABLE persona (
     apeper        VARCHAR2(40) NOT NULL,
     pasper        VARCHAR2(16) NOT NULL,
     emaper        VARCHAR2(60) NOT NULL,
-    direper       VARCHAR2(20) NOT NULL,
     dniper        CHAR(8) NOT NULL UNIQUE,
     celper        CHAR(9) NOT NULL,
     rolper        CHAR(9) NOT NULL,
     estper        CHAR(8) DEFAULT 'ACTIVO' NULL,
+    IDUBG         integer  NOT NULL,
     persona_idper INT NULL,
     CONSTRAINT persona_pk PRIMARY KEY ( idper )
 );
-
+-- Table: UBIGEO
+CREATE TABLE ubigeo (
+    IDUBG integer  NOT NULL,
+    CODUBG char(6)  NOT NULL,
+    DEPUBG varchar2(40)  NOT NULL,
+    PROUBG varchar2(40)  NOT NULL,
+    DISUBG varchar2(40)  NOT NULL,
+    CONSTRAINT UBIGEO_pk PRIMARY KEY (IDUBG)
+);
 -- foreign keys
 -- Reference: CUOTA_ACTIVIDAD (table: CUOTA)
 ALTER TABLE cuota
@@ -76,6 +84,10 @@ ALTER TABLE persona
 ALTER TABLE gasto_actividad
     ADD CONSTRAINT saldo_actividad_actividad FOREIGN KEY ( idact )
         REFERENCES actividad ( idact )ON DELETE CASCADE;
+-- Reference: PERSONA_UBIGEO (table: PERSONA)
+ALTER TABLE persona 
+    ADD CONSTRAINT persona_ubigeo FOREIGN KEY (IDUBG)
+    REFERENCES UBIGEO (IDUBG)ON DELETE CASCADE;
 
 -- End of file.
 
@@ -85,6 +97,21 @@ ALTER TABLE gasto_actividad
 ------------------------------------  TRIGGER AND SECUENCE
 ------------------------------------  TRIGGER AND SECUENCE
 
+CREATE SEQUENCE sec_ubigeo START WITH 1 INCREMENT BY 1 ORDER;
+/
+-- Creacion de trigger
+CREATE OR REPLACE TRIGGER trig_ubigeo BEFORE
+    INSERT ON ubigeo
+    FOR EACH ROW
+BEGIN
+    SELECT
+        sec_ubigeo.NEXTVAL
+    INTO :new.IDUBG
+    FROM
+        dual;
+
+END;
+/
 
 CREATE SEQUENCE sec_persona START WITH 1 INCREMENT BY 1 ORDER;
 /
@@ -211,21 +238,22 @@ CREATE OR REPLACE VIEW v_persona AS
         OVER(
             ORDER BY
                 super.idper DESC
-        )                                  AS fila,
+        )AS fila,
         super.idper,
         super.nomper,
         super.apeper,
         super.pasper,
         super.emaper,
-        super.direper,
+        concat(concat(ubigeo.DEPUBG,' '), concat(concat(ubigeo.PROUBG,' '),  ubigeo.DISUBG)) AS UBIGEO,
         super.dniper,
         super.celper,
         super.rolper,
         super.estper,
-        concat(infer.nomper, infer.apeper) AS relacion
+        concat(concat (infer.nomper,' '), infer.apeper) AS relacion
     FROM
         persona super
-        LEFT JOIN persona infer ON super.persona_idper = infer.idper;
+        LEFT JOIN persona infer ON super.persona_idper = infer.idper
+        INNER JOIN ubigeo ON super.idubg = ubigeo.idubg;
 
 -- vista de la tabla rol
 CREATE OR REPLACE VIEW v_persona_rol AS
@@ -234,21 +262,22 @@ CREATE OR REPLACE VIEW v_persona_rol AS
         OVER(
             ORDER BY
                 super.idper DESC
-        )                                  AS fila,
+        )AS fila,
         super.idper,
         super.nomper,
         super.apeper,
         super.pasper,
         super.emaper,
-        super.direper,
+        concat(concat(ubigeo.DEPUBG,' '), concat(concat(ubigeo.PROUBG,' '),  ubigeo.DISUBG)) AS UBIGEO,
         super.dniper,
         super.celper,
         super.rolper,
         super.estper,
-        concat(infer.nomper, infer.apeper) AS relacion
+        concat(concat (infer.nomper,' '), infer.apeper) AS relacion
     FROM
         persona super
-        LEFT JOIN persona infer ON super.persona_idper = infer.idper;
+        LEFT JOIN persona infer ON super.persona_idper = infer.idper
+        INNER JOIN ubigeo ON super.idubg = ubigeo.idubg;
 
 --funcion
 CREATE OR REPLACE FUNCTION  SaldoCuota
