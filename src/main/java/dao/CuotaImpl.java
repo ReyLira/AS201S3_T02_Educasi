@@ -111,6 +111,27 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
         }
          return listado;
     }
+    public List<CuotaModel> listarFecha() throws Exception {
+        List<CuotaModel> lisFech = null;
+        CuotaModel fech;
+        ResultSet rs;
+        String sql = "select distinct FECCUOT from cuota order by FECCUOT desc";
+        try {
+            lisFech = new ArrayList();
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                fech = new CuotaModel();
+                fech.setFechaCuota(rs.getDate("FECCUOT"));
+                lisFech.add(fech);
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("Error en listarFecha Dao" + e.getMessage());
+        }
+        return lisFech;
+    }
     public List<CuotaModel> listarAct() throws Exception {
          List<CuotaModel> listAc = null;
         CuotaModel act;

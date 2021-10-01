@@ -22,6 +22,9 @@ public class CuotaModel {
    private String NombrePersona;
    private String NombreActividad;
    
+   private Date fechaReporte;
+   private Date fechaReportEntrada;
+   private Date fechaReportSalida;
    private String idact,nomact,monespact,canapoact,estfinact;
     private Date fecact;
     public int getIDcuota() {
@@ -144,6 +147,30 @@ public class CuotaModel {
         this.fecact = fecact;
     }
 
+    public Date getFechaReporte() {
+        return fechaReporte;
+    }
+
+    public void setFechaReporte(Date fechaReporte) {
+        this.fechaReporte = fechaReporte;
+    }
+
+    public Date getFechaReportEntrada() {
+        return fechaReportEntrada;
+    }
+
+    public void setFechaReportEntrada(Date fechaReportEntrada) {
+        this.fechaReportEntrada = fechaReportEntrada;
+    }
+
+    public Date getFechaReportSalida() {
+        return fechaReportSalida;
+    }
+
+    public void setFechaReportSalida(Date fechaReportSalida) {
+        this.fechaReportSalida = fechaReportSalida;
+    }
+    
     
    
    

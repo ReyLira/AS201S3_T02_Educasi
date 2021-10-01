@@ -23,7 +23,7 @@
                     <h:form id="formCuota" style="align-content: center;align-items: center;text-align: center">
                         <h1 style="font-family: sans-serif">CUOTA</h1>
                         <div class="ui-g-2"></div>
-                        <div class="ui-g-10" style="background-color: white;height: 500px"> 
+                        <div class="ui-g-10" style="background-color: white"> 
                             <p:panelGrid columns="2">
                                 <p:outputLabel value="PESONA" />
                                 <p:selectOneMenu value="#{cuotaC.cuot.FKpersona}" filter="true" filterMatchMode="startsWith">
@@ -41,20 +41,34 @@
                                 <p:outputLabel value="CANTIDAD A PAGAR POR LA CUOTA"/><p:inputNumber id="CuAct" value="#{cuotaC.cuot.cantidadCuota}" disabled="true"><p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
                                 <p:outputLabel value="MONTO A PAGAR"/><p:inputNumber id="MontPa" value="#{cuotaC.cuot.montoCuota}" maxValue="#{cuotaC.cuot.cantidadCuota}"/>
                                 <p:outputLabel value="Fecha:"/>
-                               <p:calendar id="german" value="#{cuotaC.cuot.fechaCuota}" locale="de" navigator="true"
-                                           pattern="yyyy-MMM-dd"/>
+                                <p:calendar id="german" value="#{cuotaC.cuot.fechaCuota}" locale="de" navigator="true"
+                                            pattern="yyyy-MMM-dd"/>
                                 <p:commandButton value="Registrar" actionListener="#{cuotaC.registrar()}" id="boton" 
                                                  update="formCuota :formTblCuota:tblCuota" disabled="#{cuotaC.cuot.cantidadCuota lt 1}"/> 
 
                             </p:panelGrid>
                         </div>
                     </h:form>
-                    <h:form id="formDescargaActividad">
-                        <p:commandButton value="Listar cuotas" actionListener="#{cuotaC.reporteCuota()}" 
-                                         ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                    <h:form  style="background-color: white;">
+                        <h2 style="align-content: center;align-items: center;text-align: center">REPORTES</h2>
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-10" style="background-color: white">
+                            <p:panelGrid columns="3">
+                                <p:outputLabel>REPORTE POR DIA</p:outputLabel>
+                                <p:calendar id="german" value="#{cuotaC.cuot.fechaReporte}" locale="de" navigator="true" pattern="dd - MMM - y"/>
+                                <p:commandButton value="Reporte por dia" actionListener="#{cuotaC.reporteCuota()}" ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;" />
+                            </p:panelGrid>
+                        </div>
+                            <p:panelGrid columns="4">
+                                <p:outputLabel></p:outputLabel><p:outputLabel>FECHA INICIAL</p:outputLabel><p:outputLabel>FECHA FINAL</p:outputLabel><p:outputLabel></p:outputLabel>
+                                <p:outputLabel>REPORTE POR RANGO</p:outputLabel>
+                                <p:calendar id="german1" value="#{cuotaC.cuot.fechaReportEntrada}" locale="de" navigator="true" pattern="dd - MMM - y"/>
+                                <p:calendar id="german2" value="#{cuotaC.cuot.fechaReportSalida}" locale="de" navigator="true" pattern="dd - MMM - y" />
+                                <p:commandButton value="Reporte por dia" actionListener="#{cuotaC.reporteCuotaRango()}" ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;" />
+                            </p:panelGrid>
                     </h:form>
                     <h:form id="formTblCuota">
-                        <div class="ui-g-12" style="background-color: white">
+                        
                             <p:dataTable id="tblCuota"
                                          var="cuot"
                                          value="#{cuotaC.listadoCuot}"
@@ -94,7 +108,6 @@
                                     <p:confirm header="CONFIRMACIÓN" message="¿Está seguro de eliminar este registro?"/>
                                 </p:menuitem>
                             </p:contextMenu>
-                        </div>
                     </h:form>
                     <p:dialog header="ACTUALIZAR DATOS" widgetVar="wdlgDatos" resizable="false" modal="true">
                         <h:form id="formDialog">
@@ -113,7 +126,7 @@
                                 <p:outputLabel value="MONTO A PAGAR"/><p:inputText value="#{cuotaC.cuot.montoCuota}" maxlength="16"/>
                                 <p:outputLabel value="Fecha:"/>
                                 <p:calendar id="german" value="#{cuotaC.cuot.fechaCuota}" locale="de" navigator="true"
-                                           pattern="yyyy-MMM-dd"/>
+                                            pattern="yyyy-MMM-dd"/>
                                 <p:commandButton value="MODIFICAR" actionListener="#{cuotaC.modificar()}" update=":formTblCuota:tblCuota" oncomplete="PF('wdlgDatos').hide()"/>
                                 <p:commandButton value="CANCELAR" oncomplete="PF('wdlgDatos').hide()"/>
                             </p:panelGrid>
