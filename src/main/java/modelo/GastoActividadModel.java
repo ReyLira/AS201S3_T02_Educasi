@@ -19,8 +19,11 @@ public class GastoActividadModel {
     private String DesGasActividad;
     private Date FechGasActividad;
     private int FKactividad;
-    
+
     private String fila;
+    private Date fechaReporte;
+    private Date fechaReportEntrada;
+    private Date fechaReportSalida;
 
     private int IDactividad;
     private String NombreActividad;
@@ -131,6 +134,30 @@ public class GastoActividadModel {
 
     public void setFila(String fila) {
         this.fila = fila;
+    }
+
+    public Date getFechaReporte() {
+        return fechaReporte;
+    }
+
+    public void setFechaReporte(Date fechaReporte) {
+        this.fechaReporte = fechaReporte;
+    }
+
+    public Date getFechaReportEntrada() {
+        return fechaReportEntrada;
+    }
+
+    public void setFechaReportEntrada(Date fechaReportEntrada) {
+        this.fechaReportEntrada = fechaReportEntrada;
+    }
+
+    public Date getFechaReportSalida() {
+        return fechaReportSalida;
+    }
+
+    public void setFechaReportSalida(Date fechaReportSalida) {
+        this.fechaReportSalida = fechaReportSalida;
     }
     
 }

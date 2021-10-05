@@ -116,18 +116,39 @@ public class PersonaC implements Serializable {
         }
     }
 
-    public void reportePersona() throws Exception {
+    public void reportePersonaAdmin() throws Exception {
         Reporte report = new Reporte();
         try {
             Map<String, Object> parameters = new HashMap();
-            report.exportarPDFGlobal(parameters, "persona.jasper", "persona.pdf");
+            report.exportarPDFGlobal(parameters, "personaAdmin.jasper", "personaAdmin.pdf");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
             throw e;
         }
     }
-
+    public void reportePersonaApod() throws Exception {
+        Reporte report = new Reporte();
+        try {
+            Map<String, Object> parameters = new HashMap();
+            report.exportarPDFGlobal(parameters, "personaApoderado.jasper", "personaApoderado.pdf");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
+            throw e;
+        }
+    }
+    public void reportePersonaAlum() throws Exception {
+        Reporte report = new Reporte();
+        try {
+            Map<String, Object> parameters = new HashMap();
+            report.exportarPDFGlobal(parameters, "personaAlumno.jasper", "personaAlumno.pdf");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
+            throw e;
+        }
+    }
     // metodos generados
     public PersonaModel getPer() {
         return per;

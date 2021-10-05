@@ -88,7 +88,18 @@ public class ActividadC implements Serializable {
         Reporte report = new Reporte();
         try {
             Map<String, Object> parameters = new HashMap();
-            report.exportarPDFGlobal(parameters, "actividad.jasper", "actividad.pdf");
+            report.exportarPDFGlobal(parameters, "actividadEstado.jasper", "actividadEstado.pdf");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
+            throw e;
+        }
+    }
+    public void reporteActividadInactivo() throws Exception {
+        Reporte report = new Reporte();
+        try {
+            Map<String, Object> parameters = new HashMap();
+            report.exportarPDFGlobal(parameters, "actividadEstadoInact.jasper", "actividadEstadoInact.pdf");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));

@@ -14,7 +14,10 @@
                     <p:autoUpdate/>
                 </p:growl>
                 <h:head>
-                    <title>EDUCASI</title>
+                    <f:facet name="first">
+                        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                        <title>EDUCASI</title>
+                    </f:facet>
                     <f:event listener="#{personaC.listar()}" type="preRenderView" />
                 </h:head>
                 <h:form id="formPersona"  style="align-content: center;align-items: center;text-align: center">
@@ -49,9 +52,9 @@
 
                             <p:outputLabel value="DIRECCION"/>
                             <p:selectOneMenu  value="#{personaC.per.ubigeoFK}" filter="true" filterMatchMode="startsWith">
-                                    <f:selectItem itemLabel="- Seleccione -"/>
-                                    <f:selectItems value="#{personaC.listadoUbigeo}" var="apo" itemLabel="#{apo.distUbigeo.concat(' ').concat(apo.provUbigeo).concat(' ').concat( apo.deparUbigeo)}" itemValue="#{apo.IDubigeo}" />
-                                </p:selectOneMenu>
+                                <f:selectItem itemLabel="- Seleccione -"/>
+                                <f:selectItems value="#{personaC.listadoUbigeo}" var="apo" itemLabel="#{apo.distUbigeo.concat(' ').concat(apo.provUbigeo).concat(' ').concat( apo.deparUbigeo)}" itemValue="#{apo.IDubigeo}" />
+                            </p:selectOneMenu>
 
                             <p:outputLabel value="CELULAR"/><p:inputText value="#{personaC.per.celular}" maxlength="9" required="true" requiredMessage="Rellene el celular"><p:keyFilter regEx="/[0-9]/" /></p:inputText>
                             <p:outputLabel value="ROL"/><p:selectOneRadio id="rol" value="#{personaC.per.ROL}" required="true" requiredMessage="seleccione un rol">
@@ -70,9 +73,19 @@
                     </div>
                 </h:form>
                 <h:form id="formDescargaPersona">
-                    <p:commandButton value="Exportar Personas" actionListener="#{personaC.reportePersona()}" 
-                                     ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                    <div class="ui-g-2"></div>
+                    <div class="ui-g-10">
+                        <p:panelGrid columns="3">
+                            <p:commandButton value="LISTAR ADMINISTRADORES" actionListener="#{personaC.reportePersonaAdmin()}" 
+                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                            <p:commandButton value="LISTAR APODERADOS" actionListener="#{personaC.reportePersonaApod()}" 
+                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                            <p:commandButton value="LISTAR ALUMNOS" actionListener="#{personaC.reportePersonaAlum()}" 
+                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                        </p:panelGrid>
+                    </div>
                 </h:form>
+                <br/><br/>
                 <h:form id="formTblPersona" style="text-align: center;">
                     <p:selectOneButton value="#{personaC.rol}" >
                         <p:ajax event="change" update="tblPersona"/>
@@ -162,9 +175,9 @@
 
                             <p:outputLabel value="DIRECCION"/>
                             <p:selectOneMenu  value="#{personaC.per.ubigeoFK}" filter="true" filterMatchMode="startsWith">
-                                    <f:selectItem itemLabel="- Seleccione -"/>
-                                    <f:selectItems value="#{personaC.listadoUbigeo}" var="apo" itemLabel="#{apo.distUbigeo.concat(' ').concat(apo.provUbigeo).concat(' ').concat( apo.deparUbigeo)}" itemValue="#{apo.IDubigeo}" />
-                                </p:selectOneMenu>
+                                <f:selectItem itemLabel="- Seleccione -"/>
+                                <f:selectItems value="#{personaC.listadoUbigeo}" var="apo" itemLabel="#{apo.distUbigeo.concat(' ').concat(apo.provUbigeo).concat(' ').concat( apo.deparUbigeo)}" itemValue="#{apo.IDubigeo}" />
+                            </p:selectOneMenu>
 
                             <p:outputLabel value="CELULAR"/><p:inputText value="#{personaC.per.celular}" maxlength="9" required="true" requiredMessage="Rellene el celular"><p:keyFilter regEx="/[0-9]/" /></p:inputText>
                             <p:outputLabel value="ESTADO"/><p:selectOneRadio value="#{personaC.per.estado}">

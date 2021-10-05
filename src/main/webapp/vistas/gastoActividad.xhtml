@@ -16,14 +16,17 @@
                     <p:autoUpdate/>
                 </p:growl>
                 <h:head>
-                    <title>GASTO ACTIVIDAD</title>
+                    <f:facet name="first">
+                        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                        <title>GASTO ACTIVIDAD</title>
+                    </f:facet>
                     <f:event listener="#{gastoActividadC.listar()}" type="preRenderView" />
                 </h:head>
                 <h:body>
                     <h:form id="formGastoActividad" style="align-content: center;align-items: center;text-align: center;background-color: white;">
                         <h1 style="font-family: sans-serif">GASTO POR ACTIVIDAD</h1>
-                        <div class="ui-g-3" ></div>
-                        <div class="ui-g-9" >
+                        <div class="ui-g-2" ></div>
+                        <div class="ui-g-8" >
                             <p:panelGrid columns="2">
                                 <p:outputLabel value="ACTIVIDAD" />
                                 <p:selectOneMenu value="#{gastoActividadC.gasAct.FKactividad}" filter="true" filterMatchMode="startsWith">
@@ -41,8 +44,8 @@
                                 <p:inputNumber id="MontPa" value="#{gastoActividadC.gasAct.monGasActividad}" maxValue="#{gastoActividadC.gasAct.cantGasActividad}"  minValue="0" required="true" requiredMessage="Escriba el Monto a pagar">
                                     <p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
                                 <p:outputLabel value="Fecha:"/>
-                                <p:calendar id="german" value="#{gastoActividadC.gasAct.fechGasActividad}" locale="de" navigator="true"
-                                            pattern="yyyy-MMM-dd"/>
+                                <p:calendar id="german" value="#{gastoActividadC.gasAct.fechGasActividad}" locale="de" navigator="true" showOn="button"
+                                            pattern="dd-MM-yyyy"/>
                                 <p:commandButton value="Registrar" actionListener="#{gastoActividadC.registrar()}" id="boton" 
                                                  update="formGastoActividad :formTblGastoActividad:tblGastoActividad" disabled="#{gastoActividadC.gasAct.cantGasActividad lt 1}"/> 
                             </p:panelGrid>
@@ -50,9 +53,23 @@
                         <br></br>
                     </h:form>
                     <br></br>
-                    <h:form id="formDescargaGastoActividad">
-                        <p:commandButton value="Listar Gasto Actividades" actionListener="#{gastoActividadC.reporteGastoActividad()}" 
-                                         ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                    <h:form>
+                        
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-10" style="background-color: white">
+                            <p:panelGrid columns="3">
+                                <p:outputLabel>LISTADO POR DIA</p:outputLabel>
+                                <p:calendar id="german" value="#{gastoActividadC.gasAct.fechaReporte}" locale="de" navigator="true" pattern="dd-MM-yyyy" showOn="button"/>
+                                <p:commandButton value="LISTAR" actionListener="#{gastoActividadC.reporteGastoActividad()}" ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;" />
+                            </p:panelGrid>
+                        </div>
+                        <p:panelGrid columns="4">
+                            <p:outputLabel></p:outputLabel><p:outputLabel>FECHA INICIAL</p:outputLabel><p:outputLabel>FECHA FINAL</p:outputLabel><p:outputLabel></p:outputLabel>
+                            <p:outputLabel>LISTADO POR RANGO</p:outputLabel>
+                            <p:calendar id="german1" value="#{gastoActividadC.gasAct.fechaReportEntrada}" locale="de" navigator="true" pattern="dd-MM-yyyy" showOn="button"/>
+                            <p:calendar id="german2" value="#{gastoActividadC.gasAct.fechaReportSalida}" locale="de" navigator="true" pattern="dd-MM-yyyy" showOn="button"/>
+                            <p:commandButton value="LISTAR" actionListener="#{gastoActividadC.reporteGastoRango()}" ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;" />
+                        </p:panelGrid>
                     </h:form>
                     <h:form id="formTblGastoActividad">
                         <p:dataTable id="tblGastoActividad"

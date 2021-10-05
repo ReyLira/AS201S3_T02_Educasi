@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,12 +71,46 @@ public class GastoActividadC implements Serializable {
             System.out.println("Error en eliminarC " + e.getMessage());
         }
     }
-    public void reporteGastoActividad() throws Exception {
-        Reporte report = new Reporte();
+    public void reporteGastoRango() throws Exception {
         try {
-            Map<String, Object> parameters = new HashMap();
-            report.exportarPDFGlobal(parameters, "gastoActividades.jasper", "gastoActividades.pdf");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+            if (gasAct.getFechaReportEntrada() == null || gasAct.getFechaReportSalida() == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Falta rellenar una fecha en el reporte"));
+            }
+            if (gasAct.getFechaReportEntrada() != null && gasAct.getFechaReportSalida() != null) {
+                if (gasAct.getFechaReportEntrada().after(gasAct.getFechaReportSalida())) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Fecha de inicio es mayor a la salida en el reporte"));
+                } else {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YY");
+                    String sts1 = dateFormat.format(gasAct.getFechaReportEntrada());
+                    String sts2 = dateFormat.format(gasAct.getFechaReportSalida());
+                    Reporte report = new Reporte();
+                    Map<String, Object> parameters = new HashMap();
+                    parameters.put("Parametro1", sts1);
+                    parameters.put("Parametro2", sts2);
+                    report.exportarPDFGlobal(parameters, "gastoActividadesRango.jasper", "gastoActividadesRango.pdf");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+                }
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
+            throw e;
+        }
+    }
+    public void reporteGastoActividad() throws Exception {
+        try {
+            if (gasAct.getFechaReporte()== null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Falta rellenar la fecha en el reporte"));
+            }
+            if (gasAct.getFechaReporte() != null ) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YY");
+                String sts = dateFormat.format(gasAct.getFechaReporte());
+                Reporte report = new Reporte();
+
+                Map<String, Object> parameters = new HashMap();
+                parameters.put("Parameter1", sts);
+                report.exportarPDFGlobal(parameters, "gastoActividades.jasper", "gastoActividades.pdf");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+            }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
             throw e;

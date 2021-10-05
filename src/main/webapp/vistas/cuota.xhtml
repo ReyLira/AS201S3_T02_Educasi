@@ -16,7 +16,10 @@
                     <p:autoUpdate/>
                 </p:growl>
                 <h:head>
-                    <title>Cuota</title>
+                    <f:facet name="first">
+                        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                        <title>Cuota</title>
+                    </f:facet>
                     <f:event listener="#{cuotaC.listar()}" type="preRenderView" />
                 </h:head>
                 <h:body>
@@ -41,8 +44,8 @@
                                 <p:outputLabel value="CANTIDAD A PAGAR POR LA CUOTA"/><p:inputNumber id="CuAct" value="#{cuotaC.cuot.cantidadCuota}" disabled="true"><p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
                                 <p:outputLabel value="MONTO A PAGAR"/><p:inputNumber id="MontPa" value="#{cuotaC.cuot.montoCuota}" maxValue="#{cuotaC.cuot.cantidadCuota}"/>
                                 <p:outputLabel value="Fecha:"/>
-                                <p:calendar id="german" value="#{cuotaC.cuot.fechaCuota}" locale="de" navigator="true"
-                                            pattern="yyyy-MMM-dd"/>
+                                <p:calendar id="german" value="#{cuotaC.cuot.fechaCuota}" locale="de" navigator="true" showOn="button"
+                                            pattern="dd-MM-yyyy"/>
                                 <p:commandButton value="Registrar" actionListener="#{cuotaC.registrar()}" id="boton" 
                                                  update="formCuota :formTblCuota:tblCuota" disabled="#{cuotaC.cuot.cantidadCuota lt 1}"/> 
 
@@ -54,60 +57,60 @@
                         <div class="ui-g-2"></div>
                         <div class="ui-g-10" style="background-color: white">
                             <p:panelGrid columns="3">
-                                <p:outputLabel>REPORTE POR DIA</p:outputLabel>
-                                <p:calendar id="german" value="#{cuotaC.cuot.fechaReporte}" locale="de" navigator="true" pattern="dd - MMM - y"/>
-                                <p:commandButton value="Reporte por dia" actionListener="#{cuotaC.reporteCuota()}" ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;" />
+                                <p:outputLabel>LISTADO POR DIA</p:outputLabel>
+                                <p:calendar id="german" value="#{cuotaC.cuot.fechaReporte}" locale="de" navigator="true" pattern="dd-MM-yyyy" showOn="button"/>
+                                <p:commandButton value="LISTAR" actionListener="#{cuotaC.reporteCuota()}" ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;" />
                             </p:panelGrid>
                         </div>
-                            <p:panelGrid columns="4">
-                                <p:outputLabel></p:outputLabel><p:outputLabel>FECHA INICIAL</p:outputLabel><p:outputLabel>FECHA FINAL</p:outputLabel><p:outputLabel></p:outputLabel>
-                                <p:outputLabel>REPORTE POR RANGO</p:outputLabel>
-                                <p:calendar id="german1" value="#{cuotaC.cuot.fechaReportEntrada}" locale="de" navigator="true" pattern="dd - MMM - y"/>
-                                <p:calendar id="german2" value="#{cuotaC.cuot.fechaReportSalida}" locale="de" navigator="true" pattern="dd - MMM - y" />
-                                <p:commandButton value="Reporte por dia" actionListener="#{cuotaC.reporteCuotaRango()}" ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;" />
-                            </p:panelGrid>
+                        <p:panelGrid columns="4">
+                            <p:outputLabel></p:outputLabel><p:outputLabel>FECHA INICIAL</p:outputLabel><p:outputLabel>FECHA FINAL</p:outputLabel><p:outputLabel></p:outputLabel>
+                            <p:outputLabel>LISTADO POR RANGO</p:outputLabel>
+                            <p:calendar id="german1" value="#{cuotaC.cuot.fechaReportEntrada}" locale="de" navigator="true" pattern="dd-MM-yyyy" showOn="button"/>
+                            <p:calendar id="german2" value="#{cuotaC.cuot.fechaReportSalida}" locale="de" navigator="true" pattern="dd-MM-yyyy" showOn="button"/>
+                            <p:commandButton value="LISTAR" actionListener="#{cuotaC.reporteCuotaRango()}" ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;" />
+                        </p:panelGrid>
                     </h:form>
                     <h:form id="formTblCuota">
-                        
-                            <p:dataTable id="tblCuota"
-                                         var="cuot"
-                                         value="#{cuotaC.listadoCuot}"
-                                         selection="#{cuotaC.cuot}"
-                                         selectionMode="single"
-                                         rowKey="#{cuot.IDcuota}"
-                                         paginator="true"
-                                         paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                         rowsPerPageTemplate="5,10,15">
-                                <f:facet name="header">
-                                    <h:commandLink value="Descargar Listado" >
-                                        <p:dataExporter type="xls" target="tblCuota" fileName="Listado"/>
-                                    </h:commandLink>
-                                </f:facet>
-                                <p:column headerText="NOMBRE" sortBy="#{cuot.nombrePersona}" filterBy="#{cuot.nombrePersona}">
-                                    <h:outputText value="#{cuot.nombrePersona}"/>
-                                </p:column>
-                                <p:column headerText="ACTIVIDAD" sortBy="#{cuot.nombreActividad}" filterBy="#{cuot.nombreActividad}">
-                                    <h:outputText value="#{cuot.nombreActividad}"/>
-                                </p:column>
-                                <p:column headerText="MONTO A PAGAR" >
-                                    <h:outputText value="S/. #{cuot.cantidadCuota}"/>
-                                </p:column>
-                                <p:column headerText="MONTO PAGADO" >
-                                    <h:outputText value="S/. #{cuot.montoCuota}"/>
-                                </p:column>
-                                <p:column headerText="fecha" >
-                                    <h:outputText value="#{cuot.fechaCuota}"><f:convertDateTime type="date" pattern="dd - MMM - y"/></h:outputText>
-                                </p:column>
-                                <f:facet name="footer">
-                                    EN TOTAL HAY #{fn:length(cuotaC.listadoCuot)} REGISTROS.
-                                </f:facet>
-                            </p:dataTable>
-                            <p:contextMenu for="tblCuota">
-                                <p:menuitem value="MODIFICAR" oncomplete="PF('wdlgDatos').show()" update=":formDialog"/>
-                                <p:menuitem value="ELIMINAR" actionListener="#{cuotaC.eliminar()}" update="tblCuota"> 
-                                    <p:confirm header="CONFIRMACIÓN" message="¿Está seguro de eliminar este registro?"/>
-                                </p:menuitem>
-                            </p:contextMenu>
+
+                        <p:dataTable id="tblCuota"
+                                     var="cuot"
+                                     value="#{cuotaC.listadoCuot}"
+                                     selection="#{cuotaC.cuot}"
+                                     selectionMode="single"
+                                     rowKey="#{cuot.IDcuota}"
+                                     paginator="true"
+                                     paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+                            <f:facet name="header">
+                                <h:commandLink value="Descargar Listado" >
+                                    <p:dataExporter type="xls" target="tblCuota" fileName="Listado"/>
+                                </h:commandLink>
+                            </f:facet>
+                            <p:column headerText="NOMBRE" sortBy="#{cuot.nombrePersona}" filterBy="#{cuot.nombrePersona}">
+                                <h:outputText value="#{cuot.nombrePersona}"/>
+                            </p:column>
+                            <p:column headerText="ACTIVIDAD" sortBy="#{cuot.nombreActividad}" filterBy="#{cuot.nombreActividad}">
+                                <h:outputText value="#{cuot.nombreActividad}"/>
+                            </p:column>
+                            <p:column headerText="MONTO A PAGAR" >
+                                <h:outputText value="S/. #{cuot.cantidadCuota}"/>
+                            </p:column>
+                            <p:column headerText="MONTO PAGADO" >
+                                <h:outputText value="S/. #{cuot.montoCuota}"/>
+                            </p:column>
+                            <p:column headerText="fecha" >
+                                <h:outputText value="#{cuot.fechaCuota}"><f:convertDateTime type="date" pattern="dd - MMM - y"/></h:outputText>
+                            </p:column>
+                            <f:facet name="footer">
+                                EN TOTAL HAY #{fn:length(cuotaC.listadoCuot)} REGISTROS.
+                            </f:facet>
+                        </p:dataTable>
+                        <p:contextMenu for="tblCuota">
+                            <p:menuitem value="MODIFICAR" oncomplete="PF('wdlgDatos').show()" update=":formDialog"/>
+                            <p:menuitem value="ELIMINAR" actionListener="#{cuotaC.eliminar()}" update="tblCuota"> 
+                                <p:confirm header="CONFIRMACIÓN" message="¿Está seguro de eliminar este registro?"/>
+                            </p:menuitem>
+                        </p:contextMenu>
                     </h:form>
                     <p:dialog header="ACTUALIZAR DATOS" widgetVar="wdlgDatos" resizable="false" modal="true">
                         <h:form id="formDialog">
@@ -126,7 +129,7 @@
                                 <p:outputLabel value="MONTO A PAGAR"/><p:inputText value="#{cuotaC.cuot.montoCuota}" maxlength="16"/>
                                 <p:outputLabel value="Fecha:"/>
                                 <p:calendar id="german" value="#{cuotaC.cuot.fechaCuota}" locale="de" navigator="true"
-                                            pattern="yyyy-MMM-dd"/>
+                                            pattern="yyyy-MMM-dd" showOn="button"/>
                                 <p:commandButton value="MODIFICAR" actionListener="#{cuotaC.modificar()}" update=":formTblCuota:tblCuota" oncomplete="PF('wdlgDatos').hide()"/>
                                 <p:commandButton value="CANCELAR" oncomplete="PF('wdlgDatos').hide()"/>
                             </p:panelGrid>
