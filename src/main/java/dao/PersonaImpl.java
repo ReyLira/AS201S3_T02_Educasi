@@ -193,13 +193,24 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel>{
         return listadoA;
     }
     public List<PersonaModel> ListarPorRol(String rol) throws SQLException{
+       
         List<PersonaModel> listadoRol = null;
         PersonaModel per;
-        String sql = "select * from V_PERSONA_ROL WHERE ROLPER=?";
-        try (Connection conec  = (Connection) this.getCn() ){
+        String sql = "";
+        switch(rol){
+            case "ADMIN":
+                sql = "select * from V_PERSONA_ROL WHERE ROLPER='ADMIN'";
+                break;
+            case "APODERADO":
+                sql = "select * from V_PERSONA_ROL WHERE ROLPER='APODERADO'";
+                break;
+            case "ALUMNO":
+                sql = "select * from V_PERSONA_ROL WHERE ROLPER='ALUMNO'";
+                break;
+        }
+         try {
             listadoRol = new ArrayList();
-            PreparedStatement ps = conec.prepareStatement(sql);
-            ps.setString(1, rol);
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 per = new PersonaModel();
@@ -219,6 +230,8 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel>{
             }
             rs.close();
             ps.close();
+        }catch (Exception e) {
+            System.out.println("Error en listar por Rol Dao" + e.getMessage());
         }
         return listadoRol;
     }

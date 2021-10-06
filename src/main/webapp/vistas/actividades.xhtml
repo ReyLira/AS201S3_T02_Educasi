@@ -50,14 +50,25 @@
                     </h:form>
                     <br></br>
                     <h:form id="formDescargaActividad">
-                        <p:panelGrid columns="2">
-                            <p:commandButton value="Listar Actividades Activas" actionListener="#{actividadC.reporteActividad()}" 
-                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
-                            <p:commandButton value="Listar Actividades Inactivas" actionListener="#{actividadC.reporteActividadInactivo()}" 
-                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
-                        </p:panelGrid>
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-10">
+                            <p:panelGrid columns="2">
+                                <p:commandButton value="Listar Actividades Activas" actionListener="#{actividadC.reporteActividad()}" 
+                                                 ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                                <p:commandButton value="Listar Actividades Inactivas" actionListener="#{actividadC.reporteActividadInactivo()}" 
+                                                 ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                            </p:panelGrid>
+                        </div>
                     </h:form>
-                    <h:form id="formTblActividad">
+                    <br/><br/>
+                    <h:form id="formTblActividad" style="text-align: center;">
+                        <p:selectOneButton value="#{actividadC.est}" >
+                            <p:ajax event="change" update="tblActividad"/>
+                            <f:selectItem itemLabel="TODOS" itemValue="" />
+                            <f:selectItem itemLabel="ACTIVOS" itemValue="ACTIVO"/>
+                            <f:selectItem itemLabel="INACTIVOS" itemValue="INACTIVO"/>
+                        </p:selectOneButton>
+                        <br/><br/>
                         <p:dataTable id="tblActividad"
                                      var="act"
                                      value="#{actividadC.listAct}"
@@ -123,7 +134,7 @@
                                 </p:selectOneRadio>
                                 <p:outputLabel value="FECHA" />
                                 <p:calendar id="german" value="#{actividadC.act.fechaActividad}"  locale="de" navigator="true"
-                                            pattern="yyyy-MMM-dd" showOn="button"/>
+                                            pattern="dd-MM-yyyy" showOn="button"/>
                                 <p:commandButton value="MODIFICAR" actionListener="#{actividadC.modificar()}" update="@([id$=formTblActividad]) formDialogActividad"/>
                                 <p:commandButton value="CANCELAR" oncomplete="PF('dloModActividad').hide()"/>
                             </p:panelGrid>

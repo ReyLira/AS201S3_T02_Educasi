@@ -8,6 +8,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -117,5 +118,38 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
         }
          return listado;
     }
-    
+    public List<ActividadModel> ListarPorEstado(String est) throws SQLException{
+       
+        List<ActividadModel> ListarPorEst = null;
+        ActividadModel act;
+        String sql = "";
+        switch(est){
+            case "ACTIVO":
+                sql = "SELECT * FROM ACTIVIDAD where estact='ACTIVO'";
+                break;
+            case "INACTIVO":
+                sql = "SELECT * FROM ACTIVIDAD where estact='INACTIVO'";
+                break;
+        }
+         try {
+            ListarPorEst = new ArrayList();
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                act = new ActividadModel();
+             act.setIDactividad(rs.getInt("IDACT"));
+             act.setNombreActividad(rs.getString("NOMACT"));
+             act.setMontoActividad(rs.getInt("MONESPACT"));
+             act.setCantApoActividad(rs.getInt("CANAPOACT"));
+             act.setFechaActividad(rs.getDate("FECACT"));
+             act.setEstadoActividad(rs.getString("ESTACT")); 
+             ListarPorEst.add(act);
+            }
+            rs.close();
+            ps.close();
+        }catch (Exception e) {
+            System.out.println("Error en listar por Rol Dao" + e.getMessage());
+        }
+        return ListarPorEst;
+    }
 }

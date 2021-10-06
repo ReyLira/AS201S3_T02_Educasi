@@ -10,7 +10,9 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,20 +41,21 @@ public class PersonaC implements Serializable {
     private List<PersonaModel> listadoUbigeo;
     private List<PersonaModel> listadoPer;
     private List<PersonaModel> listadoApoderado;
-    private boolean enabled=true;
+    private boolean enabled = true;
+
     public PersonaC() {
         per = new PersonaModel();
         dao = new PersonaImpl();
     }
 
-    public void buscarPorDNI() throws Exception{
+    public void buscarPorDNI() throws Exception {
         try {
             buscarDniReniec(per);
             System.out.println(per.getApellido());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "DNI encontrado"));
         } catch (SQLException e) {
-            
-        }catch(NullPointerException e){
+
+        } catch (NullPointerException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "el DNI no existe o el servidor a fallado"));
             enabled = false;
         }
@@ -123,36 +126,48 @@ public class PersonaC implements Serializable {
     public void reportePersonaAdmin() throws Exception {
         Reporte report = new Reporte();
         try {
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date fechaActual = new Date(System.currentTimeMillis());
+            String fechSystem = dateFormat2.format(fechaActual);
             Map<String, Object> parameters = new HashMap();
-            report.exportarPDFGlobal(parameters, "personaAdmin.jasper", "personaAdmin.pdf");
+            report.exportarPDFGlobal(parameters, "personaAdmin.jasper", fechSystem + " personaAdmin.pdf");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
             throw e;
         }
     }
+
     public void reportePersonaApod() throws Exception {
         Reporte report = new Reporte();
         try {
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date fechaActual = new Date(System.currentTimeMillis());
+            String fechSystem = dateFormat2.format(fechaActual);
             Map<String, Object> parameters = new HashMap();
-            report.exportarPDFGlobal(parameters, "personaApoderado.jasper", "personaApoderado.pdf");
+            report.exportarPDFGlobal(parameters, "personaApoderado.jasper", fechSystem + " personaApoderado.pdf");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
             throw e;
         }
     }
+
     public void reportePersonaAlum() throws Exception {
         Reporte report = new Reporte();
         try {
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date fechaActual = new Date(System.currentTimeMillis());
+            String fechSystem = dateFormat2.format(fechaActual);
             Map<String, Object> parameters = new HashMap();
-            report.exportarPDFGlobal(parameters, "personaAlumno.jasper", "personaAlumno.pdf");
+            report.exportarPDFGlobal(parameters, "personaAlumno.jasper",fechSystem+ " personaAlumno.pdf");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
             throw e;
         }
     }
+
     // metodos generados
     public PersonaModel getPer() {
         return per;

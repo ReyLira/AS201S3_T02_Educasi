@@ -10,9 +10,13 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import modelo.ActividadModel;
@@ -26,14 +30,17 @@ import servicio.Reporte;
 @SessionScoped
 public class ActividadC implements Serializable {
 
-   private ActividadModel act;
+    private ActividadModel act;
     private ActividadImpl dao;
-    
+    private String est;
+    private List<ActividadModel> listEst;
     private List<ActividadModel> listAct;
+
     public ActividadC() {
         act = new ActividadModel();
         dao = new ActividadImpl();
     }
+
     public void registrar() throws Exception {
         try {
             System.out.println(act);
@@ -72,7 +79,7 @@ public class ActividadC implements Serializable {
             System.out.println("Error en eliminarC " + e.getMessage());
         }
     }
-    
+
     public void limpiar() {
         act = new ActividadModel();
     }
@@ -84,28 +91,37 @@ public class ActividadC implements Serializable {
             System.out.println("Error en listarC " + e.getMessage());
         }
     }
+
     public void reporteActividad() throws Exception {
         Reporte report = new Reporte();
         try {
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date fechaActual = new Date(System.currentTimeMillis());
+            String fechSystem = dateFormat2.format(fechaActual);
             Map<String, Object> parameters = new HashMap();
-            report.exportarPDFGlobal(parameters, "actividadEstado.jasper", "actividadEstado.pdf");
+            report.exportarPDFGlobal(parameters, "actividadEstado.jasper", fechSystem + " actividadEstado.pdf");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
             throw e;
         }
     }
+
     public void reporteActividadInactivo() throws Exception {
         Reporte report = new Reporte();
         try {
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date fechaActual = new Date(System.currentTimeMillis());
+            String fechSystem = dateFormat2.format(fechaActual);
             Map<String, Object> parameters = new HashMap();
-            report.exportarPDFGlobal(parameters, "actividadEstadoInact.jasper", "actividadEstadoInact.pdf");
+            report.exportarPDFGlobal(parameters, "actividadEstadoInact.jasper", fechSystem+" actividadEstadoInact.pdf");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
             throw e;
         }
     }
+
     public ActividadModel getAct() {
         return act;
     }
@@ -123,11 +139,42 @@ public class ActividadC implements Serializable {
     }
 
     public List<ActividadModel> getListAct() {
+        try {
+            if (est != null && !est.isEmpty()) {
+
+                listAct = dao.ListarPorEstado(est);
+
+            } else {
+                this.listAct = dao.listarTodos();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ActividadC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ActividadC.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return listAct;
     }
 
     public void setListAct(List<ActividadModel> listAct) {
         this.listAct = listAct;
     }
-    
+
+    public List<ActividadModel> getListEst() {
+
+        return listEst;
+    }
+
+    public void setListEst(List<ActividadModel> listEst) {
+        this.listEst = listEst;
+    }
+
+    public String getEst() {
+        return est;
+    }
+
+    public void setEst(String est) {
+        this.est = est;
+    }
+
 }

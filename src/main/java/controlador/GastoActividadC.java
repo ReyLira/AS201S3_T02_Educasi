@@ -11,6 +11,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,13 +32,15 @@ public class GastoActividadC implements Serializable {
 
     private GastoActividadModel gasAct;
     private GastoActividadImpl dao;
-    
+
     private List<GastoActividadModel> listGasAct;
     private List<GastoActividadModel> listAct;
+
     public GastoActividadC() {
         gasAct = new GastoActividadModel();
         dao = new GastoActividadImpl();
     }
+
     public void registrar() throws Exception {
         try {
             System.out.println(gasAct);
@@ -71,6 +74,7 @@ public class GastoActividadC implements Serializable {
             System.out.println("Error en eliminarC " + e.getMessage());
         }
     }
+
     public void reporteGastoRango() throws Exception {
         try {
             if (gasAct.getFechaReportEntrada() == null || gasAct.getFechaReportSalida() == null) {
@@ -83,11 +87,14 @@ public class GastoActividadC implements Serializable {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YY");
                     String sts1 = dateFormat.format(gasAct.getFechaReportEntrada());
                     String sts2 = dateFormat.format(gasAct.getFechaReportSalida());
+                    SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    Date fechaActual = new Date(System.currentTimeMillis());
+                    String fechSystem = dateFormat2.format(fechaActual);
                     Reporte report = new Reporte();
                     Map<String, Object> parameters = new HashMap();
                     parameters.put("Parametro1", sts1);
                     parameters.put("Parametro2", sts2);
-                    report.exportarPDFGlobal(parameters, "gastoActividadesRango.jasper", "gastoActividadesRango.pdf");
+                    report.exportarPDFGlobal(parameters, "gastoActividadesRango.jasper", fechSystem+" gastoActividadesRango.pdf");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
                 }
             }
@@ -96,19 +103,23 @@ public class GastoActividadC implements Serializable {
             throw e;
         }
     }
+
     public void reporteGastoActividad() throws Exception {
         try {
-            if (gasAct.getFechaReporte()== null) {
+            if (gasAct.getFechaReporte() == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Falta rellenar la fecha en el reporte"));
             }
-            if (gasAct.getFechaReporte() != null ) {
+            if (gasAct.getFechaReporte() != null) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YY");
                 String sts = dateFormat.format(gasAct.getFechaReporte());
+                SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date fechaActual = new Date(System.currentTimeMillis());
+                String fechSystem= dateFormat2.format(fechaActual);
                 Reporte report = new Reporte();
 
                 Map<String, Object> parameters = new HashMap();
                 parameters.put("Parameter1", sts);
-                report.exportarPDFGlobal(parameters, "gastoActividades.jasper", "gastoActividades.pdf");
+                report.exportarPDFGlobal(parameters, "gastoActividades.jasper",fechSystem+ " gastoActividades.pdf");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
             }
         } catch (Exception e) {
@@ -116,6 +127,7 @@ public class GastoActividadC implements Serializable {
             throw e;
         }
     }
+
     public void limpiar() {
         gasAct = new GastoActividadModel();
     }
@@ -127,17 +139,19 @@ public class GastoActividadC implements Serializable {
             System.out.println("Error en listarC " + e.getMessage());
         }
     }
-    public void obtenerCuota() throws Exception{
-        
+
+    public void obtenerCuota() throws Exception {
+
         try {
-            if (gasAct.getFKactividad()>0) {
-               gasAct.setCantGasActividad(dao.obtenerSaldoActividad(gasAct.getFKactividad()));  
+            if (gasAct.getFKactividad() > 0) {
+                gasAct.setCantGasActividad(dao.obtenerSaldoActividad(gasAct.getFKactividad()));
             }
         } catch (Exception e) {
             System.out.println("Error en obtener cuota " + e.getMessage());
         }
-      
+
     }
+
     public GastoActividadModel getGasAct() {
         return gasAct;
     }
@@ -164,7 +178,7 @@ public class GastoActividadC implements Serializable {
 
     public List<GastoActividadModel> getListAct() {
         try {
-            listAct=dao.listarAct();
+            listAct = dao.listarAct();
         } catch (SQLException ex) {
             Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -176,5 +190,5 @@ public class GastoActividadC implements Serializable {
     public void setListAct(List<GastoActividadModel> listAct) {
         this.listAct = listAct;
     }
-    
+
 }

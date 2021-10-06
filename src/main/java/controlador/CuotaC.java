@@ -107,14 +107,17 @@ public class CuotaC implements Serializable {
             if (cuot.getFechaReporte() == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Falta rellenar la fecha en el reporte"));
             }
-            if (cuot.getFechaReporte() != null ) {
+            if (cuot.getFechaReporte() != null) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YY");
+                SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date fechaActual = new Date(System.currentTimeMillis());
+                String fechSystem = dateFormat2.format(fechaActual);
                 String sts = dateFormat.format(cuot.getFechaReporte());
                 Reporte report = new Reporte();
 
                 Map<String, Object> parameters = new HashMap();
                 parameters.put("Parameter1", sts);
-                report.exportarPDFGlobal(parameters, "cuota.jasper", "cuota.pdf");
+                report.exportarPDFGlobal(parameters, "cuota.jasper", fechSystem + " cuota.pdf");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
             }
         } catch (Exception e) {
@@ -136,11 +139,14 @@ public class CuotaC implements Serializable {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YY");
                     String sts1 = dateFormat.format(cuot.getFechaReportEntrada());
                     String sts2 = dateFormat.format(cuot.getFechaReportSalida());
+                    SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    Date fechaActual = new Date(System.currentTimeMillis());
+                    String fechSystem = dateFormat2.format(fechaActual);
                     Reporte report = new Reporte();
                     Map<String, Object> parameters = new HashMap();
                     parameters.put("Parametro1", sts1);
                     parameters.put("Parametro2", sts2);
-                    report.exportarPDFGlobal(parameters, "cuotaRango.jasper", "cuotaRango.pdf");
+                    report.exportarPDFGlobal(parameters, "cuotaRango.jasper", fechSystem+" cuotaRango.pdf");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
                 }
             }
