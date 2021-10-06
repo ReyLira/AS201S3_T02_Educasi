@@ -33,10 +33,10 @@
                                     </p:inputText>&#160;
                                 </p:commandButton>
                                 <p:outputLabel value="NOMBRE" />
-                                <p:inputText  id="NOMBRE" value="#{personaC.per.nombre}"  maxlength="40" disabled="true">
+                                <p:inputText  id="NOMBRE" value="#{personaC.per.nombre}"  maxlength="40" disabled="#{personaC.enabled}">
                                     <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
                                 </p:inputText>
-                                <p:outputLabel value="APELLIDO"/><p:inputText id="APELLIDO" value="#{personaC.per.apellido}" maxlength="40" disabled="true">
+                                <p:outputLabel value="APELLIDO"/><p:inputText id="APELLIDO" value="#{personaC.per.apellido}" maxlength="40" disabled="#{personaC.enabled}">
                                     <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
                                 </p:inputText>
                             </p:panelGrid>

@@ -20,6 +20,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import modelo.PersonaModel;
 import static servicio.ReniecS.buscarDni;
+import static servicio.ReniecPrueba.buscarDniReniec;
 import servicio.Reporte;
 import static servicio.MailJava.enviarCorreo;
 
@@ -38,19 +39,22 @@ public class PersonaC implements Serializable {
     private List<PersonaModel> listadoUbigeo;
     private List<PersonaModel> listadoPer;
     private List<PersonaModel> listadoApoderado;
-
+    private boolean enabled=true;
     public PersonaC() {
         per = new PersonaModel();
         dao = new PersonaImpl();
     }
 
-    public void buscarPorDNI() {
+    public void buscarPorDNI() throws Exception{
         try {
-            buscarDni(per);
+            buscarDniReniec(per);
             System.out.println(per.getApellido());
-        } catch (Exception e) {
-            System.out.println("error en buscar por DNI " + e.getMessage());
-            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "DNI encontrado"));
+        } catch (SQLException e) {
+            
+        }catch(NullPointerException e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "el DNI no existe o el servidor a fallado"));
+            enabled = false;
         }
     }
 
@@ -230,6 +234,14 @@ public class PersonaC implements Serializable {
 
     public void setListadoUbigeo(List<PersonaModel> listadoUbigeo) {
         this.listadoUbigeo = listadoUbigeo;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
 }
