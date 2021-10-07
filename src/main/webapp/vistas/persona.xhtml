@@ -43,13 +43,27 @@
                         </p:fragment>
                         <br></br> 
                     </div>
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-9">
+                        <p:fragment>
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="GENERAR CONTRASEÑA"/>
+                                <p:commandButton value="Buscar" action="#{personaC.passAleatorio()}"  update="pass">
+                                </p:commandButton>
+                                <p:outputLabel value="CONTRASEÑA"/>
+                                <p:password id="pass" value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña" 
+                                            toggleMask="true" redisplay="true"  feedback="true"
+                                            promptLabel="Ingresa tu contraseña" weakLabel="Débil"
+                                            goodLabel="Buena" strongLabel="Fuerte">
+                                </p:password>
+                            </p:panelGrid>    
+                        </p:fragment>
+                    </div>
                     <div class="ui-g-2"></div>
                     <div class="ui-g-10">
                         <p:panelGrid columns="2">
-                            <p:outputLabel value="CONTRASEÑA"/><p:password value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña" toggleMask="true" redisplay="true"/>
                             <p:outputLabel value="EMAIL"/><p:inputText id="email" value="#{personaC.per.email}" maxlength="60" label="Email" validatorMessage="#{personaC.per.email} no es valido" required="true" requiredMessage="Rellene el correo">
                                 <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" /> <p:message for="email" /></p:inputText>
-
                             <p:outputLabel value="DIRECCION"/>
                             <p:selectOneMenu  value="#{personaC.per.ubigeoFK}" filter="true" filterMatchMode="startsWith">
                                 <f:selectItem itemLabel="- Seleccione -"/>
@@ -150,26 +164,42 @@
                 </h:form>
                 <p:dialog header="ACTUALIZAR DATOS" widgetVar="wdlgDatos" resizable="false" modal="true">
                     <h:form id="formDialog">
-                        <p:fragment>
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="DNI"/>
-                                <p:commandButton value="Buscar" action="#{personaC.buscarPorDNI()}"  update="NOMBRE APELLIDO">
-                                    <p:inputText value="#{personaC.per.DNI}" maxlength="8">
-                                        <p:keyFilter regEx="/[0-9]/"/>
-                                    </p:inputText>&#160;
-                                </p:commandButton>
-                                <p:outputLabel value="NOMBRE" />
-                                <p:inputText  id="NOMBRE" value="#{personaC.per.nombre}"  maxlength="40" disabled="true">
-                                    <p:keyFilter regEx="/[A-Z_a-z_ _ñ_á_é_i_ó_ú]/"/>
-                                </p:inputText>
-                                <p:outputLabel value="APELLIDO"/><p:inputText id="APELLIDO" value="#{personaC.per.apellido}" maxlength="40" disabled="true">
-                                    <p:keyFilter regEx="/[A-Z_a-z_ _ñ_á_é_i_ó_ú]/"/>
-                                </p:inputText>
-                            </p:panelGrid>
-                        </p:fragment>
+                        <div class="ui-g-6">
+                            <p:fragment>
+                                <p:panelGrid columns="2" >
+                                    <p:outputLabel value="DNI"/>
+                                    <p:commandButton value="Buscar" action="#{personaC.buscarPorDNI()}"  update="NOMBRE APELLIDO">
+                                        <p:inputText value="#{personaC.per.DNI}" maxlength="8">
+                                            <p:keyFilter regEx="/[0-9]/"/>
+                                        </p:inputText>&#160;
+                                    </p:commandButton>
+                                    <p:outputLabel value="NOMBRE" />
+                                    <p:inputText  id="NOMBRE" value="#{personaC.per.nombre}"  maxlength="40" disabled="true">
+                                        <p:keyFilter regEx="/[A-Z_a-z_ _ñ_á_é_i_ó_ú]/"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="APELLIDO"/><p:inputText id="APELLIDO" value="#{personaC.per.apellido}" maxlength="40" disabled="true">
+                                        <p:keyFilter regEx="/[A-Z_a-z_ _ñ_á_é_i_ó_ú]/"/>
+                                    </p:inputText>
+                                </p:panelGrid>
+                            </p:fragment>
+                        </div>
                         <br></br> 
+                        <div class="ui-g-6">
+                            <p:fragment>
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel value="GENERAR CONTRASEÑA"/>
+                                    <p:commandButton value="Buscar" action="#{personaC.passAleatorio()}"  update="pass">
+                                    </p:commandButton>
+                                    <p:outputLabel value="CONTRASEÑA"/>
+                                    <p:password id="pass" value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña" 
+                                                toggleMask="true" redisplay="true"  feedback="true"
+                                                promptLabel="Ingresa tu contraseña" weakLabel="Débil"
+                                                goodLabel="Buena" strongLabel="Fuerte">
+                                    </p:password>
+                                </p:panelGrid>    
+                            </p:fragment>
+                        </div>
                         <p:panelGrid columns="4">
-                            <p:outputLabel value="CONTRASEÑA"/><p:password value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña" toggleMask="true" redisplay="true"/>
                             <p:outputLabel value="EMAIL"/><p:inputText id="email" value="#{personaC.per.email}" maxlength="60" label="Email" validatorMessage="#{personaC.per.email} no es valido" required="true" requiredMessage="Rellene el correo">
                                 <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" /> <p:message for="email" /></p:inputText>
 

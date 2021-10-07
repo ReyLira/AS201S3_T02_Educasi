@@ -5,6 +5,7 @@
  */
 package controlador;
 
+import com.google.gson.JsonSyntaxException;
 import dao.PersonaImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -25,7 +26,7 @@ import static servicio.ReniecS.buscarDni;
 import static servicio.ReniecPrueba.buscarDniReniec;
 import servicio.Reporte;
 import static servicio.MailJava.enviarCorreo;
-
+import servicio.Password;
 /**
  *
  * @author EDGARD VIERI RODRIGUEZ HUAMAN
@@ -53,14 +54,21 @@ public class PersonaC implements Serializable {
             buscarDniReniec(per);
             System.out.println(per.getApellido());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "DNI encontrado"));
-        } catch (SQLException e) {
-
+        } catch (JsonSyntaxException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "FATAL", "DEBE INGRESAR UN DNI o corregir el formato ingresado"));
         } catch (NullPointerException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "el DNI no existe o el servidor a fallado"));
             enabled = false;
         }
     }
 
+    public void passAleatorio() throws Exception{
+        try {
+            Password.passAleatorio(per);
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "No genero password"));
+        }
+    }
     public void enviarC() {
         try {
             enviarCorreo(per);
@@ -258,5 +266,7 @@ public class PersonaC implements Serializable {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+   
 
 }
