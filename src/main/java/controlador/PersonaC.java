@@ -81,6 +81,8 @@ public class PersonaC implements Serializable {
 
     public void registrar() throws Exception {
         try {
+            per.setNombre(convertid(per.getNombre()));
+            per.setApellido(convertid(per.getApellido()));
             System.out.println(per.getROL());
             dao.registrarD(per);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Registrado con éxito"));
@@ -99,6 +101,8 @@ public class PersonaC implements Serializable {
 
     public void modificar() throws Exception {
         try {
+            per.setNombre(convertid(per.getNombre()));
+            per.setApellido(convertid(per.getApellido()));
             dao.modificar(per);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Modificado con éxito"));
             limpiar();
@@ -118,7 +122,28 @@ public class PersonaC implements Serializable {
             System.out.println("Error en eliminarC " + e.getMessage());
         }
     }
-
+    public String convertid(String str) {
+        char ch[] = str.toCharArray();
+        for (int i = 0; i < str.length(); i++) {
+            // Si se encuentra el primer carácter de una palabra
+            if (i == 0 && ch[i] != ' '
+                    || ch[i] != ' ' && ch[i - 1] == ' ') {
+                // Si está en minúsculas
+                if (ch[i] >= 'a' && ch[i] <= 'z') {
+                    // Convertir en mayúsculas
+                    ch[i] = (char) (ch[i] - 'a' + 'A');
+                }
+            } // Si aparte del primer carácter
+            // Cualquiera está en mayúsculas
+            else if (ch[i] >= 'A' && ch[i] <= 'Z') // Convertir en minúsculas
+            {
+                ch[i] = (char) (ch[i] + 'a' - 'A');
+            }
+        }
+        String st = new String(ch);
+        str = st;
+        return str;
+    }
     public void limpiar() {
         per = new PersonaModel();
     }
