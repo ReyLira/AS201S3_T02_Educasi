@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -87,10 +88,10 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
         CuotaModel cuot;
         String sql = "select * from V_CUOTA";
         ResultSet rs;
-        try {
+        try (Connection conec  = (Connection) this.getCn() ){
             this.conectar();
             listado = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = conec.prepareStatement(sql);
             rs = ps.executeQuery(); 
             while (rs.next()) {
              cuot = new CuotaModel();

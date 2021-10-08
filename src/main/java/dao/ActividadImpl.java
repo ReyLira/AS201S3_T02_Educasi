@@ -96,10 +96,10 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
         ActividadModel act;
         String sql = "select *from ACTIVIDAD";
         ResultSet rs;
-        try {
+        try (Connection conec  = (Connection) this.getCn() ){
             this.conectar();
             listado = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = conec.prepareStatement(sql);
             rs = ps.executeQuery(); 
             while (rs.next()) {
              act = new ActividadModel();
@@ -114,7 +114,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-             System.out.println("Error en listarCuota Dao" + e.getMessage());
+             System.out.println("Error en listar actividad Dao" + e.getMessage());
         }
          return listado;
     }

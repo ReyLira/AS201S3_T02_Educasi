@@ -115,10 +115,10 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel>{
         PersonaModel per;
         String sql = "SELECT* FROM V_PERSONA";
         ResultSet rs;
-        try {
+        try (Connection conec  = (Connection) this.getCn() ){
             this.conectar();
             listado = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = conec.prepareStatement(sql);
             rs = ps.executeQuery(); 
             while (rs.next()) {
                 per = new PersonaModel();

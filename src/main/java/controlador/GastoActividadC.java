@@ -35,7 +35,6 @@ public class GastoActividadC implements Serializable {
 
     private List<GastoActividadModel> listGasAct;
     private List<GastoActividadModel> listAct;
-
     public GastoActividadC() {
         gasAct = new GastoActividadModel();
         dao = new GastoActividadImpl();
@@ -43,7 +42,7 @@ public class GastoActividadC implements Serializable {
 
     public void registrar() throws Exception {
         try {
-            gasAct.setDesGasActividad(convertid(gasAct.getDesGasActividad())); 
+            gasAct.setDesGasActividad(convertid(gasAct.getDesGasActividad()));
             System.out.println(gasAct);
             dao.registrar(gasAct);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Registrado con éxito"));
@@ -95,7 +94,7 @@ public class GastoActividadC implements Serializable {
                     Map<String, Object> parameters = new HashMap();
                     parameters.put("Parametro1", sts1);
                     parameters.put("Parametro2", sts2);
-                    report.exportarPDFGlobal(parameters, "gastoActividadesRango.jasper", fechSystem+" gastoActividadesRango.pdf");
+                    report.exportarPDFGlobal(parameters, "gastoActividadesRango.jasper", fechSystem + " gastoActividadesRango.pdf");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
                 }
             }
@@ -115,12 +114,12 @@ public class GastoActividadC implements Serializable {
                 String sts = dateFormat.format(gasAct.getFechaReporte());
                 SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 Date fechaActual = new Date(System.currentTimeMillis());
-                String fechSystem= dateFormat2.format(fechaActual);
+                String fechSystem = dateFormat2.format(fechaActual);
                 Reporte report = new Reporte();
 
                 Map<String, Object> parameters = new HashMap();
                 parameters.put("Parameter1", sts);
-                report.exportarPDFGlobal(parameters, "gastoActividades.jasper",fechSystem+ " gastoActividades.pdf");
+                report.exportarPDFGlobal(parameters, "gastoActividades.jasper", fechSystem + " gastoActividades.pdf");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
             }
         } catch (Exception e) {
@@ -129,6 +128,7 @@ public class GastoActividadC implements Serializable {
         }
     }
 
+    
     public void limpiar() {
         gasAct = new GastoActividadModel();
     }
@@ -140,6 +140,7 @@ public class GastoActividadC implements Serializable {
             System.out.println("Error en listarC " + e.getMessage());
         }
     }
+
     public String convertid(String str) {
         char ch[] = str.toCharArray();
         for (int i = 0; i < str.length(); i++) {
@@ -162,6 +163,7 @@ public class GastoActividadC implements Serializable {
         str = st;
         return str;
     }
+
     public void obtenerCuota() throws Exception {
 
         try {

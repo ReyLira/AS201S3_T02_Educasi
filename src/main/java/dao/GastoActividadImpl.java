@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -87,10 +88,10 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
         GastoActividadModel gasAct;
         String sql = "select * from v_gastoAcividad";
         ResultSet rs;
-        try {
+        try (Connection conec  = (Connection) this.getCn() ){
             this.conectar();
             listado = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = conec.prepareStatement(sql);
             rs = ps.executeQuery(); 
             while (rs.next()) {
              gasAct = new GastoActividadModel();
@@ -108,7 +109,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             rs.close();
             ps.close();
         } catch (Exception e) {
-             System.out.println("Error en listarCuota Dao" + e.getMessage());
+             System.out.println("Error en gasto Actividad Dao" + e.getMessage());
         }
          return listado;
     }
