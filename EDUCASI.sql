@@ -255,6 +255,15 @@ CREATE OR REPLACE VIEW v_persona AS
         LEFT JOIN persona infer ON super.persona_idper = infer.idper
         INNER JOIN ubigeo ON super.idubg = ubigeo.idubg;
 
+--vista de fechas para reporte cuotas
+
+CREATE OR REPLACE VIEW v_FechaCuotas AS
+select distinct FECCUOT from cuota order by FECCUOT desc;
+
+--vista de fechas para reporte gasto actividad
+CREATE OR REPLACE VIEW v_gasActividaFech AS
+select distinct FECGASACT from gasto_actividad order by FECGASACT desc;
+
 -- vista de la tabla rol
 CREATE OR REPLACE VIEW v_persona_rol AS
     SELECT
