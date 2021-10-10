@@ -52,13 +52,17 @@
                             </p:panelGrid>
                         </div>
                     </h:form>
+                    
                     <h:form  style="background-color: white;">
                         <h2 style="align-content: center;align-items: center;text-align: center">REPORTES</h2>
                         <div class="ui-g-2"></div>
                         <div class="ui-g-10" style="background-color: white">
                             <p:panelGrid columns="3">
                                 <p:outputLabel>LISTADO POR DIA</p:outputLabel>
-                                <p:calendar id="german" value="#{cuotaC.cuot.fechaReporte}" locale="de" navigator="true" pattern="dd-MM-yyyy" showOn="button"/>
+                                <p:selectOneMenu  value="#{cuotaC.cuot.fechaSan}" filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{cuotaC.listadoFecha}" var="apo" itemLabel="#{apo.fechaSan}" itemValue="#{apo.fechaSan}"/>
+                                </p:selectOneMenu>
                                 <p:commandButton value="LISTAR" actionListener="#{cuotaC.reporteCuota()}" ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;" />
                             </p:panelGrid>
                         </div>

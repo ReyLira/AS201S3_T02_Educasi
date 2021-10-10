@@ -22,6 +22,7 @@ public class CuotaModel {
    private String NombrePersona;
    private String NombreActividad;
    
+   private String fechaSan;
    private Date fechaReporte;
    private Date fechaReportEntrada;
    private Date fechaReportSalida;
@@ -169,6 +170,14 @@ public class CuotaModel {
 
     public void setFechaReportSalida(Date fechaReportSalida) {
         this.fechaReportSalida = fechaReportSalida;
+    }
+
+    public String getFechaSan() {
+        return fechaSan;
+    }
+
+    public void setFechaSan(String fechaSan) {
+        this.fechaSan = fechaSan;
     }
     
     

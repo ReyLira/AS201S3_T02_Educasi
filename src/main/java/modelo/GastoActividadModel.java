@@ -21,7 +21,7 @@ public class GastoActividadModel {
     private int FKactividad;
 
     private String fila;
-    private Date fechaReporte;
+    private String fechaReporte;
     private Date fechaReportEntrada;
     private Date fechaReportSalida;
 
@@ -136,14 +136,6 @@ public class GastoActividadModel {
         this.fila = fila;
     }
 
-    public Date getFechaReporte() {
-        return fechaReporte;
-    }
-
-    public void setFechaReporte(Date fechaReporte) {
-        this.fechaReporte = fechaReporte;
-    }
-
     public Date getFechaReportEntrada() {
         return fechaReportEntrada;
     }
@@ -158,6 +150,14 @@ public class GastoActividadModel {
 
     public void setFechaReportSalida(Date fechaReportSalida) {
         this.fechaReportSalida = fechaReportSalida;
+    }
+
+    public String getFechaReporte() {
+        return fechaReporte;
+    }
+
+    public void setFechaReporte(String fechaReporte) {
+        this.fechaReporte = fechaReporte;
     }
     
 }

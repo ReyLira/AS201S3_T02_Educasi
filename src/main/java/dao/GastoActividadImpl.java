@@ -113,6 +113,27 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
         }
          return listado;
     }
+     public List<GastoActividadModel> listarFecha() throws Exception {
+        List<GastoActividadModel> lisFech = null;
+        GastoActividadModel fech;
+        ResultSet rs;
+        String sql = "select TO_CHAR( FECGASACT, 'dd/MM/YY' )as FECGASACT from v_gasActividaFech";
+        try {
+            lisFech = new ArrayList();
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                fech = new GastoActividadModel();
+                fech.setFechaReporte(rs.getString("FECGASACT"));
+                lisFech.add(fech);
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("Error en listarFecha Dao" + e.getMessage());
+        }
+        return lisFech;
+    }
     public List<GastoActividadModel> listarAct() throws Exception {
          List<GastoActividadModel> listAc = null;
         GastoActividadModel act;

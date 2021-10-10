@@ -11,6 +11,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ public class GastoActividadC implements Serializable {
 
     private List<GastoActividadModel> listGasAct;
     private List<GastoActividadModel> listAct;
+    private List<GastoActividadModel> listadoFecha;
     public GastoActividadC() {
         gasAct = new GastoActividadModel();
         dao = new GastoActividadImpl();
@@ -110,8 +112,7 @@ public class GastoActividadC implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Falta rellenar la fecha en el reporte"));
             }
             if (gasAct.getFechaReporte() != null) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YY");
-                String sts = dateFormat.format(gasAct.getFechaReporte());
+                String sts =gasAct.getFechaReporte();
                 SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 Date fechaActual = new Date(System.currentTimeMillis());
                 String fechSystem = dateFormat2.format(fechaActual);
@@ -213,6 +214,22 @@ public class GastoActividadC implements Serializable {
 
     public void setListAct(List<GastoActividadModel> listAct) {
         this.listAct = listAct;
+    }
+
+    public List<GastoActividadModel> getListadoFecha() {
+        listadoFecha = new ArrayList<GastoActividadModel>();
+        try {     
+            listadoFecha = dao.listarFecha();
+        } catch (SQLException ex) {
+            Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listadoFecha;
+    }
+
+    public void setListadoFecha(List<GastoActividadModel> listadoFecha) {
+        this.listadoFecha = listadoFecha;
     }
 
 }

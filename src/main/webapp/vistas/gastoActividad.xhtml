@@ -59,7 +59,10 @@
                         <div class="ui-g-10" style="background-color: white">
                             <p:panelGrid columns="3">
                                 <p:outputLabel>LISTADO POR DIA</p:outputLabel>
-                                <p:calendar id="german" value="#{gastoActividadC.gasAct.fechaReporte}" locale="de" navigator="true" pattern="dd-MM-yyyy" showOn="button"/>
+                                <p:selectOneMenu  value="#{gastoActividadC.gasAct.fechaReporte}" filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{gastoActividadC.listadoFecha}" var="apo" itemLabel="#{apo.fechaReporte}" itemValue="#{apo.fechaReporte}"/>
+                                </p:selectOneMenu>
                                 <p:commandButton value="LISTAR" actionListener="#{gastoActividadC.reporteGastoActividad()}" ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;" />
                             </p:panelGrid>
                         </div>

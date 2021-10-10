@@ -104,15 +104,14 @@ public class CuotaC implements Serializable {
     public void reporteCuota() throws Exception {
 
         try {
-            if (cuot.getFechaReporte() == null) {
+            if (cuot.getFechaSan()== null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Falta rellenar la fecha en el reporte"));
             }
-            if (cuot.getFechaReporte() != null) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YY");
+            if (cuot.getFechaSan() != null) {
                 SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 Date fechaActual = new Date(System.currentTimeMillis());
                 String fechSystem = dateFormat2.format(fechaActual);
-                String sts = dateFormat.format(cuot.getFechaReporte());
+                String sts = cuot.getFechaSan();
                 Reporte report = new Reporte();
 
                 Map<String, Object> parameters = new HashMap();
@@ -195,10 +194,11 @@ public class CuotaC implements Serializable {
     public void setListAct(List<CuotaModel> listAct) {
         this.listAct = listAct;
     }
-
+    
+    
     public List<CuotaModel> getListadoFecha() {
         listadoFecha = new ArrayList<CuotaModel>();
-        try {
+        try {     
             listadoFecha = dao.listarFecha();
         } catch (SQLException ex) {
             Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);

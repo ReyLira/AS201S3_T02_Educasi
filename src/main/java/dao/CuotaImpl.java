@@ -116,14 +116,14 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
         List<CuotaModel> lisFech = null;
         CuotaModel fech;
         ResultSet rs;
-        String sql = "select distinct FECCUOT from cuota order by FECCUOT desc";
+        String sql = "select TO_CHAR( FECCUOT, 'dd/MM/YY' )as FECCUOT from v_FechaCuotas";
         try {
             lisFech = new ArrayList();
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 fech = new CuotaModel();
-                fech.setFechaCuota(rs.getDate("FECCUOT"));
+                fech.setFechaSan(rs.getString("FECCUOT"));
                 lisFech.add(fech);
             }
             rs.close();
