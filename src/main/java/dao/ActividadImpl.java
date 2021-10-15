@@ -5,6 +5,7 @@
  */
 package dao;
 
+import static com.ibm.java.diagnostics.utils.Context.logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import modelo.ActividadModel;
 
 /**
@@ -22,13 +24,16 @@ import modelo.ActividadModel;
  * @author EDGARD
  */
 public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
+
     DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
     public static Date stringToFecha(String fecha) throws ParseException {
         return fecha != null ? new SimpleDateFormat("dd-MM-yyyy").parse(fecha) : null;
     }
+
     @Override
     public void registrar(ActividadModel obj) throws Exception {
-         String sql ="insert into ACTIVIDAD (NOMACT,MONESPACT,CANAPOACT,FECACT) values (?,?,?,?)";
+        String sql = "insert into ACTIVIDAD (NOMACT,MONESPACT,CANAPOACT,FECACT) values (?,?,?,?)";
         try {
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             ps.setString(1, obj.getNombreActividad());
@@ -38,12 +43,13 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error al Ingresar Actividad Dao " + e.getMessage());
+            logger.log(Level.SEVERE, "Error al Ingresar Actividad Dao {0}", e.getMessage());
         }
     }
+
     public void registrarD(ActividadModel obj) throws Exception {
-         String sql ="insert into ACTIVIDAD (NOMACT,MONESPACT,CANAPOACT,FECACT) values (?,?,?,?)";
-        try (Connection conec  = (Connection) this.getCn() ){
+        String sql = "insert into ACTIVIDAD (NOMACT,MONESPACT,CANAPOACT,FECACT) values (?,?,?,?)";
+        try (Connection conec = (Connection) this.getCn()) {
             PreparedStatement ps = conec.prepareStatement(sql);
             ps.setString(1, obj.getNombreActividad());
             ps.setInt(2, obj.getMontoActividad());
@@ -51,7 +57,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             ps.setString(4, formatter.format(obj.getFechaActividad()));
             ps.executeUpdate();
             ps.close();
-        } 
+        }
     }
 
     @Override
@@ -68,27 +74,26 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error al modificar Actividad Dao " + e.getMessage());
-        }finally {
+            logger.log(Level.SEVERE, "Error al modificar Actividad Dao {0}", e.getMessage());
+        } finally {
             this.Cerrar();
         }
     }
 
     @Override
     public void eliminar(ActividadModel obj) throws Exception {
-        String sql = "delete from ACTIVIDAD where IDACT=?";               
+        String sql = "delete from ACTIVIDAD where IDACT=?";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);             
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
             ps.setInt(1, obj.getIDactividad());
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error en eliminar Actividad" + e.getMessage());
-        }finally {
+            logger.log(Level.SEVERE, "Error al eliminar Actividad Dao {0}", e.getMessage());
+        } finally {
             this.Cerrar();
-        } 
+        }
     }
-    
 
     @Override
     public List<ActividadModel> listarTodos() throws Exception {
@@ -96,59 +101,63 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
         ActividadModel act;
         String sql = "select *from ACTIVIDAD";
         ResultSet rs;
-        try (Connection conec  = (Connection) this.getCn() ){
+        try (Connection conec = (Connection) this.getCn()) {
             this.conectar();
             listado = new ArrayList();
             PreparedStatement ps = conec.prepareStatement(sql);
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
             while (rs.next()) {
-             act = new ActividadModel();
-             act.setIDactividad(rs.getInt("IDACT"));
-             act.setNombreActividad(rs.getString("NOMACT"));
-             act.setMontoActividad(rs.getInt("MONESPACT"));
-             act.setCantApoActividad(rs.getInt("CANAPOACT"));
-             act.setFechaActividad(rs.getDate("FECACT"));
-             act.setEstadoActividad(rs.getString("ESTACT")); 
-             listado.add(act);
+                act = new ActividadModel();
+                act.setIDactividad(rs.getInt("IDACT"));
+                act.setNombreActividad(rs.getString("NOMACT"));
+                act.setMontoActividad(rs.getInt("MONESPACT"));
+                act.setCantApoActividad(rs.getInt("CANAPOACT"));
+                act.setFechaActividad(rs.getDate("FECACT"));
+                act.setEstadoActividad(rs.getString("ESTACT"));
+                listado.add(act);
             }
             rs.close();
             ps.close();
         } catch (Exception e) {
-             System.out.println("Error en listar actividad Dao" + e.getMessage());
+            logger.log(Level.SEVERE, "Error al listar Actividad Dao {0}", e.getMessage());
         }
-         return listado;
+        return listado;
     }
-    public List<ActividadModel> ListarPorEstado(String est) throws SQLException{
-       
+
+    public List<ActividadModel> ListarPorEstado(String est) throws SQLException {
+
         List<ActividadModel> ListarPorEst = null;
         ActividadModel act;
         String sql = "";
-        switch(est){
+        switch (est) {
             case "ACTIVO":
                 sql = "SELECT * FROM ACTIVIDAD where estact='ACTIVO'";
                 break;
             case "INACTIVO":
                 sql = "SELECT * FROM ACTIVIDAD where estact='INACTIVO'";
                 break;
+            default:
+                logger.log(Level.INFO, "error debe seleccionar un rol per impl ");
+                break;
         }
-         try {
+        try {
             ListarPorEst = new ArrayList();
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 act = new ActividadModel();
-             act.setIDactividad(rs.getInt("IDACT"));
-             act.setNombreActividad(rs.getString("NOMACT"));
-             act.setMontoActividad(rs.getInt("MONESPACT"));
-             act.setCantApoActividad(rs.getInt("CANAPOACT"));
-             act.setFechaActividad(rs.getDate("FECACT"));
-             act.setEstadoActividad(rs.getString("ESTACT")); 
-             ListarPorEst.add(act);
+                act.setIDactividad(rs.getInt("IDACT"));
+                act.setNombreActividad(rs.getString("NOMACT"));
+                act.setMontoActividad(rs.getInt("MONESPACT"));
+                act.setCantApoActividad(rs.getInt("CANAPOACT"));
+                act.setFechaActividad(rs.getDate("FECACT"));
+                act.setEstadoActividad(rs.getString("ESTACT"));
+                ListarPorEst.add(act);
             }
             rs.close();
             ps.close();
-        }catch (Exception e) {
-            System.out.println("Error en listar por Rol Dao" + e.getMessage());
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error en listar por Rol {0}", e.getMessage());
         }
         return ListarPorEst;
     }

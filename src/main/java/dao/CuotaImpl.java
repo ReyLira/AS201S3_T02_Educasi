@@ -5,6 +5,7 @@
  */
 package dao;
 
+import static com.ibm.java.diagnostics.utils.Context.logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import modelo.CuotaModel;
 
 /**
@@ -41,7 +43,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error al Ingresar Cuota Dao " + e.getMessage());
+            logger.log(Level.SEVERE, "Error al Ingresar Cuota cuot {0}", e.getMessage());
         }finally{
             this.Cerrar();
         }
@@ -61,7 +63,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error al modificar cuota Dao " + e.getMessage());
+            logger.log(Level.SEVERE, "Error al modificar Cuota cuot {0}", e.getMessage());
         }finally {
             this.Cerrar();
         }
@@ -76,7 +78,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error en eliminar cuota" + e.getMessage());
+            logger.log(Level.SEVERE, "Error al eliminar Cuota cuot {0}", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -88,10 +90,10 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
         CuotaModel cuot;
         String sql = "select * from V_CUOTA";
         ResultSet rs;
-        try (Connection conec  = (Connection) this.getCn() ){
+        try {
             this.conectar();
             listado = new ArrayList();
-            PreparedStatement ps = conec.prepareStatement(sql);
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
             rs = ps.executeQuery(); 
             while (rs.next()) {
              cuot = new CuotaModel();
@@ -108,7 +110,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             rs.close();
             ps.close();
         } catch (Exception e) {
-             System.out.println("Error en listarCuota Dao" + e.getMessage());
+            logger.log(Level.SEVERE, "Error al listar Cuota cuot {0}", e.getMessage());
         }
          return listado;
     }
@@ -129,7 +131,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             rs.close();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error en listarFecha Dao" + e.getMessage());
+            logger.log(Level.SEVERE, "Error al listar fecha cuot {0}", e.getMessage());
         }
         return lisFech;
     }
@@ -155,7 +157,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             rs.close();
             ps.close();
             } catch (Exception e) {
-            System.out.println("Error en listarCuota Dao" + e.getMessage());
+                logger.log(Level.SEVERE, "Error al listarCuota cuot {0}", e.getMessage());
         }
         return listAc;
     }
@@ -171,7 +173,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
                 cuota = rs.getInt("MONESPACT");
             }
         } catch (Exception e) {
-            System.out.println("error en cuota Act "+ e.getMessage());
+            logger.log(Level.SEVERE, "Error al obtener Act cuot {0}", e.getMessage());
         }
         return cuota;
     }
@@ -188,7 +190,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
                 cuota = rs.getInt("saldoCuota");
             }
         } catch (Exception e) {
-            System.out.println("error en cuota Act "+ e.getMessage());
+            logger.log(Level.SEVERE, "Error al obtener saldocuota cuot {0}", e.getMessage());
         }
         return cuota;
     }

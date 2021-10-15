@@ -5,6 +5,7 @@
  */
 package controlador;
 
+import static com.ibm.java.diagnostics.utils.Context.logger;
 import dao.GastoActividadImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -37,6 +38,7 @@ public class GastoActividadC implements Serializable {
     private List<GastoActividadModel> listGasAct;
     private List<GastoActividadModel> listAct;
     private List<GastoActividadModel> listadoFecha;
+
     public GastoActividadC() {
         gasAct = new GastoActividadModel();
         dao = new GastoActividadImpl();
@@ -45,13 +47,13 @@ public class GastoActividadC implements Serializable {
     public void registrar() throws Exception {
         try {
             gasAct.setDesGasActividad(convertid(gasAct.getDesGasActividad()));
-            System.out.println(gasAct);
+            logger.log(Level.INFO, "gasto ", gasAct);
             dao.registrar(gasAct);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Registrado con éxito"));
             limpiar();
             listar();
         } catch (Exception e) {
-            System.out.println("Error en modificarC " + e.getMessage());
+            logger.log(Level.SEVERE, "error en modificarC gasAct {0}", e.getMessage());
         }
     }
 
@@ -62,7 +64,7 @@ public class GastoActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            System.out.println("Error en modificarC " + e.getMessage());
+            logger.log(Level.SEVERE, "Error en modificarC gasAct {0}", e.getMessage());
         }
     }
 
@@ -73,7 +75,7 @@ public class GastoActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            System.out.println("Error en eliminarC " + e.getMessage());
+            logger.log(Level.SEVERE, "Error en eliminarC gasAct {0}", e.getMessage());
         }
     }
 
@@ -112,7 +114,7 @@ public class GastoActividadC implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Falta rellenar la fecha en el reporte"));
             }
             if (gasAct.getFechaReporte() != null) {
-                String sts =gasAct.getFechaReporte();
+                String sts = gasAct.getFechaReporte();
                 SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 Date fechaActual = new Date(System.currentTimeMillis());
                 String fechSystem = dateFormat2.format(fechaActual);
@@ -129,7 +131,6 @@ public class GastoActividadC implements Serializable {
         }
     }
 
-    
     public void limpiar() {
         gasAct = new GastoActividadModel();
     }
@@ -138,7 +139,7 @@ public class GastoActividadC implements Serializable {
         try {
             listGasAct = dao.listarTodos();
         } catch (Exception e) {
-            System.out.println("Error en listarC " + e.getMessage());
+            logger.log(Level.SEVERE, "Error en listarGastoActividadC {0}", e.getMessage());
         }
     }
 
@@ -172,7 +173,7 @@ public class GastoActividadC implements Serializable {
                 gasAct.setCantGasActividad(dao.obtenerSaldoActividad(gasAct.getFKactividad()));
             }
         } catch (Exception e) {
-            System.out.println("Error en obtener cuota " + e.getMessage());
+            logger.log(Level.SEVERE, "Error en obtener Cuota GastoActividadC {0}", e.getMessage());
         }
 
     }
@@ -218,7 +219,7 @@ public class GastoActividadC implements Serializable {
 
     public List<GastoActividadModel> getListadoFecha() {
         listadoFecha = new ArrayList<GastoActividadModel>();
-        try {     
+        try {
             listadoFecha = dao.listarFecha();
         } catch (SQLException ex) {
             Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);

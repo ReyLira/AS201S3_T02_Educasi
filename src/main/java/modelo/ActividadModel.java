@@ -6,66 +6,20 @@
 package modelo;
 
 import java.util.Date;
+import lombok.Data;
 
 /**
  *
- * @author EDGARD
+ * @author ZERO
  */
+@Data
 public class ActividadModel {
-    private int IDactividad;
-    private String NombreActividad;
-    private int MontoActividad;
-    private int CantApoActividad;
-    private Date FechaActividad;
-    private String EstadoActividad;
 
-    public int getIDactividad() {
-        return IDactividad;
-    }
+    int IDactividad;
+    String NombreActividad;
+    int MontoActividad;
+    int CantApoActividad;
+    Date FechaActividad;
+    String EstadoActividad;
 
-    public void setIDactividad(int IDactividad) {
-        this.IDactividad = IDactividad;
-    }
-
-    public String getNombreActividad() {
-        return NombreActividad;
-    }
-
-    public void setNombreActividad(String NombreActividad) {
-        this.NombreActividad = NombreActividad;
-    }
-
-    public int getMontoActividad() {
-        return MontoActividad;
-    }
-
-    public void setMontoActividad(int MontoActividad) {
-        this.MontoActividad = MontoActividad;
-    }
-
-    public int getCantApoActividad() {
-        return CantApoActividad;
-    }
-
-    public void setCantApoActividad(int CantApoActividad) {
-        this.CantApoActividad = CantApoActividad;
-    }
-
-    public Date getFechaActividad() {
-        return FechaActividad;
-    }
-
-    public void setFechaActividad(Date FechaActividad) {
-        this.FechaActividad = FechaActividad;
-    }
-
-    public String getEstadoActividad() {
-        return EstadoActividad;
-    }
-
-    public void setEstadoActividad(String EstadoActividad) {
-        this.EstadoActividad = EstadoActividad;
-    }
-
-    
 }

@@ -6,6 +6,7 @@
 package controlador;
 
 import com.google.gson.JsonSyntaxException;
+import static com.ibm.java.diagnostics.utils.Context.logger;
 import dao.PersonaImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -27,6 +28,7 @@ import static servicio.ReniecPrueba.buscarDniReniec;
 import servicio.Reporte;
 import static servicio.MailJava.enviarCorreo;
 import servicio.Password;
+
 /**
  *
  * @author EDGARD VIERI RODRIGUEZ HUAMAN
@@ -52,7 +54,7 @@ public class PersonaC implements Serializable {
     public void buscarPorDNI() throws Exception {
         try {
             buscarDniReniec(per);
-            System.out.println(per.getApellido());
+            logger.log(Level.INFO, per.getApellido());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "DNI encontrado"));
         } catch (JsonSyntaxException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "FATAL", "DEBE INGRESAR UN DNI o corregir el formato ingresado"));
@@ -62,19 +64,20 @@ public class PersonaC implements Serializable {
         }
     }
 
-    public void passAleatorio() throws Exception{
+    public void passAleatorio() throws Exception {
         try {
             Password.passAleatorio(per);
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "No genero password"));
         }
     }
+
     public void enviarC() {
         try {
             enviarCorreo(per);
-            System.out.println(per.getApellido());
+            logger.log(Level.INFO, per.getApellido());
         } catch (Exception e) {
-            System.out.println("error en buscar enviar correo " + e.getMessage());
+            logger.log(Level.SEVERE, "error en buscar enviar correo {0}", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -83,14 +86,14 @@ public class PersonaC implements Serializable {
         try {
             per.setNombre(convertid(per.getNombre()));
             per.setApellido(convertid(per.getApellido()));
-            System.out.println(per.getROL());
+            logger.log(Level.INFO, per.getROL());
             dao.registrarD(per);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Registrado con éxito"));
             enviarCorreo(per);
             limpiar();
             listar();
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
+            logger.log(Level.WARNING, "error== ", e.getErrorCode());
             if (e.getErrorCode() == 1) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "el DNI ingresado coincide con otro usuario existente"));
             } else {
@@ -108,7 +111,7 @@ public class PersonaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            System.out.println("Error en modificarC " + e.getMessage());
+            logger.log(Level.WARNING, "error en modificar C ", e.getMessage());
         }
     }
 
@@ -119,9 +122,10 @@ public class PersonaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            System.out.println("Error en eliminarC " + e.getMessage());
+            logger.log(Level.WARNING, "error en eliminar C ", e.getMessage());
         }
     }
+
     public String convertid(String str) {
         char ch[] = str.toCharArray();
         for (int i = 0; i < str.length(); i++) {
@@ -144,6 +148,7 @@ public class PersonaC implements Serializable {
         str = st;
         return str;
     }
+
     public void limpiar() {
         per = new PersonaModel();
     }
@@ -152,7 +157,7 @@ public class PersonaC implements Serializable {
         try {
             listadoPer = dao.listarTodos();
         } catch (Exception e) {
-            System.out.println("Error en listarC " + e.getMessage());
+            logger.log(Level.WARNING, "error en listar C ", e.getMessage());
         }
     }
 
@@ -193,7 +198,7 @@ public class PersonaC implements Serializable {
             Date fechaActual = new Date(System.currentTimeMillis());
             String fechSystem = dateFormat2.format(fechaActual);
             Map<String, Object> parameters = new HashMap();
-            report.exportarPDFGlobal(parameters, "personaAlumno.jasper",fechSystem+ " personaAlumno.pdf");
+            report.exportarPDFGlobal(parameters, "personaAlumno.jasper", fechSystem + " personaAlumno.pdf");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
@@ -254,7 +259,7 @@ public class PersonaC implements Serializable {
             try {
                 listadoApoderado = dao.ListarApoderados();
             } catch (Exception e) {
-                System.out.println("error en listar apoderado controlador " + e);
+                 logger.log(Level.WARNING, "error en listar apoderado controlador ", e.getMessage());
             }
         }
         return listadoApoderado;
@@ -291,7 +296,5 @@ public class PersonaC implements Serializable {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-
-   
 
 }

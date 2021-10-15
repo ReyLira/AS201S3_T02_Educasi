@@ -5,6 +5,7 @@
  */
 package controlador;
 
+import static com.ibm.java.diagnostics.utils.Context.logger;
 import dao.ActividadImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -43,13 +44,13 @@ public class ActividadC implements Serializable {
     public void registrar() throws Exception {
         try {
             act.setNombreActividad(convertid(act.getNombreActividad()));
-            System.out.println(act);
+            logger.log(Level.INFO, "Error==",act);
             dao.registrarD(act);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Registrado con éxito"));
             limpiar();
             listar();
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
+            logger.log(Level.WARNING, "error== ", e.getErrorCode());
             if (e.getErrorCode() == 1) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "La ACTIVIDAD ingresada coincide con otra ACTIVIDAD existente"));
             } else {
@@ -66,7 +67,7 @@ public class ActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            System.out.println("Error en modificarC " + e.getMessage());
+            logger.log(Level.SEVERE, "error en modificar actC ", e.getMessage());
         }
     }
 
@@ -77,7 +78,7 @@ public class ActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            System.out.println("Error en eliminarC " + e.getMessage());
+            logger.log(Level.SEVERE, "error en eliminar actC ", e.getMessage());
         }
     }
 
@@ -110,7 +111,7 @@ public class ActividadC implements Serializable {
         try {
             listAct = dao.listarTodos();
         } catch (Exception e) {
-            System.out.println("Error en listarC " + e.getMessage());
+            logger.log(Level.SEVERE, "error en listar actC ", e.getMessage());
         }
     }
 

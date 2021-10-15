@@ -5,6 +5,7 @@
  */
 package controlador;
 
+import static com.ibm.java.diagnostics.utils.Context.logger;
 import dao.CuotaImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -44,13 +45,13 @@ public class CuotaC implements Serializable {
 
     public void registrar() throws Exception {
         try {
-            System.out.println(cuot);
+            logger.log(Level.INFO, "Error==",cuot);
             dao.registrar(cuot);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Modificado con éxito"));
             limpiar();
             listar();
         } catch (Exception e) {
-            System.out.println("Error en registrarC " + e.getMessage());
+            logger.log(Level.SEVERE, "Error en registrarC ",e.getMessage());
         }
     }
 
@@ -61,7 +62,7 @@ public class CuotaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            System.out.println("Error en modificarC " + e.getMessage());
+            logger.log(Level.SEVERE, "Error en modificarC ",e.getMessage());
         }
     }
 
@@ -72,7 +73,7 @@ public class CuotaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            System.out.println("Error en eliminarC " + e.getMessage());
+            logger.log(Level.SEVERE, "Error en eliminarC ",e.getMessage());
         }
     }
 
@@ -84,7 +85,7 @@ public class CuotaC implements Serializable {
         try {
             listadoCuot = dao.listarTodos();
         } catch (Exception e) {
-            System.out.println("Error en listarC " + e.getMessage());
+            logger.log(Level.SEVERE, "Error en listarC ",e.getMessage());
         }
     }
 
@@ -96,7 +97,7 @@ public class CuotaC implements Serializable {
 
             }
         } catch (Exception e) {
-            System.out.println("Error en obtener cuota " + e.getMessage());
+            logger.log(Level.SEVERE, "Error en obtener cuota C ",e.getMessage());
         }
 
     }

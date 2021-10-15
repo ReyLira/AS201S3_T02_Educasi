@@ -214,12 +214,6 @@
                                 <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO"/>
                                 <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO"/>
                             </p:selectOneRadio>
-                            <p:outputLabel value="ROL"/><p:selectOneRadio id="rol" value="#{personaC.per.ROL}" required="true" requiredMessage="seleccione un rol">
-                                <p:ajax event="change" listener="#{personaC.listadoApoderado.clear()}"/>
-                                <f:selectItem itemLabel="ADMINISTRADOR" itemValue="ADMIN"/>
-                                <f:selectItem itemLabel="APODERADO" itemValue="APODERADO"/>
-                                <f:selectItem itemLabel="ALUMNO" itemValue="ALUMNO"/>
-                            </p:selectOneRadio>
                             <p:commandButton value="MODIFICAR" actionListener="#{personaC.modificar()}" update=":formTblPersona:tblPersona" oncomplete="PF('wdlgDatos').hide()"/>
                             <p:commandButton value="CANCELAR" oncomplete="PF('wdlgDatos').hide()"/>
                         </p:panelGrid>

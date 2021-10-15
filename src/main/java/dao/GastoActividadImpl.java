@@ -5,6 +5,7 @@
  */
 package dao;
 
+import static com.ibm.java.diagnostics.utils.Context.logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import modelo.GastoActividadModel;
 
 /**
@@ -41,7 +43,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error al Ingresar Gasto Actividad Dao " + e.getMessage());
+            logger.log(Level.SEVERE, "Error al registrar gasto Actividad Act {0}", e.getMessage());
         }finally{
             this.Cerrar();
         }
@@ -61,7 +63,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error al modificar cuota Dao " + e.getMessage());
+            logger.log(Level.SEVERE, "Error al modificar gasto Actividad Act {0}", e.getMessage());
         }finally {
             this.Cerrar();
         }
@@ -76,7 +78,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error en eliminar cuota" + e.getMessage());
+             logger.log(Level.SEVERE, "Error en eliminar gasto Actividad Act {0}", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -88,10 +90,10 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
         GastoActividadModel gasAct;
         String sql = "select * from v_gastoAcividad";
         ResultSet rs;
-        try (Connection conec  = (Connection) this.getCn() ){
+        try {
             this.conectar();
             listado = new ArrayList();
-            PreparedStatement ps = conec.prepareStatement(sql);
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
             rs = ps.executeQuery(); 
             while (rs.next()) {
              gasAct = new GastoActividadModel();
@@ -109,7 +111,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             rs.close();
             ps.close();
         } catch (Exception e) {
-             System.out.println("Error en gasto Actividad Dao" + e.getMessage());
+            logger.log(Level.SEVERE, "Error en gasto Actividad Act {0}", e.getMessage());
         }
          return listado;
     }
@@ -130,7 +132,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             rs.close();
             ps.close();
         } catch (Exception e) {
-            System.out.println("Error en listarFecha Dao" + e.getMessage());
+             logger.log(Level.SEVERE, "Error en listarFecha Act {0}", e.getMessage());
         }
         return lisFech;
     }
@@ -156,7 +158,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             rs.close();
             ps.close();
             } catch (Exception e) {
-            System.out.println("Error en listarCuota Dao" + e.getMessage());
+                logger.log(Level.SEVERE, "Error en listarCuot Act {0}", e.getMessage());
         }
         return listAc;
     }
@@ -172,7 +174,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
                 cuota = rs.getInt("SaldoActividad");
             }
         } catch (Exception e) {
-            System.out.println("error en cuota Act "+ e.getMessage());
+            logger.log(Level.SEVERE, "error en cuota Act {0}", e.getMessage());
         }
         return cuota;
     }

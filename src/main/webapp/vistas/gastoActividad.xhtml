@@ -30,7 +30,7 @@
                             <p:panelGrid columns="2">
                                 <p:outputLabel value="ACTIVIDAD" />
                                 <p:selectOneMenu value="#{gastoActividadC.gasAct.FKactividad}" filter="true" filterMatchMode="startsWith">
-                                    <p:ajax event="change" update="CuAct boton" listener="#{gastoActividadC.obtenerCuota()}"/>
+                                    <p:ajax event="change" update="CuAct boton MontPa" listener="#{gastoActividadC.obtenerCuota()}"/>
                                     <f:selectItem itemLabel="- Seleccione -"/>
                                     <f:selectItems value="#{gastoActividadC.listAct}" var="apo" itemLabel="#{apo.nombreActividad}" itemValue="#{apo.IDactividad}" />
                                 </p:selectOneMenu>
@@ -41,8 +41,10 @@
                                 <p:inputNumber id="CuAct" value="#{gastoActividadC.gasAct.cantGasActividad}" disabled="true">
                                     <p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
                                 <p:outputLabel value="MONTO A PAGAR"/>
+                                <p:panelGrid columns="2">
                                 <p:inputNumber id="MontPa" value="#{gastoActividadC.gasAct.monGasActividad}" maxValue="#{gastoActividadC.gasAct.cantGasActividad}"  minValue="0" required="true" requiredMessage="Escriba el Monto a pagar">
                                     <p:keyFilter regEx="/[0-9]/" /></p:inputNumber>
+                                </p:panelGrid>
                                 <p:outputLabel value="Fecha:"/>
                                 <p:calendar id="german" value="#{gastoActividadC.gasAct.fechGasActividad}" locale="de" navigator="true" showOn="button"
                                             pattern="dd-MM-yyyy"/>
@@ -124,7 +126,7 @@
                             <p:panelGrid columns="2">
                                 <p:outputLabel value="ACTIVIDAD" />
                                 <p:selectOneMenu  value="#{gastoActividadC.gasAct.FKactividad}">
-                                    <p:ajax event="change" update="CuAct" listener="#{gastoActividadC.obtenerCuota()}"/>
+                                    <p:ajax event="change" update="CuAct MontPa" listener="#{gastoActividadC.obtenerCuota()}"/>
                                     <f:selectItem itemLabel="- Seleccione -"/>
                                     <f:selectItems value="#{gastoActividadC.listAct}" var="apo" itemLabel="#{apo.nombreActividad}" itemValue="#{apo.IDactividad}" />
                                 </p:selectOneMenu>
