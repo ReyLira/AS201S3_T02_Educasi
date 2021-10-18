@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters{
-      string(name: 'URL', defaultValue:' ' , description: 'Indique la URL del reporsitorio .git')
+      string(name: 'URL', defaultValue:'https://github.com/vallegrande/AS201S3_T02_Educasi.git' , description: 'Indique la URL del reporsitorio .git')
       string(name: 'RAMA', defaultValue:' ' , description: 'Indique la rama del reporsitorio .git')
     }
     stages {
