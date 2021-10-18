@@ -1,17 +1,22 @@
 pipeline {
     agent any
+
+    parameters{
+      string(name: 'URL', string: [''], description: 'Indique la URL del reporsitorio .git')
+      string(name: 'RAMA', string: [''], description: 'Indique la rama')
+    }
     stages {
 
         stage("Git Clone"){
             steps {
                 cleanWs()
                     checkout([$class: 'GitSCM', 
-                    branches: [[name: '*/feature/sonarqube']], 
+                    branches: [[name: parameters.RAMA]], 
                     doGenerateSubmoduleConfigurations: false, 
                     extensions: [[$class: 'CleanCheckout']], 
                     submoduleCfg: [], 
                     userRemoteConfigs: [
-                        [url: 'https://github.com/vallegrande/AS201S3_T02_Educasi.git', credentialsId: 'jenkins_github']
+                        [url: parameters.URL, credentialsId: 'jenkins_github']
                         ]])
                 sh 'pwd' 
                 sh 'ls -l'
