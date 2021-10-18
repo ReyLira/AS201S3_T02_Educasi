@@ -1,17 +1,20 @@
 pipeline {
     agent any
-
-    parameters{
-      string(name: 'URL', defaultValue:' ' , description: 'Indique la URL del reporsitorio .git')
-      string(name: 'RAMA', defaultValue:' ' , description: 'Indique la rama del reporsitorio .git')
-    }
-
     stages {
 
         stage("Git Clone"){
             steps {
-                  sh 'git clone echo + params.URL'
-                  sh 'git checkout %{params.RAMA}'
+                cleanWs()
+                    checkout([$class: 'GitSCM', 
+                    branches: [[name: '*/feature/sonarqube']], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [[$class: 'CleanCheckout']], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [
+                        [url: 'https://github.com/vallegrande/AS201S3_T02_Educasi.git', credentialsId: 'jenkins_github']
+                        ]])
+                sh 'pwd' 
+                sh 'ls -l'
             } //steps
         }  //stage
 
@@ -28,5 +31,6 @@ pipeline {
                     sh 'mvn clean verify sonar:sonar -Dsonar.host.url=http://35.222.30.201:9400 -Dsonar.login=e49716356b537e63b2d17480fbf070f84dd623b9'
             }
         }
+
     }
 }
