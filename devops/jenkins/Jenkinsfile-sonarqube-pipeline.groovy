@@ -5,12 +5,13 @@ pipeline {
       string(name: 'URL', defaultValue:' ' , description: 'Indique la URL del reporsitorio .git')
       string(name: 'RAMA', defaultValue:' ' , description: 'Indique la rama del reporsitorio .git')
     }
+
     stages {
 
         stage("Git Clone"){
             steps {
-                  sh 'git clone + ${UrlGIT}'
-                  sh 'git checkout + %{RamaGIT}'
+                  sh 'git clone echo + params.URL'
+                  sh 'git checkout %{params.RAMA}'
             } //steps
         }  //stage
 
