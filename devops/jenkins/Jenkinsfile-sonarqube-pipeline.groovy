@@ -28,6 +28,7 @@ pipeline {
         stage('SonarQube Analysis') {
             agent any
             steps {
+                    sh 'sonar-scanner status'
                     sh 'sonar-scanner'
             }
         }
