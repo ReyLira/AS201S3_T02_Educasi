@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     parameters{
-      string(name: 'URL', string: [''], description: 'Indique la URL del reporsitorio .git')
-      string(name: 'RAMA', string: [''], description: 'Indique la rama')
+      text(name: 'URL', text: [''], description: 'Indique la URL del reporsitorio .git')
+      text(name: 'RAMA', text: [''], description: 'Indique la rama')
     }
     stages {
 
