@@ -2,24 +2,15 @@ pipeline {
     agent any
 
     parameters{
-      text(name: 'URL', text: [''], description: 'Indique la URL del reporsitorio .git')
-      text(name: 'RAMA', text: [''], description: 'Indique la rama')
+      string(name: 'URL', defaultValue:' ' , description: 'Indique la URL del reporsitorio .git')
+      string(name: 'RAMA', defaultValue:' ' , description: 'Indique la rama del reporsitorio .git')
     }
     stages {
 
         stage("Git Clone"){
             steps {
-                cleanWs()
-                    checkout([$class: 'GitSCM', 
-                    branches: [[name: parameters.RAMA]], 
-                    doGenerateSubmoduleConfigurations: false, 
-                    extensions: [[$class: 'CleanCheckout']], 
-                    submoduleCfg: [], 
-                    userRemoteConfigs: [
-                        [url: parameters.URL, credentialsId: 'jenkins_github']
-                        ]])
-                sh 'pwd' 
-                sh 'ls -l'
+                  sh 'git clone %parameters.URL%'
+                  sh 'git checkout %parameters.RAMA%'
             } //steps
         }  //stage
 
