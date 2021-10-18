@@ -1,6 +1,3 @@
-def UrlGIT = params.URL
-def RamaGIT = params.RAMA 
-
 pipeline {
     agent any
 
@@ -12,8 +9,8 @@ pipeline {
 
         stage("Git Clone"){
             steps {
-                  sh 'git clone ${UrlGIT}'
-                  sh 'git checkout %{RamaGIT}'
+                  sh 'git clone + ${UrlGIT}'
+                  sh 'git checkout + %{RamaGIT}'
             } //steps
         }  //stage
 
