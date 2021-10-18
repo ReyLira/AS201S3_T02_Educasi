@@ -31,13 +31,5 @@ pipeline {
                     sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=sonarqube -Dsonar.host.url=http://35.222.30.201:9400 -Dsonar.login=e49716356b537e63b2d17480fbf070f84dd623b9'
             }
         }
-
-        stage('Quality Gate') {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
     }
 }
