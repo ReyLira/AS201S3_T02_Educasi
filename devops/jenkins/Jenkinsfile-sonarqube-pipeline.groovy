@@ -11,7 +11,7 @@ pipeline {
                     extensions: [[$class: 'CleanCheckout']], 
                     submoduleCfg: [], 
                     userRemoteConfigs: [
-                        [url: 'https://github.com/vallegrande/AS201S3_T02_Educasi.git', credentialsId: 'jenkins_github']
+                        [url: 'params.Repositorio', credentialsId: 'jenkins_github']
                         ]])
                 sh 'pwd' 
                 sh 'ls -l'
@@ -28,7 +28,7 @@ pipeline {
         stage('SonarQube Analysis') {
             agent any
             steps {
-                    sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=sonarqube -Dsonar.host.url=http://35.222.30.201:9400 -Dsonar.login=e49716356b537e63b2d17480fbf070f84dd623b9'
+                    sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=params.Projectkey -Dsonar.host.url=http://35.222.30.201:9400 -Dsonar.login=e49716356b537e63b2d17480fbf070f84dd623b9'
             }
         }
     }
