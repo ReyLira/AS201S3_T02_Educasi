@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     parameters{
-      string(name: 'URL', defaultValue:'https://github.com/vallegrande/AS201S3_T02_Educasi.git' , description: 'Indique la URL del reporsitorio .git')
+      string(name: 'URL', defaultValue:' ' , description: 'Indique la URL del reporsitorio .git')
       string(name: 'RAMA', defaultValue:' ' , description: 'Indique la rama del reporsitorio .git')
     }
     stages {
 
         stage("Git Clone"){
             steps {
-                  echo "%params.URL"
+                  echo "%{params.URL}"
                   sh 'git clone %params.URL'
                   sh 'git checkout %params.RAMA'
             } //steps
