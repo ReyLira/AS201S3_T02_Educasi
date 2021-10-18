@@ -1,18 +1,20 @@
 pipeline {
     agent any
-    
-    parameters { 
-      input(name: 'URLGIT', input: [''], description: 'Seleccione el entorno a utilizar')
-      input(name: 'BRANCHNAME', input: [''], description: 'Seleccione el entorno a utilizar')
-      input(name: 'PROJECTKEY', input: [''], description: 'Seleccione el entorno a utilizar')
-    }
-    
     stages {
 
         stage("Git Clone"){
             steps {
-                   sh 'echo "llego" + params.URLGIT'
-                   SH 'git clone + params.URLGIT'
+                cleanWs()
+                    checkout([$class: 'GitSCM', 
+                    branches: [[name: '*/feature/sonarqube']], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [[$class: 'CleanCheckout']], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [
+                        [url: 'https://github.com/vallegrande/AS201S3_T02_Educasi.git', credentialsId: 'jenkins_github']
+                        ]])
+                sh 'pwd' 
+                sh 'ls -l'
             } //steps
         }  //stage
 
