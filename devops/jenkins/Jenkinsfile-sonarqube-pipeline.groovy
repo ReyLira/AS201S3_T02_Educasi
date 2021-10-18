@@ -9,8 +9,8 @@ pipeline {
 
         stage("Git Clone"){
             steps {
-                  echo "%{params.URL}"
-                  sh 'git clone %params.URL'
+                  echo "git clone %{params.URL}"
+                  sh 'git clone %{params.URL}'
                   sh 'git checkout %params.RAMA'
             } //steps
         }  //stage
