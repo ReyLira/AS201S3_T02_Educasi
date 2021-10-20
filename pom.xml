@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mycompany</groupId>
-    <artifactId>EDUCASI_MAVEN</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.vallegrande</groupId>
+    <artifactId>AS201S3_T02_Educasi</artifactId>
+    <version>1.0</version>
     <packaging>war</packaging>
 
-    <name>EDUCASI_MAVEN</name>
+    <name>AS201S3_T02_Educasi</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
