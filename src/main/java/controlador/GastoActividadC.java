@@ -5,7 +5,6 @@
  */
 package controlador;
 
-import static com.ibm.java.diagnostics.utils.Context.logger;
 import dao.GastoActividadImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -47,13 +46,13 @@ public class GastoActividadC implements Serializable {
     public void registrar() throws Exception {
         try {
             gasAct.setDesGasActividad(convertid(gasAct.getDesGasActividad()));
-            logger.log(Level.INFO, "gasto ", gasAct);
+            Logger.getGlobal().log(Level.INFO, "gasto ",gasAct);
             dao.registrar(gasAct);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Registrado con éxito"));
             limpiar();
             listar();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "error en modificarC gasAct {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "error en modificarC gasAct ",e.getMessage());
         }
     }
 
@@ -64,7 +63,7 @@ public class GastoActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error en modificarC gasAct {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en modificarC gasAct ",e.getMessage());
         }
     }
 
@@ -75,7 +74,7 @@ public class GastoActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error en eliminarC gasAct {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en eliminarC gasAct ",e.getMessage());
         }
     }
 
@@ -139,7 +138,7 @@ public class GastoActividadC implements Serializable {
         try {
             listGasAct = dao.listarTodos();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error en listarGastoActividadC {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en listarGastoActividadC ",e.getMessage());
         }
     }
 
@@ -173,7 +172,7 @@ public class GastoActividadC implements Serializable {
                 gasAct.setCantGasActividad(dao.obtenerSaldoActividad(gasAct.getFKactividad()));
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error en obtener Cuota GastoActividadC {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en obtener Cuota GastoActividadC ",e.getMessage());
         }
 
     }

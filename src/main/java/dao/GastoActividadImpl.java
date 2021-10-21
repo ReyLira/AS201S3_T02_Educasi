@@ -5,7 +5,6 @@
  */
 package dao;
 
-import static com.ibm.java.diagnostics.utils.Context.logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.GastoActividadModel;
 
 /**
@@ -24,7 +24,8 @@ import modelo.GastoActividadModel;
  * @author EDGARD
  */
 public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividadModel> {
-     DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     public static Date stringToFecha(String fecha) throws ParseException {
         return fecha != null ? new SimpleDateFormat("dd-MM-yyyy").parse(fecha) : null;
@@ -32,7 +33,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
 
     @Override
     public void registrar(GastoActividadModel obj) throws Exception {
-    String sql ="insert into GASTO_ACTIVIDAD (CANGASACT,MONGASACT,DESGASACT,FECGASACT,IDACT) values (?,?,?,?,?)";
+        String sql = "insert into GASTO_ACTIVIDAD (CANGASACT,MONGASACT,DESGASACT,FECGASACT,IDACT) values (?,?,?,?,?)";
         try {
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             ps.setInt(1, obj.getCantGasActividad());
@@ -43,8 +44,8 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al registrar gasto Actividad Act {0}", e.getMessage());
-        }finally{
+            Logger.getGlobal().log(Level.WARNING, "Error al registrar gasto Actividad Ac ", e.getMessage());
+        } finally {
             this.Cerrar();
         }
     }
@@ -63,22 +64,22 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al modificar gasto Actividad Act {0}", e.getMessage());
-        }finally {
+            Logger.getGlobal().log(Level.WARNING, "Error al modificar gasto Actividad Ac ", e.getMessage());
+        } finally {
             this.Cerrar();
         }
     }
 
     @Override
     public void eliminar(GastoActividadModel obj) throws Exception {
-    String sql = "delete from GASTO_ACTIVIDAD where IDGASACT=?";               
+        String sql = "delete from GASTO_ACTIVIDAD where IDGASACT=?";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);             
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
             ps.setInt(1, obj.getIdGastActividad());
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-             logger.log(Level.SEVERE, "Error en eliminar gasto Actividad Act {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al eliminar gasto Actividad Ac ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -94,28 +95,29 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             this.conectar();
             listado = new ArrayList();
             PreparedStatement ps = this.getCn().prepareStatement(sql);
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
             while (rs.next()) {
-             gasAct = new GastoActividadModel();
-             gasAct.setFila(rs.getString("fila"));
-             gasAct.setIDactividad(rs.getInt("idact"));
-             gasAct.setIdGastActividad(rs.getInt("IDGASACT"));
-             gasAct.setNombreActividad(rs.getString("NOMACT"));
-             gasAct.setCantGasActividad(rs.getInt("CANGASACT"));
-             gasAct.setMonGasActividad(rs.getInt("MONGASACT"));
-             gasAct.setDesGasActividad(rs.getString("DESGASACT"));
-             gasAct.setFechGasActividad(rs.getDate("FECGASACT"));
-             gasAct.setFKactividad(rs.getInt("IDACT"));
-             listado.add(gasAct);
+                gasAct = new GastoActividadModel();
+                gasAct.setFila(rs.getString("fila"));
+                gasAct.setIDactividad(rs.getInt("idact"));
+                gasAct.setIdGastActividad(rs.getInt("IDGASACT"));
+                gasAct.setNombreActividad(rs.getString("NOMACT"));
+                gasAct.setCantGasActividad(rs.getInt("CANGASACT"));
+                gasAct.setMonGasActividad(rs.getInt("MONGASACT"));
+                gasAct.setDesGasActividad(rs.getString("DESGASACT"));
+                gasAct.setFechGasActividad(rs.getDate("FECGASACT"));
+                gasAct.setFKactividad(rs.getInt("IDACT"));
+                listado.add(gasAct);
             }
             rs.close();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error en gasto Actividad Act {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error en gasto Actividad act ", e.getMessage());
         }
-         return listado;
+        return listado;
     }
-     public List<GastoActividadModel> listarFecha() throws Exception {
+
+    public List<GastoActividadModel> listarFecha() throws Exception {
         List<GastoActividadModel> lisFech = null;
         GastoActividadModel fech;
         ResultSet rs;
@@ -132,19 +134,20 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             rs.close();
             ps.close();
         } catch (Exception e) {
-             logger.log(Level.SEVERE, "Error en listarFecha Act {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error en listarFecha act ", e.getMessage());
         }
         return lisFech;
     }
+
     public List<GastoActividadModel> listarAct() throws Exception {
-         List<GastoActividadModel> listAc = null;
+        List<GastoActividadModel> listAc = null;
         GastoActividadModel act;
         ResultSet rs;
         String sql = "select * from ACTIVIDAD";
         try {
             listAc = new ArrayList();
             PreparedStatement ps = this.getCn().prepareStatement(sql);
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
             while (rs.next()) {
                 act = new GastoActividadModel();
                 act.setIDactividad(rs.getInt("IDACT"));
@@ -157,11 +160,12 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             }
             rs.close();
             ps.close();
-            } catch (Exception e) {
-                logger.log(Level.SEVERE, "Error en listarCuot Act {0}", e.getMessage());
+        } catch (Exception e) {
+            Logger.getGlobal().log(Level.WARNING, "Error en listarCuot act ", e.getMessage());
         }
         return listAc;
     }
+
     public int obtenerSaldoActividad(int idCuota) throws SQLException {
         String sql = "SELECT SaldoActividad(?)  AS  SaldoActividad from dual";
         ResultSet rs;
@@ -174,7 +178,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
                 cuota = rs.getInt("SaldoActividad");
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "error en cuota Act {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error en cuota act ", e.getMessage());
         }
         return cuota;
     }

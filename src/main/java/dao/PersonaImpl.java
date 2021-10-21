@@ -5,7 +5,6 @@
  */
 package dao;
 
-import static com.ibm.java.diagnostics.utils.Context.logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +14,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.PersonaModel;
 
 /**
@@ -45,16 +45,15 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al Ingresar Persona Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al Ingresar Persona Dao ", e.getMessage());
         } finally {
             this.Cerrar();
         }
     }
 
-    public void registrarD(PersonaModel per) throws SQLException {
+    public void registrarD(PersonaModel per) throws SQLException, Exception {
         String sql = "insert into PERSONA (NOMPER, APEPER, PASPER, EMAPER, DNIPER, CELPER, ROLPER,IDUBG,PERSONA_IDPER)values (?,?,?,?,?,?,?,?,?)";
-        try (Connection conec = (Connection) this.getCn()) {
-            PreparedStatement ps = conec.prepareStatement(sql);
+        try (PreparedStatement ps = this.getCn().prepareStatement(sql)) {
             ps.setString(1, per.getNombre());
             ps.setString(2, per.getApellido());
             ps.setString(3, per.getPassword());
@@ -69,7 +68,6 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
                 ps.setInt(9, per.getPersonaID());
             }
             ps.executeUpdate();
-            ps.close();
         }
     }
 
@@ -90,7 +88,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al modificar Persona Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al modificar Persona Dao ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -105,7 +103,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al eliminar persona Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al eliminar Persona Dao ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -141,7 +139,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al listarTodos Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al eliminar listarTodos Dao ", e.getMessage());
         }
         return listado;
     }
@@ -167,7 +165,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al listarUbigeo Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al listarUbigeo Dao ", e.getMessage());
         }
         return listadoUbigeo;
     }
@@ -191,7 +189,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al listarApoderado Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al listarApoderado Dao ", e.getMessage());
         }
         return listadoA;
     }
@@ -212,7 +210,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
                 sql = "select * from V_PERSONA_ROL WHERE ROLPER='ALUMNO'";
                 break;
             default:
-                logger.log(Level.INFO, "error debe seleccionar un rol per impl ");
+                Logger.getGlobal().log(Level.INFO, "error debe seleccionar un rol per impl ");
                 break;
         }
         try {
@@ -238,7 +236,8 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al listar por Rol Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al listar por Rol Dao ", e.getMessage());
+
         }
         return listadoRol;
     }
@@ -247,11 +246,11 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
         PersonaImpl lists = new PersonaImpl();
         try {
             for (PersonaModel ListarApoderado : lists.ListarApoderados()) {
-                logger.log(Level.INFO, "ss= ", ListarApoderado);
+                Logger.getGlobal().log(Level.INFO, "ss= ", ListarApoderado);
             }
             lists.ListarApoderados();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al listar main apoderados Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al listar main apoderados Dao", e.getMessage());
         }
     }
 

@@ -5,7 +5,6 @@
  */
 package dao;
 
-import static com.ibm.java.diagnostics.utils.Context.logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.ActividadModel;
 
 /**
@@ -43,7 +43,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al Ingresar Actividad Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al Ingresar Actividad Dao ", e.getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al modificar Actividad Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al modificar Actividad Dao ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -89,7 +89,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al eliminar Actividad Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al eliminar Actividad Dao ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -119,7 +119,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al listar Actividad Dao {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al listar Actividad Dao ", e.getMessage());
         }
         return listado;
     }
@@ -137,7 +137,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
                 sql = "SELECT * FROM ACTIVIDAD where estact='INACTIVO'";
                 break;
             default:
-                logger.log(Level.INFO, "error debe seleccionar un rol per impl ");
+                Logger.getGlobal().log(Level.WARNING, "error debe seleccionar un rol act impl ");
                 break;
         }
         try {
@@ -157,7 +157,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error en listar por Rol {0}", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error en listar por Rol ", e.getMessage());
         }
         return ListarPorEst;
     }

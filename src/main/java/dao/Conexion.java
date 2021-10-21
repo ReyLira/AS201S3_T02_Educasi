@@ -1,16 +1,18 @@
 package dao;
 
-import static com.ibm.java.diagnostics.utils.Context.logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Conexion {
 
-    private Connection cnx = null;
+    private static Connection cnx = null;
 
-    public void conectar(){
+    public  Connection conectar() throws Exception{
        try {
             String user = ("EDUCASI");
             String pwd = ("1234");
@@ -20,9 +22,9 @@ public class Conexion {
             cnx = DriverManager.getConnection(url, user, pwd);            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error de conexión, revise xfa");
-            logger.log(Level.SEVERE, "Error en la conexion {0}", e.getMessage());
+             Logger.getGlobal().log(Level.INFO, "Error en la conexion", e.getMessage());
         }
-
+       return cnx;
     }
     //Metodo de cerrar la conexión
 
@@ -37,11 +39,11 @@ public class Conexion {
 
     public static void main(String[] args) throws Exception {
         Conexion dao = new Conexion();
-        dao.conectar();
         if (dao.getCn() != null) {
-            logger.log(Level.INFO, "Conectado con éxito");
+            Logger.getGlobal().log(Level.INFO,  "Conectado con éxito");
+            
         } else {
-            logger.log(Level.SEVERE, "Error en la Conexión");
+            Logger.getGlobal().log(Level.WARNING,  "Error en la Conexión");
         }
     }
 

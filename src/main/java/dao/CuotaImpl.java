@@ -5,7 +5,6 @@
  */
 package dao;
 
-import static com.ibm.java.diagnostics.utils.Context.logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,13 +16,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.CuotaModel;
 
 /**
  *
  * @author ZERO
  */
-public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
+public class CuotaImpl extends Conexion implements ICRUD<CuotaModel> {
+
     DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     public static Date stringToFecha(String fecha) throws ParseException {
@@ -32,7 +33,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
 
     @Override
     public void registrar(CuotaModel obj) throws Exception {
-        String sql ="insert into CUOTA (CANCUOT,MONCUOT,FECCUOT,IDACT,IDPER) values (?,?,?,?,?)";
+        String sql = "insert into CUOTA (CANCUOT,MONCUOT,FECCUOT,IDACT,IDPER) values (?,?,?,?,?)";
         try {
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             ps.setInt(1, obj.getCantidadCuota());
@@ -43,8 +44,8 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al Ingresar Cuota cuot {0}", e.getMessage());
-        }finally{
+            Logger.getGlobal().log(Level.SEVERE, "Error al Ingresar Cuota cuot", e.getMessage());
+        } finally {
             this.Cerrar();
         }
     }
@@ -63,22 +64,22 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al modificar Cuota cuot {0}", e.getMessage());
-        }finally {
+            Logger.getGlobal().log(Level.SEVERE, "Error al modificar Cuota cuot", e.getMessage());
+        } finally {
             this.Cerrar();
         }
     }
 
     @Override
     public void eliminar(CuotaModel obj) throws Exception {
-    String sql = "delete from CUOTA where IDCUOT=?";               
+        String sql = "delete from CUOTA where IDCUOT=?";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);             
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
             ps.setInt(1, obj.getIDcuota());
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al eliminar Cuota cuot {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al eliminar Cuota cuot", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -94,26 +95,27 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             this.conectar();
             listado = new ArrayList();
             PreparedStatement ps = this.getCn().prepareStatement(sql);
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
             while (rs.next()) {
-             cuot = new CuotaModel();
-             cuot.setIDcuota(rs.getInt("IDCUOT"));
-             cuot.setNombreActividad(rs.getString("NOMACT"));
-             cuot.setNombrePersona(rs.getString("NOMPER"));
-             cuot.setCantidadCuota(rs.getInt("CANCUOT"));
-             cuot.setMontoCuota(rs.getInt("MONCUOT"));
-             cuot.setFechaCuota(rs.getDate("FECCUOT"));
-             cuot.setFKActividad(rs.getInt("IDACT"));
-             cuot.setFKpersona(rs.getInt("IDPER")); 
-             listado.add(cuot);
+                cuot = new CuotaModel();
+                cuot.setIDcuota(rs.getInt("IDCUOT"));
+                cuot.setNombreActividad(rs.getString("NOMACT"));
+                cuot.setNombrePersona(rs.getString("NOMPER"));
+                cuot.setCantidadCuota(rs.getInt("CANCUOT"));
+                cuot.setMontoCuota(rs.getInt("MONCUOT"));
+                cuot.setFechaCuota(rs.getDate("FECCUOT"));
+                cuot.setFKActividad(rs.getInt("IDACT"));
+                cuot.setFKpersona(rs.getInt("IDPER"));
+                listado.add(cuot);
             }
             rs.close();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al listar Cuota cuot {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al listar Cuota cuot", e.getMessage());
         }
-         return listado;
+        return listado;
     }
+
     public List<CuotaModel> listarFecha() throws Exception {
         List<CuotaModel> lisFech = null;
         CuotaModel fech;
@@ -131,19 +133,20 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             rs.close();
             ps.close();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al listar fecha cuot {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al listar fecha cuot", e.getMessage());
         }
         return lisFech;
     }
+
     public List<CuotaModel> listarAct() throws Exception {
-         List<CuotaModel> listAc = null;
+        List<CuotaModel> listAc = null;
         CuotaModel act;
         ResultSet rs;
         String sql = "select * from ACTIVIDAD";
         try {
             listAc = new ArrayList();
             PreparedStatement ps = this.getCn().prepareStatement(sql);
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
             while (rs.next()) {
                 act = new CuotaModel();
                 act.setIdact(rs.getString("IDACT"));
@@ -156,11 +159,12 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
             }
             rs.close();
             ps.close();
-            } catch (Exception e) {
-                logger.log(Level.SEVERE, "Error al listarCuota cuot {0}", e.getMessage());
+        } catch (Exception e) {
+            Logger.getGlobal().log(Level.SEVERE, "Error al listarCuota cuot", e.getMessage());
         }
         return listAc;
     }
+
     public int obtenerCuota(int idCuota, int idPersona) throws SQLException {
         String sql = "select MONESPACT FROM ACTIVIDAD where IDACT=?";
         ResultSet rs;
@@ -173,10 +177,11 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
                 cuota = rs.getInt("MONESPACT");
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al obtener Act cuot {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al obtener Act cuot cuot", e.getMessage());
         }
         return cuota;
     }
+
     public int obtenerSaldoCuota(int idCuota, int idPersona) throws SQLException {
         String sql = "SELECT SaldoCuota(?,?)  AS  saldoCuota from dual";
         ResultSet rs;
@@ -190,7 +195,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel>{
                 cuota = rs.getInt("saldoCuota");
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al obtener saldocuota cuot {0}", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al obtener saldocuota cuot", e.getMessage());
         }
         return cuota;
     }
