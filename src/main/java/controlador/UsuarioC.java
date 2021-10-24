@@ -27,25 +27,102 @@ public class UsuarioC implements Serializable {
     UsuarioModel usuarrio;
     String user;
     String pass;
+    int captcha = 0;
+    int intentos = 0;
+    boolean bloquear = false;
 
     public UsuarioC() {
         usuarrio = new UsuarioModel();
         dao = new UsuarioImpl();
     }
 
-    public void login() {
+    public void login() throws Exception {
         try {
-            usuarrio = dao.login(user, pass);
-            if (usuarrio != null) {
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("objetoUsuario", usuarrio);
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
-            } else {
-                System.out.println("no puedes entrar");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Acceso al sistema", "Usuario y/o contraseña incorrecto"));
-            }
+            dao.login(usuarrio);
         } catch (Exception e) {
-            System.out.println("error en el login C " + e.getMessage());
+            System.out.println("Error en login_C " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+    public void loginNivel() throws Exception {
+        try {
+            dao.loginNivel(usuarrio);
+        } catch (Exception e) {
+            System.out.println("Error en loginNivel_C" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    public void acceso() throws Exception {
+        try {
+            this.login();
+            if (dao.logueo == false) {
+                intentos++;
+                switch (intentos) {
+                    case 1:
+                        setIntentos(1);
+                        setCaptcha(0);
+                        System.out.println("intentos igual " + intentos);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "1 INTENTO FALLIDO", "Usuario/Contraseña incorrectas"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "LE QUEDAN 2 INTENTOS", ""));
+                        break;
+                    case 2:
+                        setIntentos(2);
+                        setCaptcha(1);
+                        //                    bloquear = true;
+                        System.out.println("intentos igual " + intentos);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "2 INTENTO FALLIDO", "Usuario/Contraseña incorrectas"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "LE QUEDA 1 INTENTO", ""));
+                        break;
+                    case 3:
+                        System.out.println("intentos igual " + intentos);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "3 INTENTO FALLIDO", "Usuario/Contraseña incorrectas"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "BLOQUEO DE SEGURIDAD", ""));
+                        setIntentos(3);
+                        //                    setCaptcha(0);
+                        bloquear = true;
+                        if (bloquear) {
+                            delaySegundo();
+                        }   if (intentos == 3) {
+                            setIntentos(0);
+                            setCaptcha(0);
+//                        bloquear = true;
+                        }   break;
+                    default:
+                        break;
+                }
+            } else {
+                this.loginNivel();
+                if (UsuarioImpl.nivel != null) switch (UsuarioImpl.nivel) {
+                    case "APODERADO":
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
+                        break;
+                    case "ADMIN":
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
+                        break;
+                    case "ALUMNO":
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error en Acceso_C " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private static void delaySegundo() {
+        try {
+            Thread.sleep(5000);
+        } catch (Exception e) {
+            System.out.println("Error en delaySegundo_C " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
 }

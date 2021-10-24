@@ -54,13 +54,16 @@ public class PersonaC implements Serializable {
         try {
             buscarDniReniec(per);
             Logger.getGlobal().log(Level.WARNING, per.getApellido());
+            enabled = true;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "DNI encontrado"));
-        } catch (JsonSyntaxException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "FATAL", "DEBE INGRESAR UN DNI o corregir el formato ingresado"));
-        } catch (NullPointerException e) {
+        }catch (NullPointerException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "el DNI no existe o el servidor a fallado"));
             enabled = false;
         }
+        catch (JsonSyntaxException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "DEBE INGRESAR UN DNI EXISTENTE", "el formato ingresado no es el correcto o el servidor a fallado"));
+            enabled = false;
+        } 
     }
 
     public void passAleatorio() throws Exception {

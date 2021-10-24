@@ -41,4 +41,12 @@
         <extension>eot</extension>
         <mime-type>application/x-font-eot</mime-type>
     </mime-mapping>
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6Lei_EUaAAAAAJJDm6OYswQDvq30fkIkDmD41lsX</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6Lei_EUaAAAAANdfzdky29JU9ch6mR7nvmg68v47</param-value>
+    </context-param>
 </web-app>
