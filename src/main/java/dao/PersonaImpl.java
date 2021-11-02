@@ -45,7 +45,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al Ingresar Persona Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al Ingresar Persona Dao {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -88,7 +88,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al modificar Persona Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al modificar Persona Dao {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -103,7 +103,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al eliminar Persona Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al eliminar Persona Dao {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -139,7 +139,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al eliminar listarTodos Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al eliminar listarTodos Dao {0} ", e.getMessage());
         }
         return listado;
     }
@@ -165,7 +165,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al listarUbigeo Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al listarUbigeo Dao {0} ", e.getMessage());
         }
         return listadoUbigeo;
     }
@@ -189,7 +189,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al listarApoderado Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al listarApoderado Dao {0} ", e.getMessage());
         }
         return listadoA;
     }
@@ -236,7 +236,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al listar por Rol Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al listar por Rol Dao {0} ", e.getMessage());
 
         }
         return listadoRol;
@@ -250,7 +250,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
             }
             lists.ListarApoderados();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error al listar main apoderados Dao", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al listar main apoderados Dao {0} ", e.getMessage());
         }
     }
 

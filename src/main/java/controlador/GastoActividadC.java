@@ -52,7 +52,7 @@ public class GastoActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "error en modificarC gasAct ",e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "error en modificarC gasAct {0}",e.getMessage());
         }
     }
 
@@ -63,7 +63,7 @@ public class GastoActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error en modificarC gasAct ",e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en modificarC gasAct {0}",e.getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ public class GastoActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error en eliminarC gasAct ",e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en eliminarC gasAct {0}",e.getMessage());
         }
     }
 
@@ -138,7 +138,7 @@ public class GastoActividadC implements Serializable {
         try {
             listGasAct = dao.listarTodos();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error en listarGastoActividadC ",e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en listarGastoActividadC {0}",e.getMessage());
         }
     }
 
@@ -172,7 +172,7 @@ public class GastoActividadC implements Serializable {
                 gasAct.setCantGasActividad(dao.obtenerSaldoActividad(gasAct.getFKactividad()));
             }
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error en obtener Cuota GastoActividadC ",e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en obtener Cuota GastoActividadC {0}",e.getMessage());
         }
 
     }

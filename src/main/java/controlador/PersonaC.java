@@ -79,7 +79,7 @@ public class PersonaC implements Serializable {
             enviarCorreo(per);
             Logger.getGlobal().log(Level.WARNING, per.getApellido());
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "error en buscar enviar correo ",e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "error en buscar enviar correo {0}",e.getMessage());
             e.printStackTrace();
         }
     }
@@ -95,7 +95,7 @@ public class PersonaC implements Serializable {
             limpiar();
             listar();
         } catch (SQLException e) {
-            Logger.getGlobal().log(Level.WARNING, "error== ",e.getErrorCode());
+            Logger.getGlobal().log(Level.WARNING, "error== {0}",e.getErrorCode());
             if (e.getErrorCode() == 1) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "el DNI ingresado coincide con otro usuario existente"));
             } else {
@@ -113,7 +113,7 @@ public class PersonaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "error en modificar c ",e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "error en modificar c {0}",e.getMessage());
         }
     }
 
@@ -124,7 +124,7 @@ public class PersonaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "error en eliminar c ",e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "error en eliminar c {0}",e.getMessage());
         }
     }
 
@@ -159,7 +159,7 @@ public class PersonaC implements Serializable {
         try {
             listadoPer = dao.listarTodos();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "error en listar c ",e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "error en listar c {0}",e.getMessage());
         }
     }
 
@@ -261,7 +261,7 @@ public class PersonaC implements Serializable {
             try {
                 listadoApoderado = dao.ListarApoderados();
             } catch (Exception e) {
-                Logger.getGlobal().log(Level.WARNING, "error en listar apoderado controlador ",e.getMessage());
+                Logger.getGlobal().log(Level.WARNING, "error en listar apoderado controlador {0}",e.getMessage());
             }
         }
         return listadoApoderado;

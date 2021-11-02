@@ -50,7 +50,7 @@ public class CuotaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en registrarC ",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en registrarC {0}",e.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public class CuotaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en modificarC ",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en modificarC {0}",e.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class CuotaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en eliminarC ",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en eliminarC {0}",e.getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ public class CuotaC implements Serializable {
         try {
             listadoCuot = dao.listarTodos();
         } catch (Exception e) {
-             Logger.getGlobal().log(Level.INFO, "Error en listarC ",e.getMessage());
+             Logger.getGlobal().log(Level.INFO, "Error en listarC {0}",e.getMessage());
         }
     }
 
@@ -96,7 +96,7 @@ public class CuotaC implements Serializable {
 
             }
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en obtener cuota C ",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en obtener cuota C {0}",e.getMessage());
         }
 
     }

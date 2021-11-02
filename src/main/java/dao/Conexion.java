@@ -22,7 +22,7 @@ public class Conexion {
             cnx = DriverManager.getConnection(url, user, pwd);            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error de conexión, revise xfa");
-             Logger.getGlobal().log(Level.INFO, "Error en la conexion", e.getMessage());
+             Logger.getGlobal().log(Level.INFO, "Error en la conexion {0} ", e.getMessage());
         }
        return cnx;
     }

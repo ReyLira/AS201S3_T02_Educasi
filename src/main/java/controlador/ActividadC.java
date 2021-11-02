@@ -49,7 +49,7 @@ public class ActividadC implements Serializable {
             limpiar();
             listar();
         } catch (SQLException e) {
-            Logger.getGlobal().log(Level.INFO, "Error== ",e.getErrorCode());
+            Logger.getGlobal().log(Level.INFO, "Error== {0}",e.getErrorCode());
             if (e.getErrorCode() == 1) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "La ACTIVIDAD ingresada coincide con otra ACTIVIDAD existente"));
             } else {
@@ -66,7 +66,7 @@ public class ActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en modificar act C ",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en modificar act C {0}",e.getMessage());
         }
     }
 
@@ -77,7 +77,7 @@ public class ActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en eliminar act C ",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en eliminar act C {0}",e.getMessage());
         }
     }
 
@@ -110,7 +110,7 @@ public class ActividadC implements Serializable {
         try {
             listAct = dao.listarTodos();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en listar act C ",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en listar act C {0}",e.getMessage());
         }
     }
 

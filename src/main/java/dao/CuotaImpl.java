@@ -44,7 +44,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error al Ingresar Cuota cuot", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al Ingresar Cuota cuot {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -64,7 +64,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error al modificar Cuota cuot", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al modificar Cuota cuot {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -79,7 +79,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error al eliminar Cuota cuot", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al eliminar Cuota cuot {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -111,7 +111,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error al listar Cuota cuot", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al listar Cuota cuot {0} ", e.getMessage());
         }
         return listado;
     }
@@ -133,7 +133,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error al listar fecha cuot", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al listar fecha cuot {0} ", e.getMessage());
         }
         return lisFech;
     }
@@ -160,7 +160,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error al listarCuota cuot", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al listarCuota cuot {0} ", e.getMessage());
         }
         return listAc;
     }
@@ -177,7 +177,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel> {
                 cuota = rs.getInt("MONESPACT");
             }
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error al obtener Act cuot cuot", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al obtener Act cuot cuot {0} ", e.getMessage());
         }
         return cuota;
     }
@@ -195,7 +195,7 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel> {
                 cuota = rs.getInt("saldoCuota");
             }
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error al obtener saldocuota cuot", e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error al obtener saldocuota cuot {0} ", e.getMessage());
         }
         return cuota;
     }

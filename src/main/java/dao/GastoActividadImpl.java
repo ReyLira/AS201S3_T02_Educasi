@@ -44,7 +44,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al registrar gasto Actividad Ac ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al registrar gasto Actividad Ac {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -64,7 +64,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al modificar gasto Actividad Ac ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al modificar gasto Actividad Ac {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -79,7 +79,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al eliminar gasto Actividad Ac ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al eliminar gasto Actividad Ac {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -112,7 +112,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error en gasto Actividad act ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error en gasto Actividad act {0} ", e.getMessage());
         }
         return listado;
     }
@@ -134,7 +134,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error en listarFecha act ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error en listarFecha act {0} ", e.getMessage());
         }
         return lisFech;
     }
@@ -161,7 +161,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error en listarCuot act ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error en listarCuot act {0} ", e.getMessage());
         }
         return listAc;
     }
@@ -178,7 +178,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
                 cuota = rs.getInt("SaldoActividad");
             }
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error en cuota act ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error en cuota act {0} ", e.getMessage());
         }
         return cuota;
     }

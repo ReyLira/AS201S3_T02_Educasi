@@ -43,7 +43,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al Ingresar Actividad Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al Ingresar Actividad Dao {0} ", e.getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al modificar Actividad Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al modificar Actividad Dao {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -89,7 +89,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al eliminar Actividad Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al eliminar Actividad Dao {0} ", e.getMessage());
         } finally {
             this.Cerrar();
         }
@@ -119,7 +119,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error al listar Actividad Dao ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error al listar Actividad Dao {0} ", e.getMessage());
         }
         return listado;
     }
@@ -157,7 +157,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
             rs.close();
             ps.close();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Error en listar por Rol ", e.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error en listar por Rol {0} ", e.getMessage());
         }
         return ListarPorEst;
     }

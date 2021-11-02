@@ -5,7 +5,10 @@
  */
 package servicio;
 
+import java.security.SecureRandom;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.PersonaModel;
 
 /**
@@ -24,7 +27,7 @@ public class Password {
         String finalString = cap_letter + small_letter
                 + numbers + symbol;
 
-        Random random = new Random();
+        Random random = SecureRandom.getInstanceStrong();
 
         char[] password = new char[length];
 
@@ -34,7 +37,7 @@ public class Password {
         }
         String pass=String.valueOf(password);
         per.setPassword(pass); 
-        System.out.println(pass);
+         Logger.getGlobal().log(Level.INFO,pass);
     }
 
     public static void main(String[] args) throws Exception {

@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.xml.ws.Response;
@@ -31,16 +33,18 @@ public class ReniecS {
                 String apellido_paterno = rootobj.get("apellidoPaterno").getAsString();
                 String apellido_materno = rootobj.get("apellidoMaterno").getAsString();
                 String nombres = rootobj.get("nombres").getAsString();
-
-                System.out.println("Resultado\n");
-                System.out.println(apellido_paterno + "\n" + apellido_materno + "\n" + nombres + "\n");
+                
+                Logger.getGlobal().log(Level.INFO, "Resultado\n ");
+                Logger.getGlobal().log(Level.INFO,"\n{}", apellido_paterno);
+                Logger.getGlobal().log(Level.INFO,"\n{}", nombres);
+                
 
                 per.setNombre(nombres);
                 per.setNombre(nombres);
                 per.setApellido(apellido_paterno + " " + apellido_materno);
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            Logger.getGlobal().log(Level.WARNING, "Error en loginNivel_C {0} ", ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Busqueda", "DNI no encontrado"));
         }
     }
