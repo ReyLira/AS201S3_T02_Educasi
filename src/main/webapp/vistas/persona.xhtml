@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <body>
+        <ui:composition template="./plantilla.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msj" showDetail="true" skipDetailIfEqualsSummary="true">
+                    <p:autoUpdate/>
+                </p:growl>
+                <h:head>
+                    <f:facet name="first">
+                        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                        <title>EDUCASI</title>
+                    </f:facet>
+                    <f:event listener="#{personaC.listar()}" type="preRenderView" />
+                </h:head>
+                <h:form id="formPersona"  style="align-content: center;align-items: center;text-align: center">
+                    <h1 style="font-family: sans-serif">PERSONA</h1>    
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-9">
+                        <p:fragment>
+                            <p:panelGrid columns="2" >
+                                <p:outputLabel value="DNI"/>
+                                <p:commandButton value="Buscar" action="#{personaC.buscarPorDNI()}"  update="NOMBRE APELLIDO">
+                                    <p:inputText value="#{personaC.per.DNI}" maxlength="8">
+                                        <p:keyFilter regEx="/[0-9]/"/>
+                                    </p:inputText>&#160;
+                                </p:commandButton>
+                                <p:outputLabel value="NOMBRE" />
+                                <p:inputText  id="NOMBRE" value="#{personaC.per.nombre}"  maxlength="40" disabled="#{personaC.enabled}">
+                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
+                                </p:inputText>
+                                <p:outputLabel value="APELLIDO"/><p:inputText id="APELLIDO" value="#{personaC.per.apellido}" maxlength="40" disabled="#{personaC.enabled}">
+                                    <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_i_ó_ú]/"/>
+                                </p:inputText>
+                            </p:panelGrid>
+                        </p:fragment>
+                        <br></br> 
+                    </div>
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-9">
+                        <p:fragment>
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="GENERAR CONTRASEÑA"/>
+                                <p:commandButton value="Buscar" action="#{personaC.passAleatorio()}"  update="pass">
+                                </p:commandButton>
+                                <p:outputLabel value="CONTRASEÑA"/>
+                                <p:password id="pass" value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña" 
+                                            toggleMask="true" redisplay="true"  feedback="true"
+                                            promptLabel="Ingresa tu contraseña" weakLabel="Débil"
+                                            goodLabel="Buena" strongLabel="Fuerte">
+                                </p:password>
+                            </p:panelGrid>    
+                        </p:fragment>
+                    </div>
+                    <div class="ui-g-2"></div>
+                    <div class="ui-g-10">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="EMAIL"/><p:inputText id="email" value="#{personaC.per.email}" maxlength="60" label="Email" validatorMessage="#{personaC.per.email} no es valido" required="true" requiredMessage="Rellene el correo">
+                                <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" /> <p:message for="email" /></p:inputText>
+                            <p:outputLabel value="DIRECCION"/>
+                            <p:selectOneMenu  value="#{personaC.per.ubigeoFK}" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="- Seleccione -"/>
+                                <f:selectItems value="#{personaC.listadoUbigeo}" var="apo" itemLabel="#{apo.distUbigeo.concat(' ').concat(apo.provUbigeo).concat(' ').concat( apo.deparUbigeo)}" itemValue="#{apo.IDubigeo}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="CELULAR"/><p:inputText value="#{personaC.per.celular}" maxlength="9" required="true" requiredMessage="Rellene el celular"><p:keyFilter regEx="/[0-9]/" /></p:inputText>
+                            <p:outputLabel value="ROL"/><p:selectOneRadio id="rol" value="#{personaC.per.ROL}" required="true" requiredMessage="seleccione un rol">
+                                <p:ajax event="change" listener="#{personaC.listadoApoderado.clear()}" update="MenuID"/>
+                                <f:selectItem itemLabel="ADMINISTRADOR" itemValue="ADMIN"/>
+                                <f:selectItem itemLabel="APODERADO" itemValue="APODERADO"/>
+                                <f:selectItem itemLabel="ALUMNO" itemValue="ALUMNO"/>
+                            </p:selectOneRadio>
+                            <p:outputLabel value="RELACION APODERADO"/><p:selectOneMenu id="MenuID" value="#{personaC.per.personaID}" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="SELECCIONE"/>
+                                <f:selectItems value="#{personaC.listadoApoderado}" var="apo" itemLabel="#{apo.nombre.concat(' ').concat(apo.apellido)}" itemValue="#{apo.ID}"/>
+                            </p:selectOneMenu>
+                            <p:commandButton value="Registrar" actionListener="#{personaC.registrar()}"
+                                             update="formPersona :formTblPersona:tblPersona"/>
+                        </p:panelGrid>
+                    </div>
+                </h:form>
+                <h:form id="formDescargaPersona">
+                    <div class="ui-g-2"></div>
+                    <div class="ui-g-10">
+                        <p:panelGrid columns="3">
+                            <p:commandButton value="LISTAR ADMINISTRADORES" actionListener="#{personaC.reportePersonaAdmin()}" 
+                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                            <p:commandButton value="LISTAR APODERADOS" actionListener="#{personaC.reportePersonaApod()}" 
+                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                            <p:commandButton value="LISTAR ALUMNOS" actionListener="#{personaC.reportePersonaAlum()}" 
+                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                        </p:panelGrid>
+                    </div>
+                </h:form>
+                <br/><br/>
+                <h:form id="formTblPersona" style="text-align: center;">
+                    <p:selectOneButton value="#{personaC.rol}" >
+                        <p:ajax event="change" update="tblPersona"/>
+                        <f:selectItem itemLabel="TODOS" itemValue="" />
+                        <f:selectItem itemLabel="ADMINISTRADOR" itemValue="ADMIN"/>
+                        <f:selectItem itemLabel="APODERADO" itemValue="APODERADO"/>
+                        <f:selectItem itemLabel="ALUMNO" itemValue="ALUMNO"/>
+                    </p:selectOneButton>
+                    <br/><br/>
+                    <p:dataTable id="tblPersona"
+                                 var="pers"
+                                 value="#{personaC.listadoPer}"
+                                 selection="#{personaC.per}"
+                                 selectionMode="single"
+                                 rowKey="#{pers.ID}"
+                                 paginator="true"
+                                 paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"
+                                 widgetVar="customersTable">
+                        <f:facet name="header">
+                            <h:commandLink value="Descargar Listado" >
+                                <p:dataExporter type="xls" target="tblPersona" fileName="Listado"/>
+                            </h:commandLink>
+                        </f:facet>
+                        <p:column headerText="NOMBRE" sortBy="#{pers.nombre}" filterBy="#{pers.nombre}">
+                            <h:outputText value="#{pers.nombre}" />
+                        </p:column>
+                        <p:column headerText="APELLIDO" sortBy="#{pers.apellido}" filterBy="#{pers.apellido}">
+                            <h:outputText value="#{pers.apellido}" />
+                        </p:column>
+                        <p:column headerText="EMAIL" sortBy="#{pers.email}" filterBy="#{pers.email}">
+                            <h:outputText value="#{pers.email}" />
+                        </p:column>
+                        <p:column headerText="DIRECCION" sortBy="#{pers.ubigeoFK}" filterBy="#{pers.ubigeoFK}">
+                            <h:outputText value="#{pers.ubigeoFK}" />
+                        </p:column>
+                        <p:column headerText="DNI" sortBy="#{pers.DNI}" filterBy="#{pers.DNI}">
+                            <h:outputText value="#{pers.DNI}" />
+                        </p:column>
+                        <p:column headerText="CELULAR" sortBy="#{pers.celular}" filterBy="#{pers.celular}">
+                            <h:outputText value="#{pers.celular}" />
+                        </p:column>
+                        <p:column headerText="ESTADO" sortBy="#{pers.estado}" filterBy="#{pers.estado}">
+                            <h:outputText value="#{pers.estado}"/>
+                        </p:column>
+                        <p:column headerText="ROL" sortBy="#{pers.ROL}" filterBy="#{pers.ROL}">
+                            <h:outputText value="#{pers.ROL}"/>                        
+                        </p:column>
+                        <p:column headerText="TUTOR" sortBy="#{pers.relacion}" filterBy="#{pers.relacion}">
+                            <h:outputText value="#{pers.relacion}" />
+                        </p:column>
+                        <f:facet name="footer">
+                            EN TOTAL HAY #{fn:length(personaC.listadoPer)} REGISTROS.
+                        </f:facet>
+                    </p:dataTable>
+                    <p:contextMenu for="tblPersona">
+                        <p:menuitem value="MODIFICAR" oncomplete="PF('wdlgDatos').show()" update=":formDialog"/>
+                        <p:menuitem value="ELIMINAR" actionListener="#{personaC.eliminar()}" update="tblPersona"> 
+                            <p:confirm header="CONFIRMACIÓN" message="¿Está seguro de eliminar este registro?"/>
+                        </p:menuitem>
+                    </p:contextMenu>
+                </h:form>
+                <p:dialog header="ACTUALIZAR DATOS" widgetVar="wdlgDatos" resizable="false" modal="true">
+                    <h:form id="formDialog">
+                        <div class="ui-g-6">
+                            <p:fragment>
+                                <p:panelGrid columns="2" >
+                                    <p:outputLabel value="DNI"/>
+                                    <p:commandButton value="Buscar" action="#{personaC.buscarPorDNI()}"  update="NOMBRE APELLIDO">
+                                        <p:inputText value="#{personaC.per.DNI}" maxlength="8">
+                                            <p:keyFilter regEx="/[0-9]/"/>
+                                        </p:inputText>&#160;
+                                    </p:commandButton>
+                                    <p:outputLabel value="NOMBRE" />
+                                    <p:inputText  id="NOMBRE" value="#{personaC.per.nombre}"  maxlength="40" disabled="true">
+                                        <p:keyFilter regEx="/[A-Z_a-z_ _ñ_á_é_i_ó_ú]/"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="APELLIDO"/><p:inputText id="APELLIDO" value="#{personaC.per.apellido}" maxlength="40" disabled="true">
+                                        <p:keyFilter regEx="/[A-Z_a-z_ _ñ_á_é_i_ó_ú]/"/>
+                                    </p:inputText>
+                                </p:panelGrid>
+                            </p:fragment>
+                        </div>
+                        <br></br> 
+                        <div class="ui-g-6">
+                            <p:fragment>
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel value="GENERAR CONTRASEÑA"/>
+                                    <p:commandButton value="Buscar" action="#{personaC.passAleatorio()}"  update="pass">
+                                    </p:commandButton>
+                                    <p:outputLabel value="CONTRASEÑA"/>
+                                    <p:password id="pass" value="#{personaC.per.password}" maxlength="16" required="true" requiredMessage="Rellene la contraseña" 
+                                                toggleMask="true" redisplay="true"  feedback="true"
+                                                promptLabel="Ingresa tu contraseña" weakLabel="Débil"
+                                                goodLabel="Buena" strongLabel="Fuerte">
+                                    </p:password>
+                                </p:panelGrid>    
+                            </p:fragment>
+                        </div>
+                        <p:panelGrid columns="4">
+                            <p:outputLabel value="EMAIL"/><p:inputText id="email" value="#{personaC.per.email}" maxlength="60" label="Email" validatorMessage="#{personaC.per.email} no es valido" required="true" requiredMessage="Rellene el correo">
+                                <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" /> <p:message for="email" /></p:inputText>
+
+                            <p:outputLabel value="DIRECCION"/>
+                            <p:selectOneMenu  value="#{personaC.per.ubigeoFK}" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="- Seleccione -"/>
+                                <f:selectItems value="#{personaC.listadoUbigeo}" var="apo" itemLabel="#{apo.distUbigeo.concat(' ').concat(apo.provUbigeo).concat(' ').concat( apo.deparUbigeo)}" itemValue="#{apo.IDubigeo}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="CELULAR"/><p:inputText value="#{personaC.per.celular}" maxlength="9" required="true" requiredMessage="Rellene el celular"><p:keyFilter regEx="/[0-9]/" /></p:inputText>
+                            <p:outputLabel value="ESTADO"/><p:selectOneRadio value="#{personaC.per.estado}">
+                                <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO"/>
+                                <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO"/>
+                            </p:selectOneRadio>
+                            <p:commandButton value="MODIFICAR" actionListener="#{personaC.modificar()}" update=":formTblPersona:tblPersona" oncomplete="PF('wdlgDatos').hide()"/>
+                            <p:commandButton value="CANCELAR" oncomplete="PF('wdlgDatos').hide()"/>
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+                <h:form>
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes"/>
+                        <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no"/>
+                    </p:confirmDialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

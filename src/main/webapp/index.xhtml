@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>     
+
+    </h:head>
+
+    <h:body>
+        <p:growl id="msj" showDetail="true" skipDetailIfEqualsSummary="true">
+            <p:autoUpdate/>
+        </p:growl>
+
+        <p:separator/>
+        <h2 style="font-weight:normal" ALIGN="center" >Clientes</h2>
+        <p:separator/>
+        <h:form id="form" style="margin: 0 auto; font-size: 12px;">
+            <div class="card">
+                <h5 class="p-mt-0" ALIGN="center">Consulta de Personas Jurídicas, Naturales y Tipo de Cambio</h5>
+                <p:tabView>
+                    <p:tab title="Naturales">
+                        <p class="p-m-0">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="Correo" />
+                                <p:inputText id="apeMat" value="#{personaC.per.email}">
+                                </p:inputText>
+                                <p:commandButton value="Registrar" action ="#{personaC.enviarC()}"/>
+                            </p:panelGrid>
+                        </p>
+                    </p:tab>
+                    
+                </p:tabView>
+            </div>
+        </h:form>
+    </h:body>
+</html>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cuota" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9ce6a063-147a-48d2-a903-16dd84663173">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CONEXION"/>
+	<parameter name="Parameter1" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT ROW_NUMBER()
+        OVER(
+            ORDER BY
+                cuota.idcuot DESC
+        ) AS fila,
+        idcuot,
+        cancuot,
+        moncuot,
+        feccuot,
+        concat(nomper, apeper) AS nomper,
+        nomact,
+        actividad.idact,
+        persona.idper
+    FROM
+             cuota
+        INNER JOIN persona ON cuota.idper = persona.idper
+        INNER JOIN actividad ON cuota.idact = actividad.idact
+        where cuota.feccuot= $P{Parameter1}]]>
+	</queryString>
+	<field name="FILA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="FILA"/>
+		<property name="com.jaspersoft.studio.field.label" value="FILA"/>
+	</field>
+	<field name="IDCUOT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="IDCUOT"/>
+		<property name="com.jaspersoft.studio.field.label" value="IDCUOT"/>
+	</field>
+	<field name="CANCUOT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="CANCUOT"/>
+		<property name="com.jaspersoft.studio.field.label" value="CANCUOT"/>
+	</field>
+	<field name="MONCUOT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="MONCUOT"/>
+		<property name="com.jaspersoft.studio.field.label" value="MONCUOT"/>
+	</field>
+	<field name="FECCUOT" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="FECCUOT"/>
+		<property name="com.jaspersoft.studio.field.label" value="FECCUOT"/>
+	</field>
+	<field name="NOMPER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOMPER"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOMPER"/>
+	</field>
+	<field name="NOMACT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOMACT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOMACT"/>
+	</field>
+	<field name="IDACT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="IDACT"/>
+		<property name="com.jaspersoft.studio.field.label" value="IDACT"/>
+	</field>
+	<field name="IDPER" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="IDPER"/>
+		<property name="com.jaspersoft.studio.field.label" value="IDPER"/>
+	</field>
+	<group name="FILA">
+		<groupExpression><![CDATA[$F{FILA}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="83" splitType="Stretch">
+			<image>
+				<reportElement x="-10" y="-10" width="109" height="89" uuid="edc0ee82-5da0-41e4-a911-0d62989220d8"/>
+				<imageExpression><![CDATA["imagen.png"]]></imageExpression>
+			</image>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="450" y="0" width="100" height="30" uuid="c104a845-39d0-4b68-bd20-a751a7573d31"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="110" y="50" width="280" height="30" uuid="449cd926-24c7-47ac-9267-5a884149bff4"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="110" y="51" width="279" height="30" uuid="b1cdeebf-1893-4144-bf13-2141316032b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE CUOTAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="6" width="100" height="19" uuid="b6c152b8-9fbd-423f-8da5-5f99bc11f604"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EDUCASI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="24" width="130" height="19" uuid="d9eaee1b-60c0-43d4-8743-928ddca93434"/>
+				<text><![CDATA[SISTEMA DE APAFAS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="18" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="560" height="59" uuid="6b442254-7047-4485-af01-769739026ad8"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="473" y="0" width="87" height="60" uuid="8cd442a6-75ff-482a-904c-3287cce9fe43">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f48fc0b8-d5a4-4d0b-8b5c-93cb3c54c90e"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="1" width="141" height="59" uuid="c250b964-51a4-4ae4-aaa1-792cf74a95b7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dcbe99aa-8336-458c-995f-8f7c1276126d"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACTIVIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="161" y="1" width="169" height="59" uuid="a9d0949c-8aef-47d5-b91b-ea31d1278bba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2e70828d-d7f4-4742-b0c9-bd6926758e16"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="1" width="59" height="59" uuid="1234ee43-57fc-4b1a-a22a-73b768c9e090">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eedfdc5e-0868-4d31-9512-5a84a229d917"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO A PAGAR POR LA CUOTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="1" width="60" height="59" uuid="468f56ff-400c-4668-b294-35f033081e1e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0de005ba-bbb8-4098-bf90-1417b3f4b0e4"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD A PAGAR POR LA CUOTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="1" width="40" height="40" uuid="404b9088-7c4a-4ed3-bf45-3b212b2bad42">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7c673a24-7d52-4a37-9e8a-7782228ba46d"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FILA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="40" y="1" width="1" height="59" uuid="7943c719-d0ec-4a07-8847-f463c2171136"/>
+			</line>
+			<line>
+				<reportElement x="100" y="1" width="1" height="59" uuid="1b19b20e-f7c6-4d31-882a-103e9980ef1b"/>
+			</line>
+			<line>
+				<reportElement x="160" y="1" width="1" height="59" uuid="ddb1a7dc-cd01-4f3f-b532-bcecf4ad0f76"/>
+			</line>
+			<line>
+				<reportElement x="472" y="0" width="1" height="60" uuid="1ee1bc92-7f65-4934-8c48-0b23e0718169"/>
+			</line>
+			<line>
+				<reportElement x="330" y="1" width="1" height="59" uuid="877458c9-3957-4f40-bb6e-e60ec2802b9f"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="33" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="560" height="33" uuid="5e995cc1-341f-480b-b169-45a1533f1c2b"/>
+			</rectangle>
+			<textField>
+				<reportElement x="473" y="0" width="87" height="33" uuid="542bbb2e-a3be-448e-ba42-0100174ce45f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f48fc0b8-d5a4-4d0b-8b5c-93cb3c54c90e"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd - MMM - y").format($F{FECCUOT})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="0" width="132" height="33" uuid="abf633aa-17e2-4d56-8b16-a638370409d4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dcbe99aa-8336-458c-995f-8f7c1276126d"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOMACT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="0" width="160" height="33" uuid="38a30aec-d9e5-436a-9174-86f3a86a1e22">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2e70828d-d7f4-4742-b0c9-bd6926758e16"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOMPER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="61" height="33" uuid="65f6cb70-9c57-4714-9ce6-6fddcc114c9a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eedfdc5e-0868-4d31-9512-5a84a229d917"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["S/."+$F{MONCUOT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="0" width="60" height="33" uuid="cb5a8544-e96e-44a0-9594-e5437cfd0a4a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0de005ba-bbb8-4098-bf90-1417b3f4b0e4"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["S/."+$F{CANCUOT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="40" height="33" uuid="9b24f094-8faa-4dde-99ec-22ba32bf90b8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7c673a24-7d52-4a37-9e8a-7782228ba46d"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{FILA}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="40" y="0" width="1" height="33" uuid="795cf93d-feb3-467f-8965-cbc27df70aca"/>
+			</line>
+			<line>
+				<reportElement x="100" y="0" width="1" height="33" uuid="3ce04589-cace-4045-846d-326ecc1cd3c0"/>
+			</line>
+			<line>
+				<reportElement x="160" y="0" width="1" height="33" uuid="c4ed79e5-e7a5-4ccd-8752-5bb9ffa80af6"/>
+			</line>
+			<line>
+				<reportElement x="330" y="0" width="1" height="33" uuid="aacea2d1-2635-49bb-be42-a79c2d80e6cb"/>
+			</line>
+			<line>
+				<reportElement x="472" y="0" width="1" height="33" uuid="070e2aa0-5705-47c0-a091-44971cb3c0c8"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="450" y="30" width="110" height="22" uuid="a82ed8c1-680f-4edd-9403-92913870bd25"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["PAGINA "+ $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

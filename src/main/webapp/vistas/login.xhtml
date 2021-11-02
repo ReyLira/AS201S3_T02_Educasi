@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head>
+        <title>Login</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="./resources/css/login.css"/>
+    </h:head>
+    <p:growl id="mensajes" severity="info,fatal,warn,error" showSummary="true" showDetail="true"/>
+
+    <h:body id="body">
+        <div class="container">
+            <div class="forms-container">
+                <div class="signin-signup">
+                    <h:form id="fmrIngresar" class="sign-in-form" prependId="false">
+                        <img src="./resources/images/EDUCASI.png" class="image" alt="" style="width:60%; height:60%;"/>
+                        <h1 class="title" style="color:#FDFEFF; font-weight:bold; font-size:40px">¡BIENVENIDO A EDUCASI!</h1>
+                        <div class="input-field">
+                            <i class="fas fa-user"></i>
+                            <p:inputText id="usuario" value="#{usuarioC.usuarrio.email}" placeholder="email del apoderado" required="true" requiredMessage="Ingrese el Usuario">
+                            </p:inputText>
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-lock"></i>
+                            <p:password id="pass" value="#{usuarioC.usuarrio.pass}" placeholder="Contraseña" required="true" requiredMessage="Ingrese la Contraseña" feedback="true" weakLabel="Débil" goodLabel="Bueno" strongLabel="Seguro">
+                            </p:password>
+                        </div>
+                        <p:captcha label="Captcha" requiredMessage="Falta verificar Captcha" rendered="#{usuarioC.captcha == 1 eq true}"/>
+                        <p:commandButton id="btnlogin" actionListener="#{usuarioC.acceso()}"
+                                         value="INICIAR SESIÓN" update="fmrIngresar,:mensajes,btnlogin"
+                                         onstart="if(#{usuarioC.bloquear}){PF('widgetBlock').show()}"
+                                         oncomplete="PF('widgetBlock').hide()"
+                                         class="boton"
+                                         style="font-weight:bold; font-size:20px"/>
+
+                        <br></br>
+                            <p:commandButton id="ayuda" value="OLVIDE MI CONTRASEÑA" style="font-weight:bold; font-size:20px"/>
+                        
+                        <p:blockUI block="body" widgetVar="widgetBlock">
+                            <p:graphicImage value="resources/images/tiempo_cinco.gif"></p:graphicImage>
+                            <!--<p:ajax update="block" delay="5000"/>-->
+                        </p:blockUI>
+                    </h:form>
+                </div>  
+            </div>     
+        </div>
+    </h:body>
+</html>
+
