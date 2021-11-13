@@ -11,7 +11,7 @@ pipeline {
                     extensions: [[$class: 'CleanCheckout']], 
                     submoduleCfg: [], 
                     userRemoteConfigs: [
-                        [url: 'https://github.com/vallegrande/AS201S3_T02_Educasi.git', credentialsId: 'jenkins_github']
+                        [url: 'https://github.com/vallegrande/AS201S3_T02_Educasi.git', credentialsId: 'vallegrande_github']
                         ]])
                 sh 'pwd' 
                 sh 'ls -l'
