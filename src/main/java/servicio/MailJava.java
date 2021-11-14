@@ -40,7 +40,7 @@ public class MailJava {
                 new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("viajeros.miniutmen@gmail.com", "912618335");
+                return new PasswordAuthentication("javamail2p@gmail.com","JAVAMAILjavamail");
             }
         });
 
@@ -79,7 +79,7 @@ public class MailJava {
                 new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("viajeros.miniutmen@gmail.com", "912618335");
+                return new PasswordAuthentication("javamail2p@gmail.com","JAVAMAILjavamail");
             }
         });
 
@@ -104,8 +104,8 @@ public class MailJava {
     public static void main(String[] args) throws Exception {
         PersonaModel per = new PersonaModel();
         UsuarioModel uss = new UsuarioModel();
-        uss.setEmail("edgard.rodriguez@vallegrande.edu.pe");
-        per.setEmail("edgard.rodriguez@vallegrande.edu.pe");
+        uss.setEmail("luis.taquire@vallegrande.edu.pe");
+        per.setEmail("luis.taquire@vallegrande.edu.pe");
         enviarCorreo(per);
         notificarCorreo(uss);
 

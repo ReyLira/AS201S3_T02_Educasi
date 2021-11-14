@@ -15,7 +15,7 @@ public class Conexion {
     public  Connection conectar() throws Exception{
        try {
             String user = ("EDUCASI");
-            String pwd = ("1234");
+            String pwd = ("123");
             String driver = ("oracle.jdbc.OracleDriver");
             String url = ("jdbc:oracle:thin:@localhost:1521/XE");
             Class.forName(driver).newInstance();
