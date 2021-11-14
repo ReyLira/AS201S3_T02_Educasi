@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <body>
+
+        <ui:composition template="./plantilla.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msj" showDetail="true" skipDetailIfEqualsSummary="true">
+                    <p:autoUpdate/>
+                </p:growl>
+                <h:head>
+                    <f:facet name="first">
+                        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                        <title>CUOTA DETALLE</title>
+                    </f:facet>
+                    <f:event listener="#{cuotaC.listar()}" type="preRenderView" />
+                </h:head>
+                <h:body>
+                    <h:form id="formTblCuotaDetalle">
+                        <h2 style="font-family: sans-serif; text-align: center">LISTADO DE CUOTAS POR PADRE DE FAMILIA</h2>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="PESONA" />
+                            <p:selectOneMenu value="#{cuotaC.perss}" filter="true" filterMatchMode="startsWith">
+                                <p:ajax event="change" update="tblCuotaDetalle"/>
+                                <f:selectItem itemLabel="- Seleccione -" itemValue="" />
+                                <f:selectItems value="#{personaC.listadoPer}" var="apo" itemLabel="#{apo.nombre.concat(' ').concat(apo.apellido)}" itemValue="#{apo.ID}"/>
+                            </p:selectOneMenu>
+                            <p:commandButton value="Listar" actionListener="#{cuotaC.ser()}"
+                                             update="tblCuotaDetalle"/>
+                        </p:panelGrid>
+                        <p:dataTable id="tblCuotaDetalle"
+                                     var="cuot"
+                                     value="#{cuotaC.listDet}"
+                                     selection="#{cuotaC.cuot}"
+                                     selectionMode="single"
+                                     rowKey="#{cuot.IDcuota}"
+                                     paginator="true"
+                                     paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+                            <f:facet name="header">
+                                <h:commandLink value="Descargar Listado" >
+                                    <p:dataExporter type="xls" target="tblCuota" fileName="Listado"/>
+                                </h:commandLink>
+                            </f:facet>
+                            <p:column headerText="NOMBRE" sortBy="#{cuot.nombrePersona}" filterBy="#{cuot.nombrePersona}">
+                                <h:outputText value="#{cuot.nombrePersona}"/>
+                            </p:column>
+                            <p:column headerText="ACTIVIDAD" sortBy="#{cuot.nombreActividad}" filterBy="#{cuot.nombreActividad}">
+                                <h:outputText value="#{cuot.nombreActividad}"/>
+                            </p:column>
+                            <p:column headerText="MONTO A PAGAR" >
+                                <h:outputText value="S/. #{cuot.cantidadCuota}"/>
+                            </p:column>
+                            <p:column headerText="MONTO PAGADO" >
+                                <h:outputText value="S/. #{cuot.montoCuota}"/>
+                            </p:column>
+                            <p:column headerText="fecha" >
+                                <h:outputText value="#{cuot.fechaCuota}"><f:convertDateTime type="date" pattern="dd - MMM - y"/></h:outputText>
+                            </p:column>
+                            <f:facet name="footer">
+                                EN TOTAL HAY #{fn:length(cuotaC.listadoCuot)} REGISTROS.
+                            </f:facet>
+                        </p:dataTable>
+                    </h:form>
+                </h:body>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

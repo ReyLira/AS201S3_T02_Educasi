@@ -43,6 +43,7 @@ public class Password {
     public static void main(String[] args) throws Exception {
        PersonaModel per = new PersonaModel();
         passAleatorio(per);
+       
     }
 
 }

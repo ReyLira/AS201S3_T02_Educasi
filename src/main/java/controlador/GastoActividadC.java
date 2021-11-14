@@ -33,10 +33,11 @@ public class GastoActividadC implements Serializable {
 
     private GastoActividadModel gasAct;
     private GastoActividadImpl dao;
-
+    private String actss;
     private List<GastoActividadModel> listGasAct;
     private List<GastoActividadModel> listAct;
     private List<GastoActividadModel> listadoFecha;
+    private List<GastoActividadModel> listDet;
 
     public GastoActividadC() {
         gasAct = new GastoActividadModel();
@@ -46,13 +47,13 @@ public class GastoActividadC implements Serializable {
     public void registrar() throws Exception {
         try {
             gasAct.setDesGasActividad(convertid(gasAct.getDesGasActividad()));
-            Logger.getGlobal().log(Level.INFO, "gasto ",gasAct);
+            Logger.getGlobal().log(Level.INFO, "gasto ", gasAct);
             dao.registrar(gasAct);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Registrado con éxito"));
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "error en modificarC gasAct {0}",e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "error en modificarC gasAct {0}", e.getMessage());
         }
     }
 
@@ -63,7 +64,7 @@ public class GastoActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error en modificarC gasAct {0}",e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en modificarC gasAct {0}", e.getMessage());
         }
     }
 
@@ -74,7 +75,7 @@ public class GastoActividadC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error en eliminarC gasAct {0}",e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en eliminarC gasAct {0}", e.getMessage());
         }
     }
 
@@ -138,7 +139,7 @@ public class GastoActividadC implements Serializable {
         try {
             listGasAct = dao.listarTodos();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error en listarGastoActividadC {0}",e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en listarGastoActividadC {0}", e.getMessage());
         }
     }
 
@@ -172,9 +173,25 @@ public class GastoActividadC implements Serializable {
                 gasAct.setCantGasActividad(dao.obtenerSaldoActividad(gasAct.getFKactividad()));
             }
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error en obtener Cuota GastoActividadC {0}",e.getMessage());
+            Logger.getGlobal().log(Level.SEVERE, "Error en obtener Cuota GastoActividadC {0}", e.getMessage());
         }
 
+    }
+    public void actObtener(){
+        try {
+            if (actss != null && !actss.isEmpty()) {
+                System.out.println("cont" + actss);
+                listDet = dao.ListarPorActividad(actss);
+            } else {
+                this.listDet = dao.listarTodos();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonaC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
     }
 
     public GastoActividadModel getGasAct() {
@@ -230,6 +247,23 @@ public class GastoActividadC implements Serializable {
 
     public void setListadoFecha(List<GastoActividadModel> listadoFecha) {
         this.listadoFecha = listadoFecha;
+    }
+
+    public String getActss() {
+        return actss;
+    }
+
+    public void setActss(String actss) {
+        this.actss = actss;
+    }
+
+    public List<GastoActividadModel> getListDet() {
+
+        return listDet;
+    }
+
+    public void setListDet(List<GastoActividadModel> listDet) {
+        this.listDet = listDet;
     }
 
 }

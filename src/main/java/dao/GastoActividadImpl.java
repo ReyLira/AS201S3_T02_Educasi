@@ -116,7 +116,39 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
         }
         return listado;
     }
-
+    
+    public List<GastoActividadModel> ListarPorActividad(String actss) throws SQLException, Exception{
+        List<GastoActividadModel> listado = null;
+        GastoActividadModel gasAct;
+        String sql = "select * from v_gastoAcividad where IDACT =?";
+        try {
+            this.conectar();
+            listado = new ArrayList();
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.setString(1, actss);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                gasAct = new GastoActividadModel();
+                gasAct.setFila(rs.getString("fila"));
+                gasAct.setIDactividad(rs.getInt("idact"));
+                gasAct.setIdGastActividad(rs.getInt("IDGASACT"));
+                gasAct.setNombreActividad(rs.getString("NOMACT"));
+                gasAct.setCantGasActividad(rs.getInt("CANGASACT"));
+                gasAct.setMonGasActividad(rs.getInt("MONGASACT"));
+                gasAct.setDesGasActividad(rs.getString("DESGASACT"));
+                gasAct.setFechGasActividad(rs.getDate("FECGASACT"));
+                gasAct.setFKactividad(rs.getInt("IDACT"));
+                listado.add(gasAct);
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            Logger.getGlobal().log(Level.SEVERE, "Error al listar Cuota APODERADO detalle cuot {0} ", e.getMessage());
+        }finally{
+            Cerrar();
+        }
+        return listado;
+    }
     public List<GastoActividadModel> listarFecha() throws Exception {
         List<GastoActividadModel> lisFech = null;
         GastoActividadModel fech;

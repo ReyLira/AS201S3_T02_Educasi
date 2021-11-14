@@ -31,11 +31,13 @@ import servicio.Reporte;
 @SessionScoped
 public class CuotaC implements Serializable {
 
+    private String perss;
     private CuotaModel cuot;
     private CuotaImpl dao;
     private List<CuotaModel> listadoCuot;
     private List<CuotaModel> listAct;
     private List<CuotaModel> listadoFecha;
+    private List<CuotaModel> listDet;
 
     public CuotaC() {
         cuot = new CuotaModel();
@@ -44,13 +46,13 @@ public class CuotaC implements Serializable {
 
     public void registrar() throws Exception {
         try {
-             Logger.getGlobal().log(Level.INFO, "Error== ",cuot);
+            Logger.getGlobal().log(Level.INFO, "Error== ", cuot);
             dao.registrar(cuot);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Modificado con éxito"));
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en registrarC {0}",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en registrarC {0}", e.getMessage());
         }
     }
 
@@ -61,7 +63,7 @@ public class CuotaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en modificarC {0}",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en modificarC {0}", e.getMessage());
         }
     }
 
@@ -72,7 +74,7 @@ public class CuotaC implements Serializable {
             limpiar();
             listar();
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en eliminarC {0}",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en eliminarC {0}", e.getMessage());
         }
     }
 
@@ -84,7 +86,7 @@ public class CuotaC implements Serializable {
         try {
             listadoCuot = dao.listarTodos();
         } catch (Exception e) {
-             Logger.getGlobal().log(Level.INFO, "Error en listarC {0}",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en listarC {0}", e.getMessage());
         }
     }
 
@@ -96,7 +98,7 @@ public class CuotaC implements Serializable {
 
             }
         } catch (Exception e) {
-            Logger.getGlobal().log(Level.INFO, "Error en obtener cuota C {0}",e.getMessage());
+            Logger.getGlobal().log(Level.INFO, "Error en obtener cuota C {0}", e.getMessage());
         }
 
     }
@@ -104,7 +106,7 @@ public class CuotaC implements Serializable {
     public void reporteCuota() throws Exception {
 
         try {
-            if (cuot.getFechaSan()== null) {
+            if (cuot.getFechaSan() == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Falta rellenar la fecha en el reporte"));
             }
             if (cuot.getFechaSan() != null) {
@@ -145,7 +147,7 @@ public class CuotaC implements Serializable {
                     Map<String, Object> parameters = new HashMap();
                     parameters.put("Parametro1", sts1);
                     parameters.put("Parametro2", sts2);
-                    report.exportarPDFGlobal(parameters, "cuotaRango.jasper", fechSystem+" cuotaRango.pdf");
+                    report.exportarPDFGlobal(parameters, "cuotaRango.jasper", fechSystem + " cuotaRango.pdf");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
                 }
             }
@@ -153,6 +155,22 @@ public class CuotaC implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
             throw e;
         }
+    }
+
+    public void ser() throws Exception {
+        try {
+            if (perss != null && !perss.isEmpty()) {
+                System.out.println("cont" + perss);
+                listDet = dao.ListarPorPersona(perss);
+            } else {
+                this.listDet = dao.listarTodos();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     //Metodos Generados
@@ -194,11 +212,10 @@ public class CuotaC implements Serializable {
     public void setListAct(List<CuotaModel> listAct) {
         this.listAct = listAct;
     }
-    
-    
+
     public List<CuotaModel> getListadoFecha() {
         listadoFecha = new ArrayList<CuotaModel>();
-        try {     
+        try {
             listadoFecha = dao.listarFecha();
         } catch (SQLException ex) {
             Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
@@ -210,6 +227,23 @@ public class CuotaC implements Serializable {
 
     public void setListadoFecha(List<CuotaModel> listadoFecha) {
         this.listadoFecha = listadoFecha;
+    }
+
+    public List<CuotaModel> getListDet() {
+
+        return listDet;
+    }
+
+    public void setListDet(List<CuotaModel> listDet) {
+        this.listDet = listDet;
+    }
+
+    public String getPerss() {
+        return perss;
+    }
+
+    public void setPerss(String perss) {
+        this.perss = perss;
     }
 
 }

@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <body>
+
+        <ui:composition template="./plantilla.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msj" showDetail="true" skipDetailIfEqualsSummary="true">
+                    <p:autoUpdate/>
+                </p:growl>
+                <h:head>
+                    <f:facet name="first">
+                        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                        <title>GASTO ACTIVIDAD DETALLE</title>
+                    </f:facet>
+                    <f:event listener="#{cuotaC.listar()}" type="preRenderView" />
+                </h:head>
+                <h:body>
+                    <h:form id="formTblGastoActividadDetalle">
+                        <h2 style="font-family: sans-serif; text-align: center">LISTADO DE ACTIVIDADES POR GASTO ACTIVIDAD</h2>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="ACTIVIDAD" />
+                            <p:selectOneMenu value="#{gastoActividadC.actss}" filter="true" filterMatchMode="startsWith">
+                                <p:ajax event="change" update="tblGastoActividadDetalle"/>
+                                <f:selectItem itemLabel="- Seleccione -"/>
+                                <f:selectItems value="#{gastoActividadC.listAct}" var="apo" itemLabel="#{apo.nombreActividad}" itemValue="#{apo.IDactividad}" />
+                            </p:selectOneMenu>
+                            <p:commandButton value="Listar" actionListener="#{gastoActividadC.actObtener()}"
+                                             update="tblGastoActividadDetalle"/>
+                        </p:panelGrid>
+                        <p:dataTable id="tblGastoActividadDetalle"
+                                     var="gast"
+                                     value="#{gastoActividadC.listDet}"
+                                     selection="#{gastoActividadC.gasAct}"
+                                     selectionMode="single"
+                                     rowKey="#{gast.idGastActividad}"
+                                     paginator="true"
+                                     paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+                            <f:facet name="header">
+                                <h:commandLink value="Descargar Listado" >
+                                    <p:dataExporter type="xls" target="tblGastoActividad" fileName="Listado"/>
+                                </h:commandLink>
+                            </f:facet>
+
+                            <p:column headerText="ACTIVIDAD" sortBy="#{gast.nombreActividad}" filterBy="#{gast.nombreActividad}">
+                                <p:outputLabel value="#{gast.nombreActividad}"/>
+                            </p:column>
+                            <p:column headerText="DESCRIPCION" sortBy="#{gast.desGasActividad}" filterBy="#{gast.desGasActividad}">
+                                <p:outputLabel value="#{gast.desGasActividad}"/>
+                            </p:column>
+                            <p:column headerText="MONTO ACUMULADO">
+                                <p:outputLabel value="S/. #{gast.cantGasActividad}"/>
+                            </p:column>
+                            <p:column headerText="GASTO REALIZADO">
+                                <p:outputLabel value="S/. #{gast.monGasActividad}"/>
+                            </p:column>
+
+                            <p:column headerText="FECHA">
+                                <h:outputText value="#{gast.fechGasActividad}" style="text-transform: uppercase">
+                                    <f:convertDateTime type="date" pattern="dd - MMM - y"/>
+                                </h:outputText>
+                            </p:column>
+                            <f:facet name="footer">
+                                EN TOTAL HAY #{fn:length(gastoActividadC.listGasAct)} REGISTROS.
+                            </f:facet>
+                        </p:dataTable>
+                    </h:form>
+                </h:body>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

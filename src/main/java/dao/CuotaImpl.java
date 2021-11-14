@@ -164,7 +164,38 @@ public class CuotaImpl extends Conexion implements ICRUD<CuotaModel> {
         }
         return listAc;
     }
-
+    public List<CuotaModel> ListarPorPersona(String perss) throws SQLException, Exception{
+        List<CuotaModel> listado = null;
+        CuotaModel cuot;
+        String sql = "select * from V_CUOTA WHERE IDPER=?";
+        try {
+            this.conectar();
+            listado = new ArrayList();
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.setString(1, perss);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cuot = new CuotaModel();
+                cuot.setIDcuota(rs.getInt("IDCUOT"));
+                cuot.setNombreActividad(rs.getString("NOMACT"));
+                cuot.setNombrePersona(rs.getString("NOMPER"));
+                cuot.setCantidadCuota(rs.getInt("CANCUOT"));
+                cuot.setMontoCuota(rs.getInt("MONCUOT"));
+                cuot.setFechaCuota(rs.getDate("FECCUOT"));
+                cuot.setFKActividad(rs.getInt("IDACT"));
+                cuot.setFKpersona(rs.getInt("IDPER"));
+                listado.add(cuot);
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            Logger.getGlobal().log(Level.SEVERE, "Error al listar Cuota APODERADO cuot {0} ", e.getMessage());
+        }finally{
+            Cerrar();
+        }
+        
+        return listado;
+    }
     public int obtenerCuota(int idCuota, int idPersona) throws SQLException {
         String sql = "select MONESPACT FROM ACTIVIDAD where IDACT=?";
         ResultSet rs;
