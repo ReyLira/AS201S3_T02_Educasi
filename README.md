@@ -19,6 +19,7 @@ Gestionar la rendición de cuentas de los ingresos y egresos de APAFA
 * Asignación de actividades de ingreso(cuotas de los padres)
 * Asignación de actividades de egreso(actividades en las que se gasto)
 * Reporte de actividades
+* Autenticación,login interactivo que nos permite ingresar al sistema
 
 
 ### Requermientos Funcionales
