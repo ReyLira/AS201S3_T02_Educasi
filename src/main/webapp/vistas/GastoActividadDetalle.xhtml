@@ -26,18 +26,18 @@
                         <h2 style="font-family: sans-serif; text-align: center">LISTADO DE ACTIVIDADES POR GASTO ACTIVIDAD</h2>
                         <p:panelGrid columns="2">
                             <p:outputLabel value="ACTIVIDAD" />
-                            <p:selectOneMenu value="#{gastoActividadC.actss}" filter="true" filterMatchMode="startsWith">
+                            <p:selectOneMenu value="#{gastoAtividadDetalleC.actss}" filter="true" filterMatchMode="startsWith">
                                 <p:ajax event="change" update="tblGastoActividadDetalle"/>
                                 <f:selectItem itemLabel="- Seleccione -"/>
-                                <f:selectItems value="#{gastoActividadC.listAct}" var="apo" itemLabel="#{apo.nombreActividad}" itemValue="#{apo.IDactividad}" />
+                                <f:selectItems value="#{gastoAtividadDetalleC.listAct}" var="apo" itemLabel="#{apo.nombreActividad}" itemValue="#{apo.IDactividad}" />
                             </p:selectOneMenu>
-                            <p:commandButton value="Listar" actionListener="#{gastoActividadC.actObtener()}"
+                            <p:commandButton value="Listar" actionListener="#{gastoAtividadDetalleC.actObtener()}"
                                              update="tblGastoActividadDetalle"/>
                         </p:panelGrid>
                         <p:dataTable id="tblGastoActividadDetalle"
                                      var="gast"
-                                     value="#{gastoActividadC.listDet}"
-                                     selection="#{gastoActividadC.gasAct}"
+                                     value="#{gastoAtividadDetalleC.listDet}"
+                                     selection="#{gastoAtividadDetalleC.gasAct}"
                                      selectionMode="single"
                                      rowKey="#{gast.idGastActividad}"
                                      paginator="true"
@@ -68,7 +68,7 @@
                                 </h:outputText>
                             </p:column>
                             <f:facet name="footer">
-                                EN TOTAL HAY #{fn:length(gastoActividadC.listGasAct)} REGISTROS.
+                                EN TOTAL HAY #{fn:length(gastoAtividadDetalleC.listGasAct)} REGISTROS.
                             </f:facet>
                         </p:dataTable>
                     </h:form>

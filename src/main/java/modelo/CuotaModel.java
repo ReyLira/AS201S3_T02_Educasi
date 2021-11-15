@@ -33,4 +33,7 @@ public class CuotaModel {
     String idact, nomact, monespact, canapoact, estfinact;
     Date fecact;
 
+    int CANTIDAD;
+    int MONTO;
+    int RESTO;
 }

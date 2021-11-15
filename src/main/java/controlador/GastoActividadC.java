@@ -177,22 +177,7 @@ public class GastoActividadC implements Serializable {
         }
 
     }
-    public void actObtener(){
-        try {
-            if (actss != null && !actss.isEmpty()) {
-                System.out.println("cont" + actss);
-                listDet = dao.ListarPorActividad(actss);
-            } else {
-                this.listDet = dao.listarTodos();
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(PersonaC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(PersonaC.class.getName()).log(Level.SEVERE, null, ex);
-        }
     
-    }
 
     public GastoActividadModel getGasAct() {
         return gasAct;

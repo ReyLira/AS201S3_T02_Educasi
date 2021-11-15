@@ -35,7 +35,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
     public void registrar(GastoActividadModel obj) throws Exception {
         String sql = "insert into GASTO_ACTIVIDAD (CANGASACT,MONGASACT,DESGASACT,FECGASACT,IDACT) values (?,?,?,?,?)";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setInt(1, obj.getCantGasActividad());
             ps.setInt(2, obj.getMonGasActividad());
             ps.setString(3, obj.getDesGasActividad());
@@ -54,7 +54,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
     public void modificar(GastoActividadModel obj) throws Exception {
         String sql = "update GASTO_ACTIVIDAD set CANGASACT=?,MONGASACT=?,DESGASACT=?,FECGASACT=?,IDACT=? where IDGASACT=?";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setInt(1, obj.getCantGasActividad());
             ps.setInt(2, obj.getMonGasActividad());
             ps.setString(3, obj.getDesGasActividad());
@@ -74,7 +74,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
     public void eliminar(GastoActividadModel obj) throws Exception {
         String sql = "delete from GASTO_ACTIVIDAD where IDGASACT=?";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setInt(1, obj.getIdGastActividad());
             ps.executeUpdate();
             ps.close();
@@ -94,7 +94,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
         try {
             this.conectar();
             listado = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 gasAct = new GastoActividadModel();
@@ -117,38 +117,6 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
         return listado;
     }
     
-    public List<GastoActividadModel> ListarPorActividad(String actss) throws SQLException, Exception{
-        List<GastoActividadModel> listado = null;
-        GastoActividadModel gasAct;
-        String sql = "select * from v_gastoAcividad where IDACT =?";
-        try {
-            this.conectar();
-            listado = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
-            ps.setString(1, actss);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                gasAct = new GastoActividadModel();
-                gasAct.setFila(rs.getString("fila"));
-                gasAct.setIDactividad(rs.getInt("idact"));
-                gasAct.setIdGastActividad(rs.getInt("IDGASACT"));
-                gasAct.setNombreActividad(rs.getString("NOMACT"));
-                gasAct.setCantGasActividad(rs.getInt("CANGASACT"));
-                gasAct.setMonGasActividad(rs.getInt("MONGASACT"));
-                gasAct.setDesGasActividad(rs.getString("DESGASACT"));
-                gasAct.setFechGasActividad(rs.getDate("FECGASACT"));
-                gasAct.setFKactividad(rs.getInt("IDACT"));
-                listado.add(gasAct);
-            }
-            rs.close();
-            ps.close();
-        } catch (Exception e) {
-            Logger.getGlobal().log(Level.SEVERE, "Error al listar Cuota APODERADO detalle cuot {0} ", e.getMessage());
-        }finally{
-            Cerrar();
-        }
-        return listado;
-    }
     public List<GastoActividadModel> listarFecha() throws Exception {
         List<GastoActividadModel> lisFech = null;
         GastoActividadModel fech;
@@ -156,7 +124,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
         String sql = "select TO_CHAR( FECGASACT, 'dd/MM/YY' )as FECGASACT from v_gasActividaFech";
         try {
             lisFech = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 fech = new GastoActividadModel();
@@ -170,7 +138,6 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
         }
         return lisFech;
     }
-
     public List<GastoActividadModel> listarAct() throws Exception {
         List<GastoActividadModel> listAc = null;
         GastoActividadModel act;
@@ -178,7 +145,7 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
         String sql = "select * from ACTIVIDAD";
         try {
             listAc = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 act = new GastoActividadModel();
@@ -197,13 +164,12 @@ public class GastoActividadImpl extends Conexion implements ICRUD<GastoActividad
         }
         return listAc;
     }
-
     public int obtenerSaldoActividad(int idCuota) throws SQLException {
         String sql = "SELECT SaldoActividad(?)  AS  SaldoActividad from dual";
         ResultSet rs;
         int cuota = -1;
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setInt(1, idCuota);
             rs = ps.executeQuery();
             if (rs.next()) {

@@ -35,7 +35,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
     public void registrar(ActividadModel obj) throws Exception {
         String sql = "insert into ACTIVIDAD (NOMACT,MONESPACT,CANAPOACT,FECACT) values (?,?,?,?)";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setString(1, obj.getNombreActividad());
             ps.setInt(2, obj.getMontoActividad());
             ps.setInt(3, obj.getCantApoActividad());
@@ -49,7 +49,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
 
     public void registrarD(ActividadModel obj) throws Exception {
         String sql = "insert into ACTIVIDAD (NOMACT,MONESPACT,CANAPOACT,FECACT) values (?,?,?,?)";
-        try (Connection conec = (Connection) this.getCn()) {
+        try (Connection conec = (Connection) this.conectar()) {
             PreparedStatement ps = conec.prepareStatement(sql);
             ps.setString(1, obj.getNombreActividad());
             ps.setInt(2, obj.getMontoActividad());
@@ -64,7 +64,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
     public void modificar(ActividadModel obj) throws Exception {
         String sql = "update ACTIVIDAD set NOMACT=?,MONESPACT=?,CANAPOACT=?,FECACT=?,ESTACT=? where IDACT=?";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setString(1, obj.getNombreActividad());
             ps.setInt(2, obj.getMontoActividad());
             ps.setInt(3, obj.getCantApoActividad());
@@ -84,7 +84,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
     public void eliminar(ActividadModel obj) throws Exception {
         String sql = "delete from ACTIVIDAD where IDACT=?";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setInt(1, obj.getIDactividad());
             ps.executeUpdate();
             ps.close();
@@ -123,7 +123,7 @@ public class ActividadImpl extends Conexion implements ICRUD<ActividadModel> {
         }
         return listado;
     }
-
+    
     public List<ActividadModel> ListarPorEstado(String est) throws SQLException {
 
         List<ActividadModel> ListarPorEst = null;

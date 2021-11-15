@@ -20,25 +20,29 @@
                         <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                         <title>CUOTA DETALLE</title>
                     </f:facet>
-                    <f:event listener="#{cuotaC.listar()}" type="preRenderView" />
+                    <f:event listener="#{cuotaDetalleC.listar()}" type="preRenderView" />
                 </h:head>
                 <h:body>
                     <h:form id="formTblCuotaDetalle">
                         <h2 style="font-family: sans-serif; text-align: center">LISTADO DE CUOTAS POR PADRE DE FAMILIA</h2>
                         <p:panelGrid columns="2">
                             <p:outputLabel value="PESONA" />
-                            <p:selectOneMenu value="#{cuotaC.perss}" filter="true" filterMatchMode="startsWith">
+                            <p:selectOneMenu value="#{cuotaDetalleC.perss}" filter="true" filterMatchMode="startsWith">
                                 <p:ajax event="change" update="tblCuotaDetalle"/>
                                 <f:selectItem itemLabel="- Seleccione -" itemValue="" />
                                 <f:selectItems value="#{personaC.listadoPer}" var="apo" itemLabel="#{apo.nombre.concat(' ').concat(apo.apellido)}" itemValue="#{apo.ID}"/>
                             </p:selectOneMenu>
-                            <p:commandButton value="Listar" actionListener="#{cuotaC.ser()}"
+                            <p:commandButton value="Listar" actionListener="#{cuotaDetalleC.ser()}"
                                              update="tblCuotaDetalle"/>
+                            <p:commandButton value="LISTAR CUOTAS" actionListener="#{cuotaDetalleC.reporteCuotaDetalle()}" 
+                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+
                         </p:panelGrid>
+
                         <p:dataTable id="tblCuotaDetalle"
                                      var="cuot"
-                                     value="#{cuotaC.listDet}"
-                                     selection="#{cuotaC.cuot}"
+                                     value="#{cuotaDetalleC.listDet}"
+                                     selection="#{cuotaDetalleC.cuot}"
                                      selectionMode="single"
                                      rowKey="#{cuot.IDcuota}"
                                      paginator="true"
@@ -65,10 +69,11 @@
                                 <h:outputText value="#{cuot.fechaCuota}"><f:convertDateTime type="date" pattern="dd - MMM - y"/></h:outputText>
                             </p:column>
                             <f:facet name="footer">
-                                EN TOTAL HAY #{fn:length(cuotaC.listadoCuot)} REGISTROS.
+                                EN TOTAL HAY #{fn:length(cuotaDetalleC.listadoCuot)} REGISTROS.
                             </f:facet>
                         </p:dataTable>
                     </h:form>
+
                 </h:body>
             </ui:define>
 

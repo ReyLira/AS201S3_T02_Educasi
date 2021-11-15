@@ -11,39 +11,49 @@ import javax.swing.JOptionPane;
 public class Conexion {
 
     private static Connection cnx = null;
-
-    public  Connection conectar() throws Exception{
-       try {
-            String user = ("EDUCASI");
-            String pwd = ("123");
-            String driver = ("oracle.jdbc.OracleDriver");
-            String url = ("jdbc:oracle:thin:@localhost:1521/XE");
+    
+    public static Connection conectar() {
+        try {
+            String user = "EDUCASI";
+            String pwd = "1234";
+            String driver = "oracle.jdbc.OracleDriver";
+            String url = "jdbc:oracle:thin:@localhost:1521/XE";
             Class.forName(driver).newInstance();
-            cnx = DriverManager.getConnection(url, user, pwd);            
+            cnx = DriverManager.getConnection(url, user, pwd);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,"Error de conexión, revise xfa");
-             Logger.getGlobal().log(Level.INFO, "Error en la conexion {0} ", e.getMessage());
+            System.out.println("Error de Conexión/Conectar " + e.getMessage());
         }
-       return cnx;
+        return cnx;
     }
-    //Metodo de cerrar la conexión
+
+    public static Connection getCnx() {
+        return cnx;
+    }
+
+    public static void setCnx(Connection aCnx) {
+        cnx = aCnx;
+    }
+
 
     public void Cerrar() throws Exception {
         if (cnx != null) {
-            if (cnx.isClosed() == false) {
-                cnx.close();
-                cnx = null;
-            }
+            cnx.close();
         }
     }
 
     public static void main(String[] args) throws Exception {
-        Conexion dao = new Conexion();
-        if (dao.getCn() != null) {
-            Logger.getGlobal().log(Level.INFO,  "Conectado con éxito");
-            
-        } else {
-            Logger.getGlobal().log(Level.WARNING,  "Error en la Conexión");
+        conectar();
+        try {
+            if (cnx != null) {
+                System.out.println("CONEXIÓN EXITOSA");
+                JOptionPane.showMessageDialog(null, "CONEXIÓN EXITOSA", "CORRECTO", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                System.out.println("SIN CONEXIÓN REVISA");
+                JOptionPane.showMessageDialog(null, "SIN CONEXIÓN REVISA", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            System.out.println("Error en " + e.getMessage());
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 

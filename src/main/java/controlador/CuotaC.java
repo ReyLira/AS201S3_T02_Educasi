@@ -31,14 +31,12 @@ import servicio.Reporte;
 @SessionScoped
 public class CuotaC implements Serializable {
 
-    private String perss;
     private CuotaModel cuot;
     private CuotaImpl dao;
     private List<CuotaModel> listadoCuot;
     private List<CuotaModel> listAct;
     private List<CuotaModel> listadoFecha;
     private List<CuotaModel> listDet;
-
     public CuotaC() {
         cuot = new CuotaModel();
         dao = new CuotaImpl();
@@ -95,8 +93,8 @@ public class CuotaC implements Serializable {
         try {
             if (cuot.getFKActividad() > 0) {
                 cuot.setCantidadCuota(dao.obtenerSaldoCuota(cuot.getFKActividad(), cuot.getFKpersona()));
-
             }
+            
         } catch (Exception e) {
             Logger.getGlobal().log(Level.INFO, "Error en obtener cuota C {0}", e.getMessage());
         }
@@ -157,22 +155,8 @@ public class CuotaC implements Serializable {
         }
     }
 
-    public void ser() throws Exception {
-        try {
-            if (perss != null && !perss.isEmpty()) {
-                System.out.println("cont" + perss);
-                listDet = dao.ListarPorPersona(perss);
-            } else {
-                this.listDet = dao.listarTodos();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
+    
+    
     //Metodos Generados
     public CuotaModel getCuot() {
         return cuot;
@@ -236,14 +220,6 @@ public class CuotaC implements Serializable {
 
     public void setListDet(List<CuotaModel> listDet) {
         this.listDet = listDet;
-    }
-
-    public String getPerss() {
-        return perss;
-    }
-
-    public void setPerss(String perss) {
-        this.perss = perss;
     }
 
 }

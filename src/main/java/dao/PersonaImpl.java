@@ -27,7 +27,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
     public void registrar(PersonaModel per) throws Exception {
         String sql = "insert into PERSONA (NOMPER, APEPER, PASPER, EMAPER, DNIPER, CELPER, ROLPER,IDUBG,PERSONA_IDPER)values (?,?,?,?,?,?,?,?,?)";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setString(1, per.getNombre());
             ps.setString(2, per.getApellido());
             ps.setString(3, per.getPassword());
@@ -53,7 +53,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
 
     public void registrarD(PersonaModel per) throws SQLException, Exception {
         String sql = "insert into PERSONA (NOMPER, APEPER, PASPER, EMAPER, DNIPER, CELPER, ROLPER,IDUBG,PERSONA_IDPER)values (?,?,?,?,?,?,?,?,?)";
-        try (PreparedStatement ps = this.getCn().prepareStatement(sql)) {
+        try (PreparedStatement ps = this.conectar().prepareStatement(sql)) {
             ps.setString(1, per.getNombre());
             ps.setString(2, per.getApellido());
             ps.setString(3, per.getPassword());
@@ -75,7 +75,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
     public void modificar(PersonaModel per) throws Exception {
         String sql = "update PERSONA set NOMPER=?, APEPER=?, PASPER=?, EMAPER=?, DNIPER=?, CELPER=?,ESTPER=?,IDUBG=? where IDPER=?";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setString(1, per.getNombre());
             ps.setString(2, per.getApellido());
             ps.setString(3, per.getPassword());
@@ -98,7 +98,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
     public void eliminar(PersonaModel per) throws Exception {
         String sql = "delete from PERSONA where IDPER=?";
         try {
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setInt(1, per.getID());
             ps.executeUpdate();
             ps.close();
@@ -115,7 +115,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
         PersonaModel per;
         String sql = "SELECT* FROM V_PERSONA";
         ResultSet rs;
-        try (Connection conec = (Connection) this.getCn()) {
+        try (Connection conec = (Connection) this.conectar()) {
             this.conectar();
             listado = new ArrayList();
             PreparedStatement ps = conec.prepareStatement(sql);
@@ -151,7 +151,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
         String sql = "select*from ubigeo";
         try {
             listadoUbigeo = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 per = new PersonaModel();
@@ -177,7 +177,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
         String sql = "select IDPER,NOMPER,APEPER from PERSONA WHERE ROLPER='APODERADO'";
         try {
             listadoA = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 per = new PersonaModel();
@@ -215,7 +215,7 @@ public class PersonaImpl extends Conexion implements ICRUD<PersonaModel> {
         }
         try {
             listadoRol = new ArrayList();
-            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 per = new PersonaModel();

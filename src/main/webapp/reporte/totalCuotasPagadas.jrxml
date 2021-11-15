@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="totalCuotasPagadas" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="06341b5a-00ed-4c07-94ee-9218054d4667">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CONEXION ORACLE"/>
+	<parameter name="Parameter1" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select SUM(cancuot) as CANTIDAD,
+   SUM(moncuot)  AS MONTO,
+   SUM(cancuot) - SUM(moncuot) as RESTO
+    from cuota where  cuota.idper=$P{Parameter1} ]]>
+	</queryString>
+	<field name="CANTIDAD" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="CANTIDAD"/>
+		<property name="com.jaspersoft.studio.field.label" value="CANTIDAD"/>
+	</field>
+	<field name="MONTO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="MONTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="MONTO"/>
+	</field>
+	<field name="RESTO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="RESTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="RESTO"/>
+	</field>
+	<group name="CANTIDAD">
+		<groupExpression><![CDATA[$F{CANTIDAD}]]></groupExpression>
+	</group>
+	<group name="MONTO">
+		<groupExpression><![CDATA[$F{MONTO}]]></groupExpression>
+	</group>
+	<group name="RESTO">
+		<groupExpression><![CDATA[$F{RESTO}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="1" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="440" height="30" uuid="0f20e7d7-aad6-4c31-9d19-41ca708346d7"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="135" height="30" uuid="4dc9deae-52e6-4164-99e2-cafb63f6b21c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30012780-7ced-47ec-a0c5-d345dd348802"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CANTIDAD TOTAL A PAGAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="0" width="140" height="30" uuid="3aafcc79-ed42-4d27-a55b-6777cbebf7a9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8f991ce6-1add-4440-8480-b36ed6bb4574"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[MONTO TOTAL PAGADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="110" height="30" uuid="b926a49b-d7ca-4a12-b13f-c056da571edd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b5a1f88-7943-4f23-93df-f9ffac29b80c"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[MONTO FALTANTE]]></text>
+			</staticText>
+			<line>
+				<reportElement x="140" y="0" width="1" height="30" uuid="e54ce2e4-f6ac-4883-981c-8f6d358b1040"/>
+			</line>
+			<line>
+				<reportElement x="300" y="0" width="1" height="30" uuid="d33ddbe0-dcac-45c3-9ecf-08e498968cee"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="440" height="30" uuid="124030e7-0b62-4e33-b5ba-ecc18e61388d"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="135" height="30" uuid="0d684fec-1943-4f99-b4a6-b350ee738618">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30012780-7ced-47ec-a0c5-d345dd348802"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="0" width="140" height="30" uuid="ec3d3bea-4bd8-4847-9c66-d87803daaa26">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8f991ce6-1add-4440-8480-b36ed6bb4574"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{MONTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="0" width="110" height="30" uuid="42e67e8b-9ac0-4fb9-9f84-d0021ae709b0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b5a1f88-7943-4f23-93df-f9ffac29b80c"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{RESTO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="140" y="0" width="1" height="30" uuid="4c46b3e0-3620-492e-a2bc-df8160389b91"/>
+			</line>
+			<line>
+				<reportElement x="300" y="0" width="1" height="30" uuid="2e3b3116-992f-46f3-a277-35dae4f3dc33"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
