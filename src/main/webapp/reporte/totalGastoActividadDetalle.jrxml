@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="totalGastoActividadDetalle" pageWidth="445" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="405" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="58750bfc-af2e-48d7-a1b3-b5f55cbec793">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CONEXION ORACLE"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="Parameter1" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select SUM(CANGASACT) as CANTIDAD, 
+   SUM(MONGASACT)AS MONTO,
+   SUM(CANGASACT)- SUM(MONGASACT)AS RESTO
+    from gasto_actividad where IDACT= $P{Parameter1} ]]>
+	</queryString>
+	<field name="CANTIDAD" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="CANTIDAD"/>
+		<property name="com.jaspersoft.studio.field.label" value="CANTIDAD"/>
+	</field>
+	<field name="MONTO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="MONTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="MONTO"/>
+	</field>
+	<field name="RESTO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="RESTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="RESTO"/>
+	</field>
+	<group name="CANTIDAD">
+		<groupExpression><![CDATA[$F{CANTIDAD}]]></groupExpression>
+	</group>
+	<group name="MONTO">
+		<groupExpression><![CDATA[$F{MONTO}]]></groupExpression>
+	</group>
+	<group name="RESTO">
+		<groupExpression><![CDATA[$F{RESTO}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="1" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="409" height="30" uuid="4f54782d-554e-4335-96c3-e17e89492217"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="150" height="30" uuid="f915c364-64fd-4ac8-aebb-2c82933b7292">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7a08805e-99d9-4253-98fe-6b8fd7feff68"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD RECAUDADA POR ACTIVIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="0" width="140" height="30" uuid="824050fe-be9b-4629-aaf5-1457d4a90223">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9ef0193a-a010-456c-8829-c11ef446f790"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO GASTADO DE LA  ACTIVIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="291" y="0" width="118" height="30" uuid="20c0060a-2386-4cd0-846f-b6943f411e94">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9b3b95cc-994b-46ed-9efc-eb141545e9db"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO RESTANTE]]></text>
+			</staticText>
+			<line>
+				<reportElement x="290" y="0" width="1" height="30" uuid="5879f171-68e7-49c9-ac53-709d6d6b51e8"/>
+			</line>
+			<line>
+				<reportElement x="150" y="0" width="1" height="30" uuid="de6ab3ef-d6fe-46e5-b95f-8a831a89ee3f"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="409" height="30" uuid="76e99c66-5054-42b0-833a-54c5acb8c5a1"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="150" height="30" uuid="4ab20de0-e23c-48ae-b5e0-f5b7a2e2a363">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7a08805e-99d9-4253-98fe-6b8fd7feff68"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["S/."+$F{CANTIDAD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="151" y="0" width="139" height="30" uuid="70bc2129-8779-46bd-aeb2-c3618c7d02a6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9ef0193a-a010-456c-8829-c11ef446f790"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["S/."+$F{MONTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="0" width="118" height="30" uuid="3a662a53-d578-4643-9d4f-97eeff71da95">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9b3b95cc-994b-46ed-9efc-eb141545e9db"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["S/."+$F{RESTO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="290" y="0" width="1" height="30" uuid="eca1d7b8-c77e-4bc4-af40-6fe44ed89b89"/>
+			</line>
+			<line>
+				<reportElement x="150" y="0" width="1" height="30" uuid="f2ce347d-fca9-417a-b995-be109dbc1eeb"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

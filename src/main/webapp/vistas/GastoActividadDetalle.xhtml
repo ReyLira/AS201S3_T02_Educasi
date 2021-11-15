@@ -33,6 +33,8 @@
                             </p:selectOneMenu>
                             <p:commandButton value="Listar" actionListener="#{gastoAtividadDetalleC.actObtener()}"
                                              update="tblGastoActividadDetalle"/>
+                            <p:commandButton value="LISTAR GASTO ACTIVIDAD DETALLE" actionListener="#{gastoAtividadDetalleC.reporteGastoActividadDetalle()}" 
+                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
                         </p:panelGrid>
                         <p:dataTable id="tblGastoActividadDetalle"
                                      var="gast"
@@ -68,7 +70,13 @@
                                 </h:outputText>
                             </p:column>
                             <f:facet name="footer">
-                                EN TOTAL HAY #{fn:length(gastoAtividadDetalleC.listGasAct)} REGISTROS.
+                                <div style="text-align: center">
+                                MONTO TOTAL RECAUDADO S/.  #{gastoAtividadDetalleC.listDet.stream().map(gast->gast.cantGasActividad).sum()}  
+                                | MONTO TOTAL GASTADO S/.  #{gastoAtividadDetalleC.listDet.stream().map(gast->gast.monGasActividad).sum()}
+                                | MONTO RESTANTE S/.  #{gastoAtividadDetalleC.listDet.stream().map(gast->gast.cantGasActividad).sum()- gastoAtividadDetalleC.listDet.stream().map(gast->gast.monGasActividad).sum()}
+                                </div>
+                                <br/><br/>
+                                EN TOTAL HAY #{fn:length(gastoAtividadDetalleC.listDet)} REGISTROS.
                             </f:facet>
                         </p:dataTable>
                     </h:form>

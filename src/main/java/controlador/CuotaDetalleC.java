@@ -41,20 +41,27 @@ public class CuotaDetalleC implements Serializable {
         cuot = new CuotaModel();
         dao = new CuotaDetalleImpl();
     }
+
     public void reporteCuotaDetalle() {
         try {
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            Date fechaActual = new Date(System.currentTimeMillis());
-            String fechSystem = dateFormat2.format(fechaActual);
-            Reporte report = new Reporte();
-            Map<String, Object> parameters = new HashMap();
-            parameters.put("Parameter1", perss);
-            report.exportarPDFGlobal(parameters, "cuotaDetallePers.jasper", fechSystem + " cuotaDetalle.pdf");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+            if (perss == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe seleccionar una persona"));
+            }
+            if (perss != null) {
+                SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date fechaActual = new Date(System.currentTimeMillis());
+                String fechSystem = dateFormat2.format(fechaActual);
+                Reporte report = new Reporte();
+                Map<String, Object> parameters = new HashMap();
+                parameters.put("Parameter1", perss);
+                report.exportarPDFGlobal(parameters, "cuotaDetallePers.jasper", fechSystem + " cuotaDetalle.pdf");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+            }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
         }
     }
+
     public void listar() {
         try {
             listadoCuot = dao.listarTodos();
@@ -62,16 +69,17 @@ public class CuotaDetalleC implements Serializable {
             Logger.getGlobal().log(Level.INFO, "Error en listarC {0}", e.getMessage());
         }
     }
+
     public void ser() throws Exception {
         try {
             if (perss != null && !perss.isEmpty()) {
-                System.out.println("cont" + perss); 
+                System.out.println("cont" + perss);
                 listDet = dao.ListarPorPersona(perss);
-                
+
             } else {
                 this.listDet = dao.listarTodos();
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(CuotaC.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -96,7 +104,6 @@ public class CuotaDetalleC implements Serializable {
         this.cuot = cuot;
     }
 
-    
     public List<CuotaModel> getListadoCuot() {
         return listadoCuot;
     }

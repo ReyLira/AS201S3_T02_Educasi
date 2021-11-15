@@ -34,7 +34,7 @@
                             </p:selectOneMenu>
                             <p:commandButton value="Listar" actionListener="#{cuotaDetalleC.ser()}"
                                              update="tblCuotaDetalle"/>
-                            <p:commandButton value="LISTAR CUOTAS" actionListener="#{cuotaDetalleC.reporteCuotaDetalle()}" 
+                            <p:commandButton value="LISTAR CUOTAS DETALLE" actionListener="#{cuotaDetalleC.reporteCuotaDetalle()}" 
                                              ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
 
                         </p:panelGrid>
@@ -69,7 +69,13 @@
                                 <h:outputText value="#{cuot.fechaCuota}"><f:convertDateTime type="date" pattern="dd - MMM - y"/></h:outputText>
                             </p:column>
                             <f:facet name="footer">
-                                EN TOTAL HAY #{fn:length(cuotaDetalleC.listadoCuot)} REGISTROS.
+                                <div style="text-align: center">
+                                MONTO A PAGAR TOTAL S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.cantidadCuota).sum()}  
+                                | MONTO TOTAL PAGADO S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.montoCuota).sum()}
+                                | MONTO FALTANTE S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.cantidadCuota).sum()- cuotaDetalleC.listDet.stream().map(cuot->cuot.montoCuota).sum()}
+                                </div>
+                                <br/><br/>
+                                EN TOTAL HAY #{fn:length(cuotaDetalleC.listDet)} REGISTROS.
                             </f:facet>
                         </p:dataTable>
                     </h:form>

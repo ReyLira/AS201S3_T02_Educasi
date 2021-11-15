@@ -11,10 +11,17 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import modelo.GastoActividadModel;
+import servicio.Reporte;
 
 /**
  *
@@ -30,10 +37,32 @@ public class GastoAtividadDetalleC implements Serializable {
     private List<GastoActividadModel> listGasAct;
     private List<GastoActividadModel> listAct;
     private List<GastoActividadModel> listDet;
+
     public GastoAtividadDetalleC() {
         gasAct = new GastoActividadModel();
         dao = new GastoActividadDetalleImpl();
     }
+
+    public void reporteGastoActividadDetalle() {
+        try {
+            if (actss == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe seleccionar una ACTIVIDAD"));
+            }
+            if (actss != null) {
+                SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date fechaActual = new Date(System.currentTimeMillis());
+                String fechSystem = dateFormat2.format(fechaActual);
+                Reporte report = new Reporte();
+                Map<String, Object> parameters = new HashMap();
+                parameters.put("Parameter1", actss);
+                report.exportarPDFGlobal(parameters, "gastoActividadesDetalle.jasper", fechSystem + " GastoActividadDetalle.pdf");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
+        }
+    }
+
     public void listar() {
         try {
             listGasAct = dao.listarTodos();
@@ -41,7 +70,8 @@ public class GastoAtividadDetalleC implements Serializable {
             Logger.getGlobal().log(Level.SEVERE, "Error en listarGastoActividadC {0}", e.getMessage());
         }
     }
-    public void actObtener(){
+
+    public void actObtener() {
         try {
             if (actss != null && !actss.isEmpty()) {
                 System.out.println("cont" + actss);
@@ -55,8 +85,9 @@ public class GastoAtividadDetalleC implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(PersonaC.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
+
     }
+
     public GastoActividadModel getGasAct() {
         return gasAct;
     }
@@ -111,5 +142,5 @@ public class GastoAtividadDetalleC implements Serializable {
     public void setDao(GastoActividadDetalleImpl dao) {
         this.dao = dao;
     }
-    
+
 }

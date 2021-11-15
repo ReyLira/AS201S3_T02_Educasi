@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gastoActividadesDetalle" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cafbd7ca-584c-42b2-919a-8c9eb78f3586">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CONEXION ORACLE"/>
+	<parameter name="Parameter1" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT ROW_NUMBER()
+        OVER(
+            ORDER BY
+                gasto_actividad.idgasact DESC
+        ) AS fila,
+            actividad.idact,
+            gasto_actividad.idgasact,
+            actividad.nomact,
+            gasto_actividad.cangasact, 
+            gasto_actividad.mongasact,
+            gasto_actividad.desgasact, 
+            gasto_actividad.fecgasact 
+      from  gasto_actividad
+      INNER JOIN actividad ON gasto_actividad.idact = actividad.idact
+      where actividad.idact= $P{Parameter1} ]]>
+	</queryString>
+	<field name="FILA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="FILA"/>
+		<property name="com.jaspersoft.studio.field.label" value="FILA"/>
+	</field>
+	<field name="IDACT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="IDACT"/>
+		<property name="com.jaspersoft.studio.field.label" value="IDACT"/>
+	</field>
+	<field name="IDGASACT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="IDGASACT"/>
+		<property name="com.jaspersoft.studio.field.label" value="IDGASACT"/>
+	</field>
+	<field name="NOMACT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOMACT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOMACT"/>
+	</field>
+	<field name="CANGASACT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="CANGASACT"/>
+		<property name="com.jaspersoft.studio.field.label" value="CANGASACT"/>
+	</field>
+	<field name="MONGASACT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="MONGASACT"/>
+		<property name="com.jaspersoft.studio.field.label" value="MONGASACT"/>
+	</field>
+	<field name="DESGASACT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DESGASACT"/>
+		<property name="com.jaspersoft.studio.field.label" value="DESGASACT"/>
+	</field>
+	<field name="FECGASACT" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="FECGASACT"/>
+		<property name="com.jaspersoft.studio.field.label" value="FECGASACT"/>
+	</field>
+	<group name="FILA">
+		<groupExpression><![CDATA[$F{FILA}]]></groupExpression>
+	</group>
+	<group name="IDACT">
+		<groupExpression><![CDATA[$F{IDACT}]]></groupExpression>
+	</group>
+	<group name="IDGASACT">
+		<groupExpression><![CDATA[$F{IDGASACT}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="81" splitType="Stretch">
+			<image>
+				<reportElement x="-10" y="-10" width="109" height="89" uuid="17a5ee78-9fd3-449a-bad1-66d427c0d69e"/>
+				<imageExpression><![CDATA["imagen.png"]]></imageExpression>
+			</image>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="450" y="0" width="100" height="30" uuid="87229f3a-e934-46eb-adf5-9385e91325d4"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="100" y="51" width="340" height="30" uuid="5dab4516-b281-4dde-86b1-919de0922383"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="110" y="51" width="320" height="30" uuid="734899bb-41be-45bc-b6bd-ed70fc7c9cb4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE GASTOS POR ACTIVIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="6" width="100" height="19" uuid="71e2eb8c-0d02-4a2f-a5a9-8d47e83b7a0d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EDUCASI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="24" width="130" height="19" uuid="7aada83e-cde0-43ba-9b66-575e272b5a56"/>
+				<text><![CDATA[SISTEMA DE APAFAS]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="475" y="30" width="75" height="22" uuid="d35e891c-9973-40ee-8543-6043bebad9d8"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["PAGINA "+ $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="90" y="0" width="189" height="30" uuid="531e61b2-07f0-40ef-9f17-456e83c4981b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="344ca985-29d0-4a5c-bf34-f5fedb06f26c"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[NOMBRE DE ACTIVIDAD:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="279" y="0" width="92" height="30" uuid="d65e0465-f48c-484c-a908-83a6742ceeb5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="344ca985-29d0-4a5c-bf34-f5fedb06f26c"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMACT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="30" uuid="8d967b6f-34fc-4818-8a42-57ec3b4bcf70"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="30" uuid="28f966fc-bd23-4ea2-ab52-636ced972e8b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7a094920-251c-4edf-a08d-9550a6ce9253"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FILA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="191" y="0" width="138" height="30" uuid="d33df2b3-fd9c-45e5-b2b2-6fbd0b52b1e3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3442064e-c9fa-4f48-b975-ab79304b45ad"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD A RECAUDADA POR LA ACTIVIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="128" height="30" uuid="a998136e-261a-4a57-912c-e97399cb34bc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77121d38-da10-48ac-a2b3-25ace104b606"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO GASTADO POR ACTIVIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="0" width="139" height="30" uuid="64263fa7-8075-46d6-916c-8ce01abff5e5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d4ba11b5-9d7d-46f1-9a64-d0e169b70a8d"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="463" y="0" width="87" height="30" uuid="fdeec83a-cc8e-4d2d-bcee-0e01c3d48d1a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d8883767-fdc8-4d8d-8574-aad50303ca68"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="50" y="0" width="1" height="30" uuid="2f05133e-1fb6-4d8b-86ed-8410ee3603e8"/>
+			</line>
+			<line>
+				<reportElement x="190" y="0" width="1" height="30" uuid="50120051-93a0-4b33-91c4-bd275a65b524"/>
+			</line>
+			<line>
+				<reportElement x="329" y="0" width="1" height="30" uuid="8efa864b-28d2-47e4-8474-93b9bc386c03"/>
+			</line>
+			<line>
+				<reportElement x="460" y="0" width="1" height="30" uuid="92075389-71fa-4a06-81fa-6d76b4a38675"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="30" uuid="d76f82ca-934f-4d0a-ba24-68b41b1d13fd"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="50" height="30" uuid="4d32a3d5-aac9-4273-aa36-14837144be6d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7a094920-251c-4edf-a08d-9550a6ce9253"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FILA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="191" y="0" width="138" height="30" uuid="84c33dc2-cc51-4766-a5f9-aaa2cbd0de24">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3442064e-c9fa-4f48-b975-ab79304b45ad"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["S/."+$F{CANGASACT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="0" width="130" height="30" uuid="97235638-6549-4adc-b6be-b9629cd65d4d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77121d38-da10-48ac-a2b3-25ace104b606"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["S/."+$F{MONGASACT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="0" width="130" height="30" uuid="c05a82e0-f137-41ab-87b1-e3279b0a21d3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d4ba11b5-9d7d-46f1-9a64-d0e169b70a8d"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{DESGASACT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="0" width="94" height="30" uuid="8182350d-6a29-416a-8092-224966985195">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d8883767-fdc8-4d8d-8574-aad50303ca68"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[
+new SimpleDateFormat("dd - MMM - y").format($F{FECGASACT})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="50" y="0" width="1" height="30" uuid="118eafb0-5717-48bd-bf4c-39be4c18cb31"/>
+			</line>
+			<line>
+				<reportElement x="190" y="0" width="1" height="30" uuid="7bd1578a-5700-4508-a720-853cb39a1724"/>
+			</line>
+			<line>
+				<reportElement x="329" y="0" width="1" height="30" uuid="06af9876-460c-4632-86c3-44bfc7ee5665"/>
+			</line>
+			<line>
+				<reportElement x="460" y="0" width="1" height="30" uuid="864db95a-bf1d-4198-b36e-56233765c7b8"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="117" splitType="Stretch">
+			<subreport>
+				<reportElement x="60" y="0" width="341" height="110" uuid="5ea02dd1-d964-4e1f-af1b-98b8911af2a2"/>
+				<subreportParameter name="Parameter1">
+					<subreportParameterExpression><![CDATA[$P{Parameter1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["totalGastoActividadDetalle.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
