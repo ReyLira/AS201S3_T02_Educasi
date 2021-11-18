@@ -9,6 +9,15 @@
 
     <name>AS201S3_T02_Educasi</name>
 
+    <developers>
+        <developer>
+            <name>Wilmer Noe Meza Yalle</name>
+            <email>wilmer.meza@vallegrande.edu.pe</email>
+            <organization>VALLEGRANDE</organization>
+        </developer>
+    </developers>
+
+
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
