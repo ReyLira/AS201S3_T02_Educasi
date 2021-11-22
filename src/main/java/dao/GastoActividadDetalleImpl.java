@@ -132,4 +132,19 @@ public class GastoActividadDetalleImpl extends Conexion implements ICRUD<GastoAc
         }
         return listado;
     }
+    public GastoActividadModel total(int idactFK) throws SQLException {
+        GastoActividadModel gastoActTotal =  new GastoActividadModel();
+        String sql = "select SUM(CANGASACT) as CANTIDAD, SUM(MONGASACT)AS MONTO,SUM(CANGASACT)- SUM(MONGASACT)AS RESTO from gasto_actividad where IDACT=?";
+        ResultSet rs;
+       try (PreparedStatement ps =  this.conectar().prepareStatement(sql)) {
+            ps.setInt(1, idactFK);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                gastoActTotal.setCANTIDAD(rs.getInt("CANTIDAD"));
+                gastoActTotal.setMONTO(rs.getInt("MONTO"));
+                gastoActTotal.setRESTO(rs.getInt("RESTO"));
+            } 
+        }
+        return gastoActTotal;
+    }
 }

@@ -24,18 +24,30 @@
                 <h:body>
                     <h:form id="formTblGastoActividadDetalle">
                         <h2 style="font-family: sans-serif; text-align: center">LISTADO DE ACTIVIDADES POR GASTO ACTIVIDAD</h2>
-                        <p:panelGrid columns="2">
-                            <p:outputLabel value="ACTIVIDAD" />
-                            <p:selectOneMenu value="#{gastoAtividadDetalleC.actss}" filter="true" filterMatchMode="startsWith">
-                                <p:ajax event="change" update="tblGastoActividadDetalle"/>
-                                <f:selectItem itemLabel="- Seleccione -"/>
-                                <f:selectItems value="#{gastoAtividadDetalleC.listAct}" var="apo" itemLabel="#{apo.nombreActividad}" itemValue="#{apo.IDactividad}" />
-                            </p:selectOneMenu>
-                            <p:commandButton value="Listar" actionListener="#{gastoAtividadDetalleC.actObtener()}"
-                                             update="tblGastoActividadDetalle"/>
-                            <p:commandButton value="LISTAR GASTO ACTIVIDAD DETALLE" actionListener="#{gastoAtividadDetalleC.reporteGastoActividadDetalle()}" 
-                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
-                        </p:panelGrid>
+                        <div class="ui-g-6">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="ACTIVIDAD" />
+                                <p:selectOneMenu value="#{gastoAtividadDetalleC.actss}" filter="true" filterMatchMode="startsWith">
+                                    <p:ajax event="change" update="tblGastoActividadDetalle total"/>
+                                    <f:selectItem itemLabel="- Seleccione -"/>
+                                    <f:selectItems value="#{gastoAtividadDetalleC.listAct}" var="apo" itemLabel="#{apo.nombreActividad}" itemValue="#{apo.IDactividad}" />
+                                </p:selectOneMenu>
+                                <p:commandButton value="Listar" actionListener="#{gastoAtividadDetalleC.actObtener()}"
+                                                 update="tblGastoActividadDetalle total"/>
+                                <p:commandButton value="LISTAR GASTO ACTIVIDAD DETALLE" actionListener="#{gastoAtividadDetalleC.reporteGastoActividadDetalle()}" 
+                                                 ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                            </p:panelGrid>
+                        </div>
+                        <div class="ui-g-6">
+                            <p:panelGrid id="total" columns="3">
+                                <p:outputLabel>MONTO TOTAL RECAUDADO</p:outputLabel>
+                                <p:outputLabel>MONTO TOTAL GASTADO</p:outputLabel>
+                                <p:outputLabel>MONTO RESTANTE</p:outputLabel>
+                                <p:outputLabel value="#{gastoAtividadDetalleC.gasAct.CANTIDAD}"> S/.</p:outputLabel>
+                                <p:outputLabel value="#{gastoAtividadDetalleC.gasAct.MONTO}"> S/.</p:outputLabel>
+                                <p:outputLabel value="#{gastoAtividadDetalleC.gasAct.RESTO}"> S/.</p:outputLabel>
+                            </p:panelGrid>
+                        </div>
                         <p:dataTable id="tblGastoActividadDetalle"
                                      var="gast"
                                      value="#{gastoAtividadDetalleC.listDet}"
@@ -71,9 +83,9 @@
                             </p:column>
                             <f:facet name="footer">
                                 <div style="text-align: center">
-                                MONTO TOTAL RECAUDADO S/.  #{gastoAtividadDetalleC.listDet.stream().map(gast->gast.cantGasActividad).sum()}  
-                                | MONTO TOTAL GASTADO S/.  #{gastoAtividadDetalleC.listDet.stream().map(gast->gast.monGasActividad).sum()}
-                                | MONTO RESTANTE S/.  #{gastoAtividadDetalleC.listDet.stream().map(gast->gast.cantGasActividad).sum()- gastoAtividadDetalleC.listDet.stream().map(gast->gast.monGasActividad).sum()}
+                                    MONTO TOTAL RECAUDADO S/.  #{gastoAtividadDetalleC.listDet.stream().map(gast->gast.cantGasActividad).sum()}  
+                                    | MONTO TOTAL GASTADO S/.  #{gastoAtividadDetalleC.listDet.stream().map(gast->gast.monGasActividad).sum()}
+                                    | MONTO RESTANTE S/.  #{gastoAtividadDetalleC.listDet.stream().map(gast->gast.cantGasActividad).sum()- gastoAtividadDetalleC.listDet.stream().map(gast->gast.monGasActividad).sum()}
                                 </div>
                                 <br/><br/>
                                 EN TOTAL HAY #{fn:length(gastoAtividadDetalleC.listDet)} REGISTROS.

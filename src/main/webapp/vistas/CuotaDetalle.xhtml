@@ -25,20 +25,31 @@
                 <h:body>
                     <h:form id="formTblCuotaDetalle">
                         <h2 style="font-family: sans-serif; text-align: center">LISTADO DE CUOTAS POR PADRE DE FAMILIA</h2>
-                        <p:panelGrid columns="2">
-                            <p:outputLabel value="PESONA" />
-                            <p:selectOneMenu value="#{cuotaDetalleC.perss}" filter="true" filterMatchMode="startsWith">
-                                <p:ajax event="change" update="tblCuotaDetalle"/>
-                                <f:selectItem itemLabel="- Seleccione -" itemValue="" />
-                                <f:selectItems value="#{personaC.listadoPer}" var="apo" itemLabel="#{apo.nombre.concat(' ').concat(apo.apellido)}" itemValue="#{apo.ID}"/>
-                            </p:selectOneMenu>
-                            <p:commandButton value="Listar" actionListener="#{cuotaDetalleC.ser()}"
-                                             update="tblCuotaDetalle"/>
-                            <p:commandButton value="LISTAR CUOTAS DETALLE" actionListener="#{cuotaDetalleC.reporteCuotaDetalle()}" 
-                                             ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                        <div class="ui-g-6">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="PESONA" />
+                                <p:selectOneMenu value="#{cuotaDetalleC.perss}" filter="true" filterMatchMode="startsWith">
+                                    <p:ajax event="change" update="tblCuotaDetalle total"/>
+                                    <f:selectItem itemLabel="- Seleccione -" itemValue="" />
+                                    <f:selectItems value="#{personaC.listadoPer}" var="apo" itemLabel="#{apo.nombre.concat(' ').concat(apo.apellido)}" itemValue="#{apo.ID}"/>
+                                </p:selectOneMenu>
+                                <p:commandButton value="Listar" actionListener="#{cuotaDetalleC.ser()}"
+                                                 update="tblCuotaDetalle total"/>
+                                <p:commandButton value="LISTAR CUOTAS DETALLE" actionListener="#{cuotaDetalleC.reporteCuotaDetalle()}" 
+                                                 ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
 
-                        </p:panelGrid>
-
+                            </p:panelGrid>
+                        </div>
+                        <div class="ui-g-6">
+                            <p:panelGrid id="total" columns="3">
+                                <p:outputLabel>MONTO A PAGAR TOTAL</p:outputLabel>
+                                <p:outputLabel>MONTO TOTAL PAGADO</p:outputLabel>
+                                <p:outputLabel>MONTO FALTANTE</p:outputLabel>
+                                <p:outputLabel value="#{cuotaDetalleC.cuot.CANTIDAD}"> S/.</p:outputLabel>
+                                <p:outputLabel value="#{cuotaDetalleC.cuot.MONTO}"> S/.</p:outputLabel>
+                                <p:outputLabel value="#{cuotaDetalleC.cuot.RESTO}"> S/.</p:outputLabel>
+                            </p:panelGrid>
+                        </div>
                         <p:dataTable id="tblCuotaDetalle"
                                      var="cuot"
                                      value="#{cuotaDetalleC.listDet}"
@@ -70,14 +81,22 @@
                             </p:column>
                             <f:facet name="footer">
                                 <div style="text-align: center">
-                                MONTO A PAGAR TOTAL S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.cantidadCuota).sum()}  
-                                | MONTO TOTAL PAGADO S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.montoCuota).sum()}
-                                | MONTO FALTANTE S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.cantidadCuota).sum()- cuotaDetalleC.listDet.stream().map(cuot->cuot.montoCuota).sum()}
+                                    MONTO A PAGAR TOTAL S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.cantidadCuota).sum()}  
+                                    | MONTO TOTAL PAGADO S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.montoCuota).sum()}
+                                    | MONTO FALTANTE S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.cantidadCuota).sum()- cuotaDetalleC.listDet.stream().map(cuot->cuot.montoCuota).sum()}
                                 </div>
                                 <br/><br/>
                                 EN TOTAL HAY #{fn:length(cuotaDetalleC.listDet)} REGISTROS.
                             </f:facet>
                         </p:dataTable>
+                        <!-- comment <p:panelGrid columns="3" id="total">
+                            <p:outputLabel value="MONTO A PAGAR TOTAL"/>
+                            <p:outputLabel value="MONTO TOTAL PAGADO"/>
+                            <p:outputLabel value="MONTO FALTANTE"/>
+                            <p:inputText value="#{cuotaDetalleC.cuot.CANTIDAD}"/>
+                            <p:inputText value="#{cuotaDetalleC.cuot.MONTO}" />
+                            <p:inputText value="#{cuotaDetalleC.cuot.RESTO}" />
+                        </p:panelGrid>-->
                     </h:form>
 
                 </h:body>

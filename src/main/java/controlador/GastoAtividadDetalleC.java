@@ -31,6 +31,7 @@ import servicio.Reporte;
 @SessionScoped
 public class GastoAtividadDetalleC implements Serializable {
 
+    private int glob;
     private GastoActividadModel gasAct;
     private GastoActividadDetalleImpl dao;
     private String actss;
@@ -76,6 +77,11 @@ public class GastoAtividadDetalleC implements Serializable {
             if (actss != null && !actss.isEmpty()) {
                 System.out.println("cont" + actss);
                 listDet = dao.ListarPorActividad(actss);
+                glob = Integer.valueOf(actss);
+                gasAct = dao.total(glob);
+                System.out.println(gasAct.getCANTIDAD());
+                System.out.println(gasAct.getMONTO());
+                System.out.println(gasAct.getRESTO());
             } else {
                 this.listDet = dao.listarTodos();
             }

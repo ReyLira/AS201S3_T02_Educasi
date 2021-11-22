@@ -8,6 +8,7 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,12 +23,14 @@ import modelo.CuotaModel;
  *
  * @author EDGARD
  */
-public class CuotaDetalleImpl extends Conexion implements ICRUD<CuotaModel>{
+public class CuotaDetalleImpl extends Conexion implements ICRUD<CuotaModel> {
+
     DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     public static Date stringToFecha(String fecha) throws ParseException {
         return fecha != null ? new SimpleDateFormat("dd-MM-yyyy").parse(fecha) : null;
     }
+
     public List<CuotaModel> ListarPorPersona(String perss) throws SQLException, Exception {
         List<CuotaModel> listado = null;
         CuotaModel cuot;
@@ -54,7 +57,7 @@ public class CuotaDetalleImpl extends Conexion implements ICRUD<CuotaModel>{
             ps.close();
         } catch (Exception e) {
             Logger.getGlobal().log(Level.SEVERE, "Error al listar Cuota APODERADO cuot {0} ", e.getMessage());
-        } 
+        }
 
         return listado;
     }
@@ -104,4 +107,21 @@ public class CuotaDetalleImpl extends Conexion implements ICRUD<CuotaModel>{
         }
         return listado;
     }
+
+    public CuotaModel total(int idperFK) throws SQLException {
+        CuotaModel cuotaTotal =  new CuotaModel();
+        String sql = "select SUM(cancuot) as CANTIDAD,SUM(moncuot) AS MONTO,SUM(cancuot) - SUM(moncuot) as RESTO from cuota where  cuota.idper=?";
+        ResultSet rs;
+       try (PreparedStatement ps =  this.conectar().prepareStatement(sql)) {
+            ps.setInt(1, idperFK);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                cuotaTotal.setCANTIDAD(rs.getInt("CANTIDAD"));
+                cuotaTotal.setMONTO(rs.getInt("MONTO"));
+                cuotaTotal.setRESTO(rs.getInt("RESTO"));
+            } 
+        }
+        return cuotaTotal;
+    }
+   
 }

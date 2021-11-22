@@ -35,4 +35,7 @@ public class GastoActividadModel {
     Date FechaActividad;
     String EstadoActividad;
 
+    int CANTIDAD;
+    int MONTO;
+    int RESTO;
 }

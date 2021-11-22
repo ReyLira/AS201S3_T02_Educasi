@@ -31,11 +31,13 @@ import servicio.Reporte;
 @SessionScoped
 public class CuotaDetalleC implements Serializable {
 
+    private int glob;
     private String perss;
     private CuotaModel cuot;
     private CuotaDetalleImpl dao;
     private List<CuotaModel> listadoCuot;
     private List<CuotaModel> listDet;
+    private List<CuotaModel> litTotal;
 
     public CuotaDetalleC() {
         cuot = new CuotaModel();
@@ -76,6 +78,11 @@ public class CuotaDetalleC implements Serializable {
                 System.out.println("cont" + perss);
                 listDet = dao.ListarPorPersona(perss);
 
+                glob = Integer.valueOf(perss);
+                cuot = dao.total(glob);
+                System.out.println(cuot.getCANTIDAD());
+                System.out.println(cuot.getMONTO());
+                System.out.println(cuot.getRESTO());
             } else {
                 this.listDet = dao.listarTodos();
             }
@@ -126,6 +133,22 @@ public class CuotaDetalleC implements Serializable {
 
     public void setDao(CuotaDetalleImpl dao) {
         this.dao = dao;
+    }
+
+    public List<CuotaModel> getLitTotal() {
+        return litTotal;
+    }
+
+    public void setLitTotal(List<CuotaModel> litTotal) {
+        this.litTotal = litTotal;
+    }
+
+    public int getGlob() {
+        return glob;
+    }
+
+    public void setGlob(int glob) {
+        this.glob = glob;
     }
 
 }
