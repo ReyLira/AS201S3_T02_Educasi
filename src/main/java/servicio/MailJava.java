@@ -40,7 +40,7 @@ public class MailJava {
                 new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("javamail2p@gmail.com","JAVAMAILjavamail");
+                return new PasswordAuthentication("viajeros.miniutmen@gmail.com","912618335");
             }
         });
 
@@ -79,7 +79,7 @@ public class MailJava {
                 new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("javamail2p@gmail.com","JAVAMAILjavamail");
+                return new PasswordAuthentication("viajeros.miniutmen@gmail.com","912618335");
             }
         });
 

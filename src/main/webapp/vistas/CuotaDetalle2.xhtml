@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <body>
+
+        <ui:composition template="./plantilla2.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msj" showDetail="true" skipDetailIfEqualsSummary="true">
+                    <p:autoUpdate/>
+                </p:growl>
+                <h:head>
+                    <f:facet name="first">
+                        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                        <title>CUOTA DETALLE</title>
+                    </f:facet>
+                    <f:event listener="#{cuotaDetalleC.listar()}" type="preRenderView" />
+                </h:head>
+                <h:body>
+                    <h:form id="formTblCuotaDetalle">
+                        <h2 style="font-family: sans-serif; text-align: center">LISTADO DE CUOTAS POR PADRE DE FAMILIA</h2>
+                        <div class="ui-g-6">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="PESONA" />
+                                <p:selectOneMenu value="#{cuotaDetalleC.perss}" filter="true" filterMatchMode="startsWith">
+                                    <p:ajax event="change" update="tblCuotaDetalle total"/>
+                                    <f:selectItem itemLabel="- Seleccione -" itemValue="" />
+                                    <f:selectItems value="#{personaC.listadoPer}" var="apo" itemLabel="#{apo.nombre.concat(' ').concat(apo.apellido)}" itemValue="#{apo.ID}"/>
+                                </p:selectOneMenu>
+                                <p:commandButton value="Listar" actionListener="#{cuotaDetalleC.ser()}"
+                                                 update="tblCuotaDetalle total"/>
+                                <p:commandButton value="LISTAR CUOTAS DETALLE" actionListener="#{cuotaDetalleC.reporteCuotaDetalle()}" 
+                                                 ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+
+                            </p:panelGrid>
+                        </div>
+                        <div class="ui-g-6">
+                            <p:panelGrid id="total" columns="3">
+                                <p:outputLabel>MONTO A PAGAR TOTAL</p:outputLabel>
+                                <p:outputLabel>MONTO TOTAL PAGADO</p:outputLabel>
+                                <p:outputLabel>MONTO FALTANTE</p:outputLabel>
+                                <p:outputLabel value="#{cuotaDetalleC.cuot.CANTIDAD}"> S/.</p:outputLabel>
+                                <p:outputLabel value="#{cuotaDetalleC.cuot.MONTO}"> S/.</p:outputLabel>
+                                <p:outputLabel value="#{cuotaDetalleC.cuot.RESTO}"> S/.</p:outputLabel>
+                            </p:panelGrid>
+                        </div>
+                        <p:dataTable id="tblCuotaDetalle"
+                                     var="cuot"
+                                     value="#{cuotaDetalleC.listDet}"
+                                     selection="#{cuotaDetalleC.cuot}"
+                                     selectionMode="single"
+                                     rowKey="#{cuot.IDcuota}"
+                                     paginator="true"
+                                     paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+                            <f:facet name="header">
+                                <h:commandLink value="Descargar Listado" >
+                                    <p:dataExporter type="xls" target="tblCuota" fileName="Listado"/>
+                                </h:commandLink>
+                            </f:facet>
+                            <p:column headerText="NOMBRE" sortBy="#{cuot.nombrePersona}" filterBy="#{cuot.nombrePersona}">
+                                <h:outputText value="#{cuot.nombrePersona}"/>
+                            </p:column>
+                            <p:column headerText="ACTIVIDAD" sortBy="#{cuot.nombreActividad}" filterBy="#{cuot.nombreActividad}">
+                                <h:outputText value="#{cuot.nombreActividad}"/>
+                            </p:column>
+                            <p:column headerText="MONTO A PAGAR" >
+                                <h:outputText value="S/. #{cuot.cantidadCuota}"/>
+                            </p:column>
+                            <p:column headerText="MONTO PAGADO" >
+                                <h:outputText value="S/. #{cuot.montoCuota}"/>
+                            </p:column>
+                            <p:column headerText="fecha" >
+                                <h:outputText value="#{cuot.fechaCuota}"><f:convertDateTime type="date" pattern="dd - MMM - y"/></h:outputText>
+                            </p:column>
+                            <f:facet name="footer">
+                                <div style="text-align: center">
+                                    MONTO A PAGAR TOTAL S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.cantidadCuota).sum()}  
+                                    | MONTO TOTAL PAGADO S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.montoCuota).sum()}
+                                    | MONTO FALTANTE S/.  #{cuotaDetalleC.listDet.stream().map(cuot->cuot.cantidadCuota).sum()- cuotaDetalleC.listDet.stream().map(cuot->cuot.montoCuota).sum()}
+                                </div>
+                                <br/><br/>
+                                EN TOTAL HAY #{fn:length(cuotaDetalleC.listDet)} REGISTROS.
+                            </f:facet>
+                        </p:dataTable>
+                        <!-- comment <p:panelGrid columns="3" id="total">
+                            <p:outputLabel value="MONTO A PAGAR TOTAL"/>
+                            <p:outputLabel value="MONTO TOTAL PAGADO"/>
+                            <p:outputLabel value="MONTO FALTANTE"/>
+                            <p:inputText value="#{cuotaDetalleC.cuot.CANTIDAD}"/>
+                            <p:inputText value="#{cuotaDetalleC.cuot.MONTO}" />
+                            <p:inputText value="#{cuotaDetalleC.cuot.RESTO}" />
+                        </p:panelGrid>-->
+                    </h:form>
+
+                </h:body>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

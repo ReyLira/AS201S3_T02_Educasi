@@ -21,7 +21,7 @@ public class ReniecS {
 
     public static void buscarDni(PersonaModel per) throws Exception {
         String dni = per.getDNI();
-        String token = "?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imp1bGlvLnF1aXNwZUB2YWxsZWdyYW5kZS5lZHUucGUifQ.6M-P2QMMvKFZEeMvTUXvkOooM02N_pWqt0OdlaYW3PM";
+        String token = "?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVkZ2FyZC5yb2RyaWd1ZXpAdmFsbGVncmFuZGUuZWR1LnBlIn0.6IG4DxQV4ysccdUC3gwV9kSwgUQ8GFRtHqApHNxBd_g";
         String enlace = "https://dniruc.apisperu.com/api/v1/dni/" + dni + token;
         try {
             URL url = new URL(enlace);

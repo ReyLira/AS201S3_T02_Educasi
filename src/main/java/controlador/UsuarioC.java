@@ -43,7 +43,7 @@ public class UsuarioC implements Serializable {
         try {
             
             dao.login(usuarrio);
-             notificarCorreo(usuarrio);
+            notificarCorreo(usuarrio);
         } catch (Exception e) {
             Logger.getGlobal().log(Level.WARNING, "Error en login_C {0} ", e.getMessage());
             e.printStackTrace();
@@ -54,7 +54,7 @@ public class UsuarioC implements Serializable {
         try {
            
             dao.loginNivel(usuarrio);
-             notificarCorreo(usuarrio);
+            notificarCorreo(usuarrio);
         } catch (Exception e) {
             Logger.getGlobal().log(Level.WARNING, "Error en loginNivel_C {0} ", e.getMessage());
             e.printStackTrace();
@@ -102,7 +102,7 @@ public class UsuarioC implements Serializable {
                 if (UsuarioImpl.nivel != null) switch (UsuarioImpl.nivel) {
                     case "APODERADO":
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
                         break;
                     case "ADMIN":
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
@@ -110,7 +110,7 @@ public class UsuarioC implements Serializable {
                         break;
                     case "ALUMNO":
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
                         break;
                     default:
                         
