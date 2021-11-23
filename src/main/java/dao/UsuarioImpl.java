@@ -20,48 +20,26 @@ public class UsuarioImpl extends Conexion {
     public static Boolean logueo = false;
     public static String nivel = "";
 
-    public String loginNivel(UsuarioModel usuario) throws Exception {
-        String sql = "select DNIPER,PASPER,ROLPER,EMAPER FROM persona where EMAPER=? and pasper=?";
-        try {
-            PreparedStatement ps = (PreparedStatement) this.conectar().prepareStatement(sql);
-            ps.setString(1, usuario.getEmail());
-            ps.setString(2, usuario.getPass());
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                nivel = rs.getString("ROLPER");
-                logueo = true;
-            } else {
-                logueo = false;
-            }
-            ps.close();
-            rs.close();
-            return nivel;
-        } catch (Exception e) {
-            Logger.getGlobal().log(Level.WARNING, "Errorr en loginNivel_D {0} ", e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    public UsuarioModel login(UsuarioModel usuario) throws Exception {
-        
-        String sql = "select DNIPER,PASPER,NOMPER,EMAPER FROM persona where EMAPER=? and pasper=?";
+    public UsuarioModel ingresoLogin(String DNI, String pass) throws Exception {
+        UsuarioModel ingreso = new UsuarioModel();
+        String sql = "select DNIPER,PASPER,NOMPER,APEPER,ROLPER,EMAPER FROM persona where DNIPER=? and pasper=?";
         ResultSet rs;
-        try (PreparedStatement ps = (PreparedStatement) this.conectar().prepareStatement(sql)) {
-            ps.setString(1, usuario.getEmail());
-            ps.setString(2, usuario.getPass());
+        try (PreparedStatement ps = this.conectar().prepareStatement(sql)) {
+            ps.setString(1, DNI);
+            ps.setString(2, pass);
             rs = ps.executeQuery();
             if (rs.next()) {
-                usuario = new UsuarioModel();
-                usuario.setDNI(rs.getString("DNIPER"));
-                usuario.setPass(rs.getString("PASPER"));
-                usuario.setNombre(rs.getString("NOMPER"));
-                usuario.setEmail(rs.getString("EMAPER"));
+                ingreso.setDNI(rs.getString("DNIPER"));
+                ingreso.setPass(rs.getString("PASPER"));
+                ingreso.setNombre(rs.getString("NOMPER"));
+                ingreso.setApellido(rs.getString("APEPER"));
+                ingreso.setEmail(rs.getString("EMAPER")); 
+                ingreso.setRol(rs.getString("ROLPER"));
                 logueo = true;
             } else {
                 logueo = false;
             }
         }
-        return usuario;
+        return ingreso;
     }
 }

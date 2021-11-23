@@ -14,5 +14,7 @@ public class UsuarioModel {
     String DNI;
     String pass;
     String nombre;
+    String apellido;
     String email;
+    String rol;
 }

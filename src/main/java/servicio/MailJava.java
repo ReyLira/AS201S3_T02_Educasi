@@ -53,7 +53,7 @@ public class MailJava {
             message.setFrom(new InternetAddress(correo));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
             message.setSubject("Correo de notificacion ");
-            message.setText("BUENOS DIAS USUARIO USTED A INICIADO SESION AL SISTEMA EDUCASI"
+            message.setText("BUENOS DIAS "+uss.getNombre()+" "+uss.getApellido()+" USTED A INICIADO SESION AL SISTEMA EDUCASI"
                     + "\n con el correo: " + uss.getEmail()+ "\n desde la direccion IP: " + thisIp
                     + "\n en la Fecha : " + fechSystem
                     + "\n Muchas gracias por ser parte de educasi");
