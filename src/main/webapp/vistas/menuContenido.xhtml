@@ -12,7 +12,38 @@
         <ui:composition template="./plantilla.xhtml">
 
             <ui:define name="content">
-                BIENVENIDOS A EL SISTEMA EDUCASI ADMINISTRADOR
+
+                <h:head>
+                    <f:event listener="#{usuarioC.ingres()}" type="preRenderView" />
+                    <h2 style="text-align: center">BIENVENIDOS AL SISTEMA EDUCASI ADMINISTRADOR</h2>
+                </h:head>
+                <h:body>
+                    <h:form style="height: 200px">
+                        
+                        <div class="ui-g-6">
+                            <h4 style="text-align: center">DATOS DEL USUARIO</h4>
+                            <p:panelGrid columns="4">
+                                <p:outputLabel>NOMBRE</p:outputLabel>
+                                <p:outputLabel>APELLIDO</p:outputLabel>
+                                <p:outputLabel>DNI</p:outputLabel>
+                                <p:outputLabel>ROL</p:outputLabel>
+                                <p:outputLabel value="#{usuarioC.usuarrio.nombre}"></p:outputLabel>
+                                <p:outputLabel value="#{usuarioC.usuarrio.apellido}"></p:outputLabel>
+                                <p:outputLabel value="#{usuarioC.usuarrio.DNI}"></p:outputLabel>
+                                <p:outputLabel value="#{usuarioC.usuarrio.rol}"></p:outputLabel>  
+                            </p:panelGrid>
+                        </div>
+                        <div class="ui-g-6">
+                            <h4 style="text-align: center">OPCIONES</h4>
+                            <p:panelGrid columns="4">
+                                <p:outputLabel>EDITAR DATOS DEL USUARIO</p:outputLabel>
+                                <p:commandButton value="EDITAR"></p:commandButton>
+                                <p:outputLabel>CERRAR SESION</p:outputLabel>
+                                <p:commandButton actionListener="#{usuarioC.cerrarSesion()}" value="SALIR" style="background-color:#EF5350;color:black;font-weight:bold;"></p:commandButton>
+                            </p:panelGrid>
+                        </div>
+                    </h:form>
+                </h:body>
             </ui:define>
 
         </ui:composition>

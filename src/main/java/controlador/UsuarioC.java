@@ -6,13 +6,16 @@
 package controlador;
 
 import dao.UsuarioImpl;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import lombok.Data;
 import modelo.UsuarioModel;
 import static servicio.MailJava.notificarCorreo;
@@ -92,7 +95,7 @@ public class UsuarioC implements Serializable {
                         break;
                 }
             } else {
-                
+
                 this.ingres();
                 if (usuarrio.getRol() != null) {
                     System.out.println("no entra");
@@ -128,4 +131,9 @@ public class UsuarioC implements Serializable {
         }
     }
 
+    // Cerrar y limpiar la sesión y direccionar al xhtml inicial del proyecto
+    public void cerrarSesion() throws IOException {
+       FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+       FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/");
+    }
 }
