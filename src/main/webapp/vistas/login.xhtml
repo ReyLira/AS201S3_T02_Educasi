@@ -13,18 +13,21 @@
         <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"/>
         <link rel="stylesheet" href="./resources/css/login.css"/>
     </h:head>
-    <p:growl id="mensajes" severity="info,fatal,warn,error" showSummary="true" showDetail="true"/>
+    <p:growl id="mensajes" severity="info,fatal,warn,error" showSummary="true" showDetail="true">
+    </p:growl>
 
     <h:body id="body">
         <div class="container">
             <div class="forms-container">
                 <div class="signin-signup">
                     <h:form id="fmrIngresar" class="sign-in-form" prependId="false">
+                        <p:growl id="growl" showDetail="true"/>
                         <img src="./resources/images/EDUCASI.png" class="image" alt="" style="width:60%; height:60%;"/>
                         <h1 class="title" style="color:#FDFEFF; font-weight:bold; font-size:40px">¡BIENVENIDO A EDUCASI!</h1>
                         <div class="input-field">
                             <i class="fas fa-user"></i>
-                            <p:inputText id="usuario" value="#{usuarioC.usuarrio.DNI}" placeholder="DNI" required="true" requiredMessage="Ingrese el DNI">
+                            <p:inputText id="usuario" value="#{usuarioC.usuarrio.DNI}" placeholder="DNI" required="true" requiredMessage="Ingrese el DNI" maxlength="8">
+                                <p:keyFilter regEx="/[0-9]/"/>
                             </p:inputText>
                         </div>
                         <div class="input-field">
@@ -41,16 +44,93 @@
                                          style="font-weight:bold; font-size:20px"/>
 
                         <br></br>
-                            <p:commandButton id="ayuda" value="OLVIDE MI CONTRASEÑA" style="font-weight:bold; font-size:20px"/>
-                        
                         <p:blockUI block="body" widgetVar="widgetBlock">
                             <p:graphicImage value="resources/images/tiempo_cinco.gif"></p:graphicImage>
                             <!--<p:ajax update="block" delay="5000"/>-->
                         </p:blockUI>
+                        <div class="card">
+                            <style type="text/css">
+                                button.ui-button {
+                                    margin-right: .5rem;
+                                }
+                            </style>
+                            <p:commandButton value="¿HAS OLVIDADO TU CONTRASEÑA?" onclick="PF('dlg2').show();" style="font-weight:bold" styleClass="ui-button-secondary"/>
+                            <p:commandButton value="AYUDA" style="font-weight:bold" styleClass="ui-button-warning" onclick="PF('dlg3').show();" />
+                        </div>
                     </h:form>
+
                 </div>  
             </div>     
         </div>
+        <p:dialog header="ENVIAR CONSULTA" widgetVar="dlg3" resizable="false" modal="true">
+            <h:form id="formularioEnvioInf">
+                <script type="text/javascript">
+                    function limpiarForm()
+                    {
+                        document.getElementById("formularioEnvioInf").reset();
+                    }
+                </script>
+                <p:panelGrid columns="1" style="table-layout:fixed; text-align: center">
+                    <h:outputText value="Este es un formulario donde usted puede enviar sus consultas&lt;br /&gt; y recomendaciones ingresando su DNI, solo podrán realizar&lt;br /&gt; las consultas si su DNI está registrado en un USUARIO del SISTEMA" escape="false" />  
+                </p:panelGrid>
+                <br></br>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="DNI"/>
+                    <p:inputText id="DNInotificar" value="#{usuarioC.usuarrio.DNI}" placeholder="DNI" required="true" requiredMessage="Ingrese el DNI" maxlength="8">
+                        <p:keyFilter regEx="/[0-9]/"/>
+                    </p:inputText>
+                    <p:outputLabel value="CONSULTA"/>
+                    <p:inputTextarea  id="CONSULTA" value="#{usuarioC.consult}" placeholder="CONSULTA" required="true" requiredMessage="Ingrese Su consulta">
+                    </p:inputTextarea>
+                    <p:commandButton id="btnNotificar" actionListener="#{usuarioC.consultaEmail()}"
+                                     value="ENVIAR CONSULTA" 
+                                     update="fmrIngresar,:mensajes,btnlogin,btnNotificar" 
+                                     oncomplete="limpiarForm(), PF('dlg3').hide()"/>
+                    <p:commandButton value="CANCELAR" oncomplete="PF('dlg3').hide()" style="background-color: #D32F2F"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+        <p:dialog header="CAMBIAR CONTRASEÑA" widgetVar="dlg2" resizable="false" modal="true" >
+
+            <h:form id="formularioCambioPass">
+                <script type="text/javascript">
+                    function limpiarForm()
+                    {
+                        document.getElementById("formularioCambioPass").reset();
+                    }
+                </script>
+                <p:panelGrid columns="1" style="table-layout:fixed; text-align: center">
+                    <h:outputText value="Para cambiar la contraseña en caso no la &lt;br /&gt; recuerde, es necesario que ingrese su&lt;br /&gt;usuario (DNI) y su correo electrónico" escape="false" />  
+                </p:panelGrid>
+                <br></br>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="DNI"/>
+                    <p:inputText id="DNI" value="#{usuarioC.usuarrio.DNI}" placeholder="DNI" required="true" requiredMessage="Ingrese el DNI" maxlength="8">
+                        <p:keyFilter regEx="/[0-9]/"/>
+                    </p:inputText>
+                    <p:outputLabel value="EMAIL"/>
+                    <p:inputText id="emails" value="#{usuarioC.usuarrio.email}" placeholder="CORREO ELECTRONICO" required="true" requiredMessage="Ingrese el correo electronico">
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                    </p:inputText>
+                    <p:outputLabel value="NUEVA CONTRASEÑA"/>
+                    <p:fragment>
+                        <p:commandButton value="Buscar" action="#{usuarioC.passAleatorio()}"  update="passs">
+                        </p:commandButton>&#160;
+
+                        <p:password id="passs" value="#{usuarioC.usuarrio.pass}" maxlength="16" required="true" requiredMessage="Rellene la contraseña" 
+                                    toggleMask="true" redisplay="true"  feedback="true"
+                                    promptLabel="Ingresa tu contraseña" weakLabel="Débil"
+                                    goodLabel="Buena" strongLabel="Fuerte">
+                        </p:password>
+                    </p:fragment>
+                    <p:commandButton id="btncambio" actionListener="#{usuarioC.modificar()}"
+                                     value="CAMBIAR CONTRASEÑA" 
+                                     update="fmrIngresar,:mensajes,btnlogin,btncambio" 
+                                     oncomplete="limpiarForm(), PF('dlg2').hide()"/>
+                    <p:commandButton value="CANCELAR" oncomplete="PF('dlg2').hide()" style="background-color: #D32F2F"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
     </h:body>
 </html>
 

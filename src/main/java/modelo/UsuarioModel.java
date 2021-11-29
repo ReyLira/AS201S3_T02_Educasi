@@ -17,4 +17,5 @@ public class UsuarioModel {
     String apellido;
     String email;
     String rol;
+    String consulta;
 }
