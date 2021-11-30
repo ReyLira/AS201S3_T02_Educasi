@@ -33,7 +33,7 @@
                                     <f:selectItem itemLabel="- Seleccione -" itemValue="" />
                                     <f:selectItems value="#{personaC.listadoPer}" var="apo" itemLabel="#{apo.nombre.concat(' ').concat(apo.apellido)}" itemValue="#{apo.ID}"/>
                                 </p:selectOneMenu>
-                                <p:commandButton value="Listar" actionListener="#{cuotaDetalleC.ser()}"
+                                <p:commandButton value="Listar" actionListener="#{cuotaDetalleC.cuotObtener()}"
                                                  update="tblCuotaDetalle total"/>
                                 <p:commandButton value="LISTAR CUOTAS DETALLE" actionListener="#{cuotaDetalleC.reporteCuotaDetalle()}" 
                                                  ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>

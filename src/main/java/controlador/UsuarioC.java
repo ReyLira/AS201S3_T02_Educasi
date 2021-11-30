@@ -156,7 +156,21 @@ public class UsuarioC implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "ERROR ", "error en cambiar contraseña"));
         }
     }
-
+    public void modificar2() throws Exception {
+        try {
+            dao.modificar(usuarrio);
+            if (dao.validar.equals(true)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "La contraseña ha sido modificada con éxito"));
+                MailJava.enviarCorreo2(usuarrio);
+            } 
+            else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "ERROR", "Ingrese correctamente los datos"));
+            }
+        } catch (Exception e) {
+            Logger.getGlobal().log(Level.WARNING, "error en cambiar contraseña {0}", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "ERROR ", "error en cambiar contraseña"));
+        }
+    }
     public void limpiar() {
         usuarrio = new UsuarioModel();
     }

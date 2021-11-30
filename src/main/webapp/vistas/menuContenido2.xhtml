@@ -16,8 +16,10 @@
                    <f:event listener="#{usuarioC.ingres()}" type="preRenderView" />
                    <h2>BIENVENIDOS A EL SISTEMA EDUCASI APODERADO Y ALUMNO</h2>
                 </h:head>
+                <p:growl id="mensajes" severity="info,fatal,warn,error" showSummary="true" showDetail="true">
+                </p:growl>
                 <h:body>
-                    <h:form style="height: 200px">
+                    <h:form style="height: 200px" id="fmrDatos">
                         
                         <div class="ui-g-6">
                             <h4 style="text-align: center">DATOS DEL USUARIO</h4>
@@ -36,12 +38,42 @@
                             <h4 style="text-align: center">OPCIONES</h4>
                             <p:panelGrid columns="4">
                                 <p:outputLabel>EDITAR DATOS DEL USUARIO</p:outputLabel>
-                                <p:commandButton value="EDITAR"></p:commandButton>
+                                <p:commandButton value="EDITAR" onclick="PF('dlg2').show();"></p:commandButton>
                                 <p:outputLabel>CERRAR SESION</p:outputLabel>
                                 <p:commandButton actionListener="#{usuarioC.cerrarSesion()}" value="SALIR" style="background-color:#EF5350;color:black;font-weight:bold;"></p:commandButton>
                             </p:panelGrid>
                         </div>
                     </h:form>
+                    <p:dialog header="CAMBIAR CONTRASEÑA" widgetVar="dlg2" resizable="false" modal="true" >
+                        <h:form id="formularioCambioPass">
+                           
+                            <p:panelGrid columns="1" style="table-layout:fixed; text-align: center">
+                                <h:outputText value="Para cambiar la contraseña verifique que&lt;br /&gt; este activo su inicio de sesion&lt;br /&gt;se enviara a su correo su nueva contraseña" escape="false" />  
+                            </p:panelGrid>
+                            <br></br>
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="DNI"/>
+                                <p:inputText id="DNI" value="#{usuarioC.usuarrio.DNI}" placeholder="DNI" required="true" requiredMessage="Ingrese el DNI" maxlength="8" disabled="true" style="width: 400px">
+                                    <p:keyFilter regEx="/[0-9]/"/>
+                                </p:inputText>
+                                <p:outputLabel value="EMAIL"/>
+                                <p:inputText id="emails" value="#{usuarioC.usuarrio.email}" placeholder="CORREO ELECTRONICO" required="true" requiredMessage="Ingrese el correo electronico" disabled="true" style="width: 400px">
+                                    <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                                </p:inputText>
+                                <p:outputLabel value="NUEVA CONTRASEÑA"/>
+                                    <p:password id="passs" value="#{usuarioC.usuarrio.pass}" maxlength="16" required="true" requiredMessage="Rellene la contraseña" 
+                                                toggleMask="true" redisplay="true"  feedback="true"
+                                                promptLabel="Ingresa tu contraseña" weakLabel="Débil"
+                                                goodLabel="Buena" strongLabel="Fuerte" style="width: 300px">
+                                    </p:password>
+                                <p:commandButton id="btncambioPass" actionListener="#{usuarioC.modificar2()}"
+                                                 value="CAMBIAR CONTRASEÑA" 
+                                                 update="fmrDatos,:mensajes,btncambioPass" 
+                                                 oncomplete="PF('dlg2').hide()"/>
+                                <p:commandButton value="CANCELAR" oncomplete="PF('dlg2').hide()" style="background-color: #D32F2F"/>
+                            </p:panelGrid>
+                        </h:form>
+                    </p:dialog>
                 </h:body>
             </ui:define>
 

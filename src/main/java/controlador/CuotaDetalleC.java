@@ -72,7 +72,7 @@ public class CuotaDetalleC implements Serializable {
         }
     }
 
-    public void ser() throws Exception {
+    public void cuotObtener() throws Exception {
         try {
             if (perss != null && !perss.isEmpty()) {
                 System.out.println("cont" + perss);
