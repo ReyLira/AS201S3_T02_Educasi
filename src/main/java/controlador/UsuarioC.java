@@ -12,15 +12,25 @@ import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import lombok.Data;
+import modelo.CuotaModel;
+import modelo.UsuarioDetalleModel;
 import modelo.UsuarioModel;
 import servicio.MailJava;
 import static servicio.MailJava.notificarCorreo;
 import servicio.Password;
+import servicio.Reporte;
 
 /**
  *
@@ -33,16 +43,21 @@ public class UsuarioC implements Serializable {
 
     UsuarioImpl dao;
     UsuarioModel usuarrio;
+    UsuarioDetalleModel detalleUsu;
     String user;
     String consult;
     String pass;
+    String validador;
     int captcha = 0;
     int intentos = 0;
     boolean bloquear = false;
+    public static int global;
+    private List<UsuarioDetalleModel> listadoCuot;
 
     public UsuarioC() {
         usuarrio = new UsuarioModel();
         dao = new UsuarioImpl();
+        global = usuarrio.getID();
     }
 
     public void ingres() throws Exception {
@@ -52,14 +67,15 @@ public class UsuarioC implements Serializable {
             System.out.println(usuarrio.getDNI());
             System.out.println(usuarrio.getEmail());
             System.out.println(usuarrio.getRol());
+            System.out.println(usuarrio.getID());
 
-            
         } catch (Exception e) {
             Logger.getGlobal().log(Level.WARNING, "Error en login_C {0} ", e.getMessage());
             e.printStackTrace();
         }
     }
-    public void acceso(){
+
+    public void acceso() {
         try {
             this.ingres();
             if (dao.logueo == false) {
@@ -99,25 +115,27 @@ public class UsuarioC implements Serializable {
                         break;
                 }
             } else {
-                 if (usuarrio.getRol() != null) switch (usuarrio.getRol()) {
-                    case "APODERADO":
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
-                        notificarCorreo(usuarrio);
-                        break;
-                    case "ADMIN    ":
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
-                        notificarCorreo(usuarrio);
-                        break;
-                    case "ALUMNO   ":
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
-                        notificarCorreo(usuarrio);
-                        break;
-                    default:
-                        System.out.println("no ingresa");
-                        break;
+                if (usuarrio.getRol() != null) {
+                    switch (usuarrio.getRol()) {
+                        case "APODERADO":
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
+                            notificarCorreo(usuarrio);
+                            break;
+                        case "ADMIN    ":
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
+                            notificarCorreo(usuarrio);
+                            break;
+                        case "ALUMNO   ":
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
+                            notificarCorreo(usuarrio);
+                            break;
+                        default:
+                            System.out.println("no ingresa");
+                            break;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -125,6 +143,7 @@ public class UsuarioC implements Serializable {
             e.printStackTrace();
         }
     }
+
     private static void delaySegundo() {
         try {
             Thread.sleep(5000);
@@ -156,14 +175,14 @@ public class UsuarioC implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "ERROR ", "error en cambiar contraseña"));
         }
     }
+
     public void modificar2() throws Exception {
         try {
             dao.modificar(usuarrio);
             if (dao.validar.equals(true)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "La contraseña ha sido modificada con éxito"));
                 MailJava.enviarCorreo2(usuarrio);
-            } 
-            else {
+            } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "ERROR", "Ingrese correctamente los datos"));
             }
         } catch (Exception e) {
@@ -171,6 +190,7 @@ public class UsuarioC implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "ERROR ", "error en cambiar contraseña"));
         }
     }
+
     public void limpiar() {
         usuarrio = new UsuarioModel();
     }
@@ -197,5 +217,48 @@ public class UsuarioC implements Serializable {
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "No genero password"));
         }
+    }
+
+    public void total() {
+        try {
+            detalleUsu = dao.total(usuarrio.getID());
+        } catch (Exception e) {
+            System.out.println("ERROR TOTAL" + e.getMessage());
+        }
+    }
+
+    public void listarPersona() {
+        try {
+            listadoCuot = dao.ListarPorPersona(usuarrio.getID());
+            System.err.println("ss" + usuarrio.getID());
+        } catch (Exception e) {
+            System.out.println("ERROR LISTAR" + e.getMessage());
+        }
+    }
+
+    public void reporteCuotaDetalle() {
+        try {
+            validador=String.valueOf(usuarrio.getID());
+            if (validador == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe seleccionar una persona"));
+            }
+            if (validador != null) {
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date fechaActual = new Date(System.currentTimeMillis());
+            String fechSystem = dateFormat2.format(fechaActual);
+            Reporte report = new Reporte();
+            Map<String, Object> parameters = new HashMap();
+            parameters.put("Parameter1", validador);
+            report.exportarPDFGlobal(parameters, "cuotaDetallePers.jasper", fechSystem + " cuotaDetalle.pdf");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));
+            e.printStackTrace();
+        }
+    }
+
+    public String encrypt(String data) {
+        return Base64.getEncoder().encodeToString(data.getBytes(StandardCharsets.UTF_8));
     }
 }

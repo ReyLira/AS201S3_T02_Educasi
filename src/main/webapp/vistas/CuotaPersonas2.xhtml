@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <body>
+        <ui:composition template="./plantilla2.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msj" showDetail="true" skipDetailIfEqualsSummary="true">
+                    <p:autoUpdate/>
+                </p:growl>
+                <h:head>
+                    <f:event listener="#{usuarioC.listarPersona()}" type="preRenderView" />
+                    <f:event listener="#{usuarioC.total()}" type="preRenderView" />
+                </h:head>
+                <h:body>
+                    <h:form id="formTblCuotaDetalle">
+                        <h4 style="font-family: sans-serif; text-align: center">CUOTAS CANCELADAS POR EL USUARIO</h4>
+                        <div style="height: 200px;background-color: #E5EEF3">
+                            <div class="ui-g-6">    
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel style="font-weight: bold">NOMBRE</p:outputLabel>
+                                    <p:outputLabel style="font-weight: bold">APELLIDO</p:outputLabel>
+                                    <p:outputLabel value="#{usuarioC.usuarrio.nombre}"></p:outputLabel>
+                                    <p:outputLabel value="#{usuarioC.usuarrio.apellido}"></p:outputLabel> 
+                                </p:panelGrid>
+                                <p:panelGrid columns="1">
+                                <p:commandButton value="LISTAR CUOTAS PERSONA" actionListener="#{usuarioC.reporteCuotaDetalle()}" 
+                                                 ajax="false" style="background-color:yellowgreen;color:black;font-weight:bold;"/>
+                                </p:panelGrid>
+                            </div>
+                            <div class="ui-g-6">
+                                <p:panelGrid id="total" columns="3">
+                                    <p:outputLabel style="font-weight: bold">MONTO A PAGAR TOTAL</p:outputLabel>
+                                    <p:outputLabel style="font-weight: bold">MONTO TOTAL PAGADO</p:outputLabel>
+                                    <p:outputLabel style="font-weight: bold">MONTO FALTANTE</p:outputLabel>
+                                    <p:outputLabel value="#{usuarioC.detalleUsu.CANTIDAD}"> S/.</p:outputLabel>
+                                    <p:outputLabel value="#{usuarioC.detalleUsu.MONTO}"> S/.</p:outputLabel>
+                                    <p:outputLabel value="#{usuarioC.detalleUsu.RESTO}"> S/.</p:outputLabel>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+                        <br></br>
+                        <p:dataTable id="tblCuotaDetalle"
+                                     var="usuarrio"
+                                     value="#{usuarioC.listadoCuot}"
+                                     selection="#{usuarioC.detalleUsu}"
+                                     selectionMode="single"
+                                     rowKey="#{usuarrio.IDcuota}"
+                                     paginator="true"
+                                     paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+                            <f:facet name="header">
+                                <h:commandLink value="Descargar Listado" >
+                                    <p:dataExporter type="xls" target="tblCuotaDetalle" fileName="Listado"/>
+                                </h:commandLink>
+                            </f:facet>
+                            <p:column headerText="ACTIVIDAD" sortBy="#{usuarrio.nombreActividad}" filterBy="#{usuarrio.nombreActividad}">
+                                <h:outputText value="#{usuarrio.nombreActividad}"/>
+                            </p:column>
+                            <p:column headerText="MONTO A PAGAR" >
+                                <h:outputText value="S/. #{usuarrio.cantidadCuota}"/>
+                            </p:column>
+                            <p:column headerText="MONTO PAGADO" >
+                                <h:outputText value="S/. #{usuarrio.montoCuota}"/>
+                            </p:column>
+                            <p:column headerText="fecha" >
+                                <h:outputText value="#{usuarrio.fechaCuota}"><f:convertDateTime type="date" pattern="dd - MMM - y"/></h:outputText>
+                            </p:column>
+                            <f:facet name="footer">
+                                <br/><br/>
+                                EN TOTAL HAY #{fn:length(usuarioC.listadoCuot)} REGISTROS.
+                            </f:facet>
+                        </p:dataTable>
+                    </h:form>
+                </h:body>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

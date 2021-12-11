@@ -5,7 +5,9 @@
  */
 package servicio;
 
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +19,9 @@ import modelo.UsuarioModel;
  * @author EDGARD
  */
 public class Password {
-
+     public static String encrypt (String data){
+        return Base64.getEncoder().encodeToString(data.getBytes(StandardCharsets.UTF_8));
+    }
     public static void passAleatorio(PersonaModel per)throws Exception  {
         int length = 10;
         String symbol = "-/.^&*_!@%=+>)";
