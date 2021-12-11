@@ -25,6 +25,11 @@
     <welcome-file-list>
         <welcome-file>faces/vistas/login.xhtml</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <error-code>404</error-code>
+        <!--dentro del web-content de tu aplicacion -->
+        <location>/faces/vistas/error404.xhtml</location> 
+    </error-page>
     <mime-mapping>
         <extension>ttf</extension>
         <mime-type>application/x-font-ttf</mime-type>
