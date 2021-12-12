@@ -119,16 +119,19 @@ public class UsuarioC implements Serializable {
                     switch (usuarrio.getRol()) {
                         case "APODERADO":
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("objetoUsuario", usuarrio);
                             FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
                             notificarCorreo(usuarrio);
                             break;
                         case "ADMIN    ":
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("objetoUsuario", usuarrio);
                             FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
                             notificarCorreo(usuarrio);
                             break;
                         case "ALUMNO   ":
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", "Ingreso Exitoso"));
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("objetoUsuario", usuarrio);
                             FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
                             notificarCorreo(usuarrio);
                             break;
@@ -153,8 +156,48 @@ public class UsuarioC implements Serializable {
         }
     }
 
+    // Obtener el objeto de la sesión activa
+    public static UsuarioModel obtenerObjetoSesion() {
+        return (UsuarioModel) FacesContext.getCurrentInstance().getExternalContext().
+                getSessionMap().get("objetoUsuario");
+    }
+    // Si la sesión no está iniciada no permitirá entrar a otra vista de la aplicación
+
+    public void seguridadSesion() throws IOException {
+        if (obtenerObjetoSesion() == null) {
+            limpiar();
+            FacesContext.getCurrentInstance().getExternalContext().
+                    redirect("/AS201S3_T02_Educasi/");
+        }
+    }
+    // Si la sesión está activa se redirecciona a la vista principal
+
+    public void seguridadLogin() throws IOException {
+        UsuarioModel us = obtenerObjetoSesion();
+        if (us != null) {
+            switch (us.getRol()) {
+                case "ADMIN    ":
+                    FacesContext.getCurrentInstance().getExternalContext().
+                    redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
+                    break;
+                case "APODERADO":
+                    FacesContext.getCurrentInstance().getExternalContext().
+                    redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
+                    break;
+                case "ALUMNO   ":
+                    FacesContext.getCurrentInstance().getExternalContext().
+                    redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
+                    break;
+                default:
+                    System.out.println("no ingresa");
+                    break;
+            }
+        }
+    }
+
     // Cerrar y limpiar la sesión y direccionar al xhtml inicial del proyecto
     public void cerrarSesion() throws IOException {
+        limpiar();
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/");
     }
@@ -238,19 +281,19 @@ public class UsuarioC implements Serializable {
 
     public void reporteCuotaDetalle() {
         try {
-            validador=String.valueOf(usuarrio.getID());
+            validador = String.valueOf(usuarrio.getID());
             if (validador == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe seleccionar una persona"));
             }
             if (validador != null) {
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            Date fechaActual = new Date(System.currentTimeMillis());
-            String fechSystem = dateFormat2.format(fechaActual);
-            Reporte report = new Reporte();
-            Map<String, Object> parameters = new HashMap();
-            parameters.put("Parameter1", validador);
-            report.exportarPDFGlobal(parameters, "cuotaDetallePers.jasper", fechSystem + " cuotaDetalle.pdf");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
+                SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date fechaActual = new Date(System.currentTimeMillis());
+                String fechSystem = dateFormat2.format(fechaActual);
+                Reporte report = new Reporte();
+                Map<String, Object> parameters = new HashMap();
+                parameters.put("Parameter1", validador);
+                report.exportarPDFGlobal(parameters, "cuotaDetallePers.jasper", fechSystem + " cuotaDetalle.pdf");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF GENERADO", null));
             }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL GENERAR PDF", null));

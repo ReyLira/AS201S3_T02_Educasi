@@ -12,6 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"/>
         <link rel="stylesheet" href="./resources/css/login.css"/>
+        <f:event listener="#{usuarioC.seguridadLogin()}" type="preRenderView"></f:event>
     </h:head>
     <p:growl id="mensajes" severity="info,fatal,warn,error" showSummary="true" showDetail="true">
     </p:growl>
