@@ -1,11 +1,11 @@
 # AS201S3_T02_Educasi
-Sistema de Gestión de Ingresos y Egresos de APAFA .
+Sistema de Registro de Ingresos y Egresos de APAFA .
 
 # Equipo de desarrollo.
 (Edgard Rodriguez | Luis Taquire)
 
 ### Objetivos Generales
-Gestionar la rendición de cuentas de los ingresos y egresos de APAFA 
+Realizar la rendición de cuentas de los ingresos y egresos de APAFA 
 
 ### Objetivos específicos
 * Reducir el tiempo y costes adicionales en la espera de la emisión de constancia de no adeudo.
