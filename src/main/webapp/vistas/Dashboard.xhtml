@@ -19,6 +19,19 @@
                 <h:outputStylesheet library="css" name="primeflex.min.css"/>
                 <h:outputStylesheet library="css" name="primeflex.css"/>
                 <h:body>
+                    <h:form>
+                        <p:fragment>
+                            <div align="center">
+                                <h4>TIEMPO DE INICIO DE SESION</h4>
+                                <h:outputText id="contador" value="#{dashboardC.number}" style="font-size: 36px;font-weight: bold;color: #D32F2F"></h:outputText>
+                                <p:progressBar value="#{dashboardC.number}" id="contador1" displayOnly="true"/>
+                                <p:poll id="poll" interval="1" process="contador" listener="#{dashboardC.decrementoNumero()}" update="contador contador1"></p:poll>  
+                                <p:idleMonitor timeout="1">
+                                    <p:ajax event="active" listener="#{dashboardC.activarSesion()}"></p:ajax>
+                                </p:idleMonitor>
+                            </div>
+                        </p:fragment>
+                    </h:form>
                     <h2 style="font-family: sans-serif; text-align: center">GRAFICOS DE LAS PERSONAS</h2>
                     <div class="p-grid">
                         <div class="p-col">

@@ -6,6 +6,7 @@
 package controlador;
 
 import dao.DashboardImpl;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.pie.PieChartDataSet;
 import org.primefaces.model.charts.pie.PieChartModel;
@@ -87,4 +89,20 @@ public class DashboardC implements Serializable {
             Logger.getGlobal().log(Level.WARNING, "Error en el dashboardCargoD {0}", e.getMessage());
         }
     }
+    private int number = 20;
+
+    public void activarSesion() {
+        number = 20;
+    }
+
+    public void decrementoNumero() throws IOException {
+        if (number > 0) {
+            number--;
+        } else if (number == 0) {
+            System.out.println("salir de sesion");
+            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/AS201S3_T02_Educasi/");
+        }
+    }
+
 }
