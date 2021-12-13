@@ -1,5 +1,5 @@
 # AS201S3_T02_Educasi
-Sistema de Registro de Ingresos y Egresos de APAFA .
+Sistema de Registro de Ingresos y Egresos de APAFA.
 
 # Equipo de desarrollo.
 (Edgard Rodriguez | Luis Taquire)
