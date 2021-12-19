@@ -20,6 +20,7 @@
                         <title>GASTO ACTIVIDAD DETALLE</title>
                     </f:facet>
                     <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView"></f:event>
+                    <f:event listener="#{usuarioC.seguradUsuarioAdmin()}" type="preRenderView"></f:event>
                     <f:event listener="#{cuotaC.listar()}" type="preRenderView" />
                 </h:head>
                 <h:body>

@@ -19,6 +19,7 @@
                 <h:outputStylesheet library="css" name="primeflex.min.css"/>
                 <h:outputStylesheet library="css" name="primeflex.css"/>
                 <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView"></f:event>
+                <f:event listener="#{usuarioC.seguradUsuarioApoderado()}" type="preRenderView"></f:event>
                 <h:body>
                     <h:form>
                         <p:fragment>

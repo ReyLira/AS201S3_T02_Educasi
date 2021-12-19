@@ -170,23 +170,40 @@ public class UsuarioC implements Serializable {
                     redirect("/AS201S3_T02_Educasi/");
         }
     }
-    // Si la sesión está activa se redirecciona a la vista principal
 
+    //si inicio sesion como usuario administrador no permitira que ingrese a otra vista que no sea del administrador
+    public void seguradUsuarioAdmin() throws IOException {
+        UsuarioModel us = obtenerObjetoSesion();
+        if (us != null && us.getRol().equals("ADMIN    ")) {
+            FacesContext.getCurrentInstance().getExternalContext().
+                    redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
+        }
+    }
+     //si inicio sesion como usuario administrador no permitira que ingrese a otra vista que no sea del apoderado
+    public void seguradUsuarioApoderado() throws IOException {
+        UsuarioModel us = obtenerObjetoSesion();
+        if (us != null && us.getRol().equals("APODERADO")) {
+            FacesContext.getCurrentInstance().getExternalContext().
+                    redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
+        }
+    }
+
+    // Si la sesión está activa se redirecciona a la vista principal
     public void seguridadLogin() throws IOException {
         UsuarioModel us = obtenerObjetoSesion();
         if (us != null) {
             switch (us.getRol()) {
                 case "ADMIN    ":
                     FacesContext.getCurrentInstance().getExternalContext().
-                    redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
+                            redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido.xhtml");
                     break;
                 case "APODERADO":
                     FacesContext.getCurrentInstance().getExternalContext().
-                    redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
+                            redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
                     break;
                 case "ALUMNO   ":
                     FacesContext.getCurrentInstance().getExternalContext().
-                    redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
+                            redirect("/AS201S3_T02_Educasi/faces/vistas/menuContenido2.xhtml");
                     break;
                 default:
                     System.out.println("no ingresa");

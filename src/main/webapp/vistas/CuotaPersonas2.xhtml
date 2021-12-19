@@ -15,6 +15,7 @@
                 </p:growl>
                 <h:head>
                     <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView"></f:event>
+                    <f:event listener="#{usuarioC.seguradUsuarioAdmin()}" type="preRenderView"></f:event>
                     <f:event listener="#{usuarioC.listarPersona()}" type="preRenderView" />
                     <f:event listener="#{usuarioC.total()}" type="preRenderView" />
                 </h:head>

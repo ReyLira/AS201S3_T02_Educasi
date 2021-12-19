@@ -19,6 +19,7 @@
                         <title>EDUCASI</title>
                     </f:facet>
                     <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView"></f:event>
+                    <f:event listener="#{usuarioC.seguradUsuarioApoderado()}" type="preRenderView"></f:event>
                     <f:event listener="#{personaC.listar()}" type="preRenderView" />
                 </h:head>
                 <h:form id="formPersona"  style="align-content: center;align-items: center;text-align: center">
